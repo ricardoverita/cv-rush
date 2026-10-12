@@ -65,10 +65,10 @@ Bots are eliminated by their simulated outcomes (a failed ATS, a destroyed CV), 
 
 | | Casual | Ranked |
 |---|---|---|
-| Field | Randomly generated per run (archetype mix, names) | **One daily field for everyone** (same archetypes, stats and seed) |
-| Strength | Scaled to the player's seniority band to keep races close | Fixed for the day |
+| Field | Randomly generated per run (archetype mix, names) | **One daily field per category** (the same archetypes, stats and seed for everyone in the category) |
+| Strength | Scaled to the player's exact seniority to keep races close | Scaled to the category's band; fixed for the day |
 | Drama tuning | Light rubber-banding of *visual* pacing for close races | None: what you see matches the simulation |
-| Position | Personal context | Scored, comparable across all players that day |
+| Position | Personal context | Scored, comparable across all players of the category that day |
 
 ## 7. Content and i18n
 

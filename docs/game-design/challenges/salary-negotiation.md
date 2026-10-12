@@ -30,7 +30,7 @@ The offer call. "So, what are your salary expectations?" A short back-and-forth 
 
 - Uses the job's salary range, currency and seniority. It is coherent with what the player read.
 - **Never a game over** by itself (as in the brief: it affects score, speed and CV Health).
-- **Ranked:** the Daily Job has the same range for everyone and graded outcomes are deterministic, so it is fair.
+- **Ranked:** each player negotiates against the range of their own posting; the graded logic and the number of rounds are identical within the category, so it is fair.
 - It adds about 15–20 s, so the pacing budget must absorb it (for example by shortening Segment 2).
 
 ### Open questions

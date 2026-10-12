@@ -1,6 +1,6 @@
 # Product vision, core fantasy and target users
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
 >
 > "CV Rush" is the provisional public name. Everything below describes the product in brand-agnostic terms so that a rename is a branding change, not a redesign.
 
@@ -10,14 +10,14 @@
 
 Elevator pitch:
 
-> You found a job you want. Grab your CV and race through recruiters, an ATS machine and interviews to deliver it at the company before the other candidates. Win the day and your profile becomes the Daily Champion.
+> Tell us who you are: your seniority, your role, your stack. You'll get a job that fits you. Grab your CV and race through recruiters, an ATS machine and interviews to deliver it at the company before the other candidates. Win the day in your category and you become its Daily Champion.
 
 ### Why this can work
 
 | Reason | What it means for the product |
 |---|---|
 | **Universal and relatable** | Almost everyone in tech has a ghosting, ATS or "10 years of experience in a 2-year-old framework" story. Shared pain is shareable humor. |
-| **Personal** | The job posting is built around the player's role and stack. It is *their* hiring process. |
+| **Personal** | The job posting is built around the player's seniority, role and stack, in both modes. It is *their* hiring process, and every result says *as what* it was achieved. |
 | **Short and competitive** | 2–5 minute runs, a daily ranking, and a one-tap retry create the "one more try" loop. |
 | **A real reason to share** | The leaderboard is a professional showcase. Sharing a result is also a way to be discovered on LinkedIn. |
 | **Open and transparent** | Public rules, open-source code and community content build trust and grow the question supply. |
@@ -72,7 +72,7 @@ Every UX, game-design and architecture decision should reinforce this sentence. 
 1. **Satirize the process, respect the people.** The jokes target systems (ATS filters, ghosting, absurd requirements), not recruiters, candidates or any identity.
 2. **Fast, readable, replayable.** A run fits in a coffee break and is playable one-handed on a phone.
 3. **The server is the referee.** Results are computed server-side, are explainable, and do not depend on trusting the browser.
-4. **Personal in casual, fair in ranked.** Personalization drives fun; fairness drives competition. The two do not mix (see [game modes](game-modes.md)).
+4. **Compete as who you are.** Every run is played as the player's declared seniority, role and stack, frozen when the run starts. Casual maximizes personalization; ranked compares players only with comparable profiles (see [competitive identity](competitive-identity.md) and [game modes](game-modes.md)).
 5. **Visibility by choice.** Nobody becomes public by finishing a run. Showcasing is an explicit, reversible opt-in.
 6. **Built in the open.** Rules are documented, code is open source, and content is contributable without touching game code.
 
@@ -103,12 +103,12 @@ Every UX, game-design and architecture decision should reinforce this sentence. 
 | Open-source contributors | Portfolio, learning, community | A contribution path that does not require knowing the whole system | Secondary (supply side) |
 | Companies and communities | Sponsorship, employer branding | Rules that protect game integrity | Future |
 
-Covered roles: engineering, data, design, product and security roles (16 at launch, extensible). See [MVP scope](mvp-scope.md) for which roles have full content coverage at launch.
+Covered roles: 13 engineering, infrastructure, quality, data, security and architecture roles at launch, grouped into 10 tracks (extensible). See [competitive identity](competitive-identity.md) and [MVP scope](mvp-scope.md) for which tracks are ranked at launch.
 
 ### Personas (fictional)
 
 - **Andrea**, Junior Frontend Developer, Lima. Job hunting. Opens the game from a LinkedIn post on her phone. Plays in Spanish. Wants practice and a result she can share.
-- **Marco**, Senior Backend Engineer, Barcelona. Employed and competitive. Plays the Daily Challenge on desktop at lunch and checks whether he held the #1 spot.
+- **Marco**, Senior Backend Engineer, Barcelona. Employed and competitive. Plays the Daily Challenge on desktop at lunch and checks whether he held the #1 spot in Backend · Senior+.
 - **Priya**, Tech Recruiter, London. Shares the game with candidates and colleagues. Plays in English. Expects the satire to be fair to recruiters.
 - **Tomás**, Mid Fullstack Developer, Buenos Aires. Wants to contribute Laravel questions without learning the whole architecture.
 

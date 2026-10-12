@@ -23,7 +23,7 @@
 **What the MVP must preserve:**
 
 - Analytics events with non-sensitive metadata (role, seniority, technology IDs, challenge type, duration, success).
-- A **profile snapshot per run** (role, seniority, stack at the time of play), so history stays correct when profiles change.
+- A **frozen profile snapshot per run** (role, seniority, stack, category at the time of play), so history and aggregates stay correct when profiles change.
 - A stable **topic and tag taxonomy** for questions and technologies.
 - Per-attempt records (question version, answer, timing, result).
 
@@ -49,7 +49,7 @@ CV Rush results — not a professional certification.
 
 **What the MVP must preserve:**
 
-- Leaderboards are defined over **competition periods** (day, week; season later), not hardcoded to days.
+- Leaderboards are defined over **competition periods** (day, week; season later) **and categories** (track × band), not hardcoded to days or to a single global board.
 - Every run records the **ruleset and scoring version** it was played under, so results remain explainable after rules change.
 - Champions and results are archived with their period.
 
@@ -80,7 +80,8 @@ See [community › sponsorship and integrity](community.md#7-sponsorship-and-int
 
 | Future capability | Enabler in the MVP domain |
 |---|---|
-| Talent insights | First-party events with safe metadata; per-run profile snapshots; topic taxonomy |
+| Talent insights | First-party events with safe metadata; frozen per-run profile snapshots; topic taxonomy |
+| Results with context forever | Competing context (seniority, role, stack, category) stored with every result |
 | Skill Passport | Stable player identity; per-attempt records; consent by purpose |
 | Seasons | Competition periods; ruleset and scoring version per run |
 | Recruiter challenges | Job postings and challenge blueprints as data with an owner |

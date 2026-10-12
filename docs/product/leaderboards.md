@@ -1,8 +1,8 @@
-# Leaderboards: Daily Champion, Weekly Top 7 and Candidate of the Week
+# Leaderboards: categories, Daily Champions, Weekly Top 7 and Candidate of the Week
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 2)**
 >
-> Only **ranked (Daily Challenge)** runs feed these leaderboards. Casual runs only produce personal bests.
+> Only **ranked** runs feed these leaderboards. Casual runs produce personal bests. Revision 2 makes leaderboards **category-first** (track × band), following [competitive identity](competitive-identity.md).
 
 ## 1. Time model
 
@@ -10,46 +10,81 @@
 
 | Concept | Definition (canonical, UTC) | What the player sees (local) |
 |---|---|---|
-| Daily Challenge window | `00:00:00.000` to `23:59:59.999` UTC | "Daily Challenge ends in 04:32:18", with the local closing time, e.g. "closes today at 19:00 (your time)" |
+| Daily Challenge window | `00:00:00.000` to `23:59:59.999` UTC | "Daily Challenge ends in 04:32:18", plus the local closing time ("closes today at 19:00, your time") |
 | Run ownership | A run belongs to the UTC day in which it **started** | — |
-| Grace window | Runs started before close may finish within their maximum lifetime (10 min, initial value) | "Finishing runs… the champion will be announced shortly" |
+| Grace window | Runs started before close may finish within their maximum lifetime (10 min, initial value) | "Finishing runs… champions will be announced shortly" |
 | Verification | Runs after the grace window | "Verifying today's results" |
-| Week | ISO week, Monday 00:00 UTC to Sunday 23:59:59.999 UTC | Day names in local language; each card notes its UTC date |
+| Week | ISO week, Monday 00:00 UTC to Sunday 23:59:59.999 UTC | Day names in local language; each card shows its UTC date |
 
-Examples for the same close at 00:00 UTC:
+The same 00:00 UTC close is 19:00 in Lima (UTC−5), 18:00 in Mexico City (UTC−6), 01:00/02:00 the next day in Madrid (winter/summer) and 00:00/01:00 the next day in London. Countdowns are computed from server time; the client only formats them. The public **"How ranking works"** page documents exactly when a Daily Challenge ends.
 
-| Player in | Local closing time |
-|---|---|
-| Lima (UTC−5) | 19:00 the same day |
-| Mexico City (UTC−6) | 18:00 the same day |
-| Madrid (UTC+1 winter / UTC+2 summer) | 01:00 / 02:00 the next day |
-| London (UTC+0 / UTC+1) | 00:00 / 01:00 the next day |
+## 2. Structure: category first
 
-Rules:
+**The unit of competition is the category** (track × band, e.g. Fullstack · Senior+). Players are only ranked against comparable profiles; scores from different categories are **never compared** in the MVP.
 
-- All countdowns are computed from server time. The client only formats them.
-- Every date shown on leaderboards is unambiguous: day names come with their date, and a tooltip says "UTC day".
-- The **"How ranking works"** page documents exactly when a Daily Challenge ends.
+| Board | Scope | Content |
+|---|---|---|
+| **Category daily leaderboard** | One category, one UTC day | Provisional ranking during the day; top 20 + your position |
+| **Daily Champion** | One category, one UTC day | The best verified run |
+| **Weekly Top 7** | One category, one ISO week | The 7 Daily Champions of that category |
+| **Candidate of the Week** | One category, one ISO week | The best of those 7 champions |
+| **Spotlight** (not a ranking) | All active categories | Today's champions and the Candidates of the Week, side by side, **without comparing their scores** |
 
-## 2. Daily leaderboard
+### Example: category daily leaderboard
 
-- A **live, provisional** ranking during the day.
-- **One entry per player**: their best delivered ranked run of the day.
-- It shows the **top 20** plus **the player's own position** if they are outside it.
-- Each entry shows the display name (or "Anonymous Candidate"), role and seniority (if public), score and race time.
-- **Ranking key:** score (desc), then accuracy (desc), then race time (asc), then delivery timestamp (asc, earlier wins).
-- **Field size** is shown ("#3 of 214 candidates") for context and transparency.
-- Failed and abandoned runs are never listed. Bots never appear on leaderboards.
+```
+FULLSTACK · SENIOR+ · Tue 13 Oct (UTC) · 41 candidates · provisional
 
-## 3. Daily Champion
+#1  Ricardo Vera — Senior Fullstack Developer
+    Node.js · PHP · React                       18,492 pts   [View LinkedIn]
+#2  Andrea Gómez — Senior Fullstack Developer
+    Java · React · PostgreSQL                   18,210 pts   [View LinkedIn]
+#3  Anonymous Candidate                         17,950 pts
+#4  Sam Lee — Staff Fullstack Developer
+    Go · Vue · PostgreSQL · Kafka               17,402 pts
+…
+#12 You — Senior Fullstack Developer            15,880 pts
+```
 
-**Definition:** the player with the best **verified** ranked run of a UTC day.
+- Each row shows the **competing context from the run's snapshot**: exact seniority + role, and stack chips (up to 5, "+N"). Stacks don't have to be identical; the category blueprint keeps difficulty comparable.
+- A "Staff" player appears in **Senior+** with their real title.
+- Anonymous entries show only "Anonymous Candidate" and the score.
+- **One entry per player per day**: their best delivered run (the daily lock means all their attempts are in the same category).
+- **Ranking key:** score (desc), then accuracy (desc), then race time (asc), then delivery timestamp (asc).
+- Field size is always shown. Failed and abandoned runs and bots are never listed.
 
-### 3.1 Lifecycle
+### Navigation
+
+- The leaderboard opens on **the player's own category** (from their last ranked run or their current profile).
+- A category switcher lists **active categories** (with runs today) plus the player's own. Empty categories are not listed, so we never show a wall of empty boards.
+- Preview categories (see [category lifecycle](competitive-identity.md#33-progressive-growth-instead-of-empty-boards)) show a **Preview** badge, with no champions.
+
+## 3. Global comparison: alternatives
+
+Should there be a single "best of the day" across all categories? The challenges differ (different bands, tracks, topics), so raw scores are not comparable.
+
+| Option | Description | Pros | Cons | Verdict |
+|---|---|---|---|---|
+| G1. Raw global ranking | The highest score across all categories | Simple | Compares different challenges: unfair and misleading | ❌ Never |
+| G2. Normalized index | Each run's **percentile within its category** that day (minimum field size, e.g. 20); a global view sorted by percentile | "How dominant were you in your field?" is comparable | Noisy for small fields; field strength differs between categories; harder to explain | ⏸ **V1, experimental**, labeled "Top performers (normalized)", never a "champion" title |
+| G3. Long-term rating (Elo/Glicko-like) | A rating per player across runs | Robust over time | Needs identity, volume and calibrated content | ⏸ V2+ |
+| **G4. No global ranking; a global spotlight** | Show every category's champion side by side, ordered by field size, not by score | Honest, simple; best for discovering professionals | No single "best of the day" | ✅ **MVP** |
+
+**Recommendation:** G4 for the MVP. Collect per-category distributions from day one. Introduce G2 as an experimental, clearly explained view once several categories regularly reach the minimum field size.
+
+## 4. Category daily leaderboard rules
+
+- Live and **provisional** during the day.
+- Only delivered ranked runs in an **official** category count toward champions. Preview categories have boards but no titles.
+- Players see their own provisional rank on the results screen: "#1 of 41 today in Fullstack · Senior+ (provisional)".
+
+## 5. Daily Champion (per category)
+
+**Definition:** the best **verified** ranked run of a UTC day **in a category**.
 
 ```mermaid
 stateDiagram-v2
-  [*] --> LiveLeader: day open, best provisional run
+  [*] --> LiveLeader: day open, best provisional run in the category
   LiveLeader --> PendingVerification: day closed and grace window over
   PendingVerification --> Verified: automated checks pass
   PendingVerification --> Disqualified: automated checks fail
@@ -58,98 +93,87 @@ stateDiagram-v2
   Verified --> [*]
 ```
 
-- **Live leader:** shown on the landing page as "Today's leader (live)".
-- **Verification (MVP: automated rules):** a valid and complete run; only legal state transitions; every answer within its time window; no duplicate submissions; response timings above human plausibility floors; plausible ATS inputs; wall-clock duration not shorter than the minimum possible; attempt limits respected; a display name that passes moderation. Exact thresholds are deliberately not public (see [risks](risks.md)).
-- **Verified:** becomes the **Daily Champion** and is archived forever (with an anonymized display if the player later withdraws consent).
-- **Disqualified:** the next best run is verified and promoted. No public shaming; the run is simply not ranked.
-- **Revoked:** an admin can revoke a champion after a manual review. History keeps a neutral note ("Result withdrawn after review").
-- **Minimum field size:** none in the MVP. A day with three players still has a champion. The card shows the field size.
+- **Verification (MVP, automated rules):** a valid and complete run; legal state transitions; answers within their windows; no duplicate submissions; timings above human plausibility floors; plausible ATS inputs; wall-clock duration not shorter than the minimum possible; attempt limits and the ranked profile lock respected; a snapshot that passed profile validation; a display name that passes moderation. Thresholds are not public.
+- **Minimum field for the title:** a category needs **at least 3 verified runs** that day (tunable) to award "Daily Champion". Below that, the top run is shown as "Category leader (small field)". This reduces the incentive to hop into empty categories.
+- **Disqualified:** the next best run is checked and promoted. **Revoked:** an admin action after review; history keeps a neutral note.
+- Results are archived forever with their **snapshot context**; if the player later withdraws consent, they appear as "Anonymous Candidate".
 
-### 3.2 Champion card
+### Champion card
 
 ```
-TODAY'S CHAMPION · Tue 13 Oct (UTC)
-Alex Morgan
+DAILY CHAMPION · FULLSTACK · SENIOR+ · Tue 13 Oct (UTC)
+Ricardo Vera
 Senior Fullstack Developer
-19,430 pts · #1 of 214 candidates
-Backend Daily Challenge
+Node.js · PHP · React · PostgreSQL · Redis
+18,492 pts · #1 of 41 candidates · Kestrel Pay challenge
 [ View LinkedIn ]
 ```
 
-- If the champion chose to stay anonymous: "Anonymous Candidate · 19,430 pts · #1 of 214". No role, seniority or LinkedIn.
-- The landing page shows **Today's leader (live)** and **Yesterday's champion (verified)**.
-- The results screen tells a provisional #1 when the day closes in their local time, and invites them to come back and check. This is an intentional return driver.
+## 6. Weekly Top 7 (per category)
 
-## 4. Weekly Top 7
-
-**Not the seven highest scores of the week.** It is the **seven Daily Champions** of the ISO week, one per day, in order from Monday to Sunday.
+**The seven Daily Champions of a category in an ISO week**, Monday to Sunday. Not the seven highest scores.
 
 | Card state | When | Shows |
 |---|---|---|
-| Upcoming | The day has not started | Day, track ("Thursday · DevOps & Cloud") |
+| Upcoming | The day has not started | Day, date |
 | Live | The day is open | The current live leader (provisional) |
-| Verifying | Closed, grace window or verification running | "Verifying…" |
-| Champion | Verified | Name, role, seniority, score, LinkedIn (per consent) |
-| No champion | Nobody delivered a ranked run that day | "No champion this day" |
+| Verifying | Closed; grace or verification running | "Verifying…" |
+| Champion | Verified | Name, exact seniority + role, stack, score, LinkedIn (per consent), the day's company |
+| Small field | Fewer than 3 verified runs | "Category leader (small field)" |
+| No champion | No verified runs that day | "No champion this day" |
 
-- **Repeat winners are allowed.** A player who wins two days appears twice, with a "2× champion this week" badge.
-- Because the daily track rotates, the Top 7 is a **showcase of different disciplines**, which supports the mission of discovering professional profiles.
-- Each card shows its daily track and field size.
+Repeat winners are allowed ("2× champion this week"). The Weekly Top 7 page opens on the player's category, with the same category switcher.
 
-## 5. Candidate of the Week
+## 7. Candidate of the Week (per category)
 
-**Definition (MVP proposal):** among the seven verified Daily Champions of the week, the one with the **highest score**. Ties are resolved by accuracy, then race time, then the earlier date.
+**Definition (MVP):** among a category's verified Daily Champions of the week, the **highest score**. Ties: accuracy, then race time, then the earlier date.
 
-### 5.1 The comparability problem
-
-Different days use different jobs and question families, so raw scores across days are only comparable if the days are equally hard. Options:
-
-| Option | Description | Pros | Cons |
-|---|---|---|---|
-| A. Raw score | Highest raw score among the 7 champions | Simple, understandable, matches the brief | Biased towards easier days |
-| B. Field-relative index | Champion score ÷ that day's 90th percentile score | Corrects for each day's difficulty | Noisy with small fields; harder to explain |
-| C. Margin of victory | Distance between #1 and #2 | Rewards dominance | Punishes champions of competitive days |
-| D. Fixed blueprint (enabler) | Every day uses the same blueprint, the same Mid–Senior level and the same maximum score | Makes A largely fair by construction | The track topic can still vary in difficulty |
-
-**Recommendation:** **D + A for the MVP.** Every ranked day has the same blueprint, level and maximum score, so raw scores are broadly comparable, and the rule is easy to explain. We record each day's score distribution from day one. If the data shows systematic differences between tracks, we switch to **B** with a minimum field size (fallback to A below it). That change would be documented in an ADR and announced on the "How ranking works" page.
-
-### 5.2 Display
+Raw scores are comparable **within a category** across days, because the category blueprint (structure, band difficulty curve, maximum score) is the same every day. The remaining variance comes from the Daily Company's themed families and is monitored. If one day's theme turns out systematically easier or harder, we switch to a field-relative index (champion score ÷ the day's 90th percentile in the category, with a minimum field size) through an ADR, announced on "How ranking works".
 
 ```
-CANDIDATE OF THE WEEK · Week 42
-Alex Morgan
-Senior Backend Engineer
-Monday Champion · 21,938 pts
+CANDIDATE OF THE WEEK · FULLSTACK · SENIOR+ · Week 42
+Ricardo Vera
+Senior Fullstack Developer · Node.js · PHP · React
+Monday Champion · 18,492 pts
 [ View LinkedIn ]
 ```
 
-Selected after Sunday's verification and shown through the following week.
+## 8. Spotlight: discovering professionals across categories
 
-## 6. A day and a week
+The landing page and a "Champions" page show:
+
+- **Today's company:** "Kestrel Pay is hiring today · 237 candidates applied".
+- **Today's champions:** one card per official category (the live leader during the day, the verified champion after close), **ordered by field size**, never by score. The copy makes it explicit: "Champions by category — scores are not comparable between categories."
+- **Candidates of the Week:** one per category.
+- **Your status:** "You're #3 of 41 in Fullstack · Senior+ · the day closes in 04:32:18".
+
+This keeps the product's mission (discovering professionals of many profiles) without pretending that a Junior Frontend score and a Senior+ Backend score can be compared.
+
+## 9. A day and a week
 
 ```mermaid
 flowchart LR
-  open["00:00 UTC<br/>Daily Challenge opens"] --> live["During the day<br/>provisional leaderboard"]
+  open["00:00 UTC<br/>Daily Company revealed,<br/>category blueprints created"] --> live["During the day<br/>provisional boards per category"]
   live --> close["24:00 UTC<br/>no new ranked runs"]
   close --> grace["Grace window<br/>in-flight runs finish"]
-  grace --> verify["Automated verification"]
-  verify --> champion["Daily Champion published"]
-  champion --> sunday{"Was it Sunday?"}
-  sunday -->|"Yes"| cotw["Candidate of the Week<br/>selected from the 7 champions"]
+  grace --> verify["Automated verification<br/>per category"]
+  verify --> champions["Daily Champions published<br/>(categories with ≥ 3 runs)"]
+  champions --> sunday{"Was it Sunday?"}
+  sunday -->|"Yes"| cotw["Candidate of the Week<br/>per category"]
   sunday -->|"No"| open
   cotw --> open
 ```
 
-## 7. Ranking integrity
+## 10. Ranking integrity
 
-- Rankings are computed only from server-side data. The client never sends scores, times or positions.
-- **Sponsors can never influence rankings, positions, questions or eligibility.** Sponsorship and game integrity are separate concerns (see [community](community.md#7-sponsorship-and-integrity)).
-- Every admin action on rankings (disqualify, revoke, hide a name) is audited.
-- The public **"How ranking works"** page explains what influences the score, what the ranking means and what it does **not** mean (it is not a measure of professional ability). It does not publish verification thresholds.
+- Rankings use only server-side data and the run's **server-side snapshot**. The client never sends scores, times, positions, or "who it is" after the run starts.
+- **Sponsors can never influence** rankings, categories, positions, questions or eligibility (see [community](community.md#7-sponsorship-and-integrity)).
+- Every admin action (disqualify, revoke, hide a name, exclude a run for profile misrepresentation) is audited.
+- **"How ranking works"** explains categories, what influences the score, what the ranking means and what it does **not** mean (it is not a measure of professional ability, and declared seniority is not verified). Verification thresholds are not published.
 
-## 8. Future extensions (not MVP)
+## 11. Future extensions (not MVP)
 
-- **Seasons:** longer competition periods (e.g. "Season 1") with their own leaderboards, without destroying history. The data model treats "day", "week" and "season" as competition periods. See [future platform](future-platform.md#4-seasons).
-- **Archive:** browsable past weeks and champions.
-- **Public champion pages:** indexable pages for verified champions who opted in (V1).
-- **Leagues:** postponed until eligibility can be verified (see [game modes](game-modes.md#5-alternatives-considered)).
+- **Normalized global view** (G2): experimental in V1.
+- **Seasons:** category leaderboards per season, without destroying history. Leaderboards are defined over **competition periods** (day, week, later season). See [future platform](future-platform.md#4-seasons).
+- **Category splits** (e.g. Senior+ → Senior | Lead+) when fields are large; old results keep their original category.
+- **Archive** of past weeks and **public champion pages** (opt-in, indexable).

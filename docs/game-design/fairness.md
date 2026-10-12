@@ -1,109 +1,155 @@
 # Fairness strategy
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 2)**
 >
-> The *why* and the mode split are in [game modes](../product/game-modes.md). This document explains **how ranked fairness holds** and how we monitor it.
+> The *why* is in [competitive identity](../product/competitive-identity.md) and [game modes](../product/game-modes.md). This document explains **how ranked fairness holds within a category** and how we monitor it.
 
 ## 1. What "fair" means here
 
-> Two players with the same skill, playing the same day's ranked challenge, on any device, in either language, should get approximately the same score, and **nothing they declare about themselves should change that**.
+> Two players **in the same category** (track × band), with the same skill, on the same day, should get approximately the same score, whatever their device, their language, or the technologies they chose. **Players in different categories are not compared.**
 
-Casual mode optimizes for fun and personalization. Fairness there means "no frustrating unfairness", not comparability.
+Casual mode optimizes for personalization. Fairness there means "no frustrating unfairness", not comparability.
 
 ## 2. Sources of unfairness
 
 | Source | Example |
 |---|---|
-| Self-declared data | Declaring Trainee to get easier questions |
-| Content variance | One player gets an easy variant, another a hard one |
-| Randomness | Lucky ATS streams, lucky bot fields |
+| Self-declared seniority | A Senior declares Junior to win the Junior board ("smurfing") |
+| Category hopping | Playing several categories in a day to collect titles; hopping into empty categories |
+| Stack choice | One technology's questions are easier than another's at the same nominal level |
+| Stack coverage | Some technologies have fewer or no ranked questions |
+| Content variance | One player gets an easier variant of a shared family |
+| Randomness | Lucky ATS streams or obstacle layouts |
 | Latency | A player far from the server loses answer-speed points |
-| Device | Keyboard vs touch; small screens |
+| Device | Keyboard vs touch |
 | Language | One translation is easier or ambiguous |
-| Accessibility | Reduced-motion or assistive settings change difficulty |
-| Attempts | Unlimited retries reward grinding and luck |
-| Cross-day | Monday's job is easier than Thursday's (weekly award) |
+| Accessibility | Settings change difficulty |
+| Attempts | Unlimited retries reward grinding |
+| Cross-day | One Daily Company theme is easier than another (Candidate of the Week) |
+| Cross-category | Comparing a Junior Frontend score with a Senior+ Backend score |
 
-## 3. Ranked controls
+### 2.1 Controls at a glance
 
 | Source | Control |
 |---|---|
-| Self-declared data | The profile has **no input** into difficulty, content selection or score (see the [diagram](../product/game-modes.md#4-what-the-profile-affects)) |
-| Content variance | A **Daily Blueprint** with fixed slots and difficulties; **question families** of calibrated equivalent variants |
-| Randomness | A **randomness budget** (section 5): randomness only where it is fairness-neutral; constrained generators for ATS and obstacles; **one daily bot field** for everyone |
-| Latency | Server-measured times with a small fixed tolerance; speed points in **coarse buckets** |
-| Device | Equivalent inputs (tap, keys, steering); obstacles carry little weight; the same time windows |
-| Language | Ranked questions must be validated in **both** locales; per-locale statistics |
-| Accessibility | Accessibility options never change timers or content in ranked; reduced motion only changes presentation |
-| Attempts | **3 ranked attempts per day**, best counts |
-| Cross-day | The same blueprint, level and maximum every day; a field-relative index if data shows a bias (see [leaderboards](../product/leaderboards.md#5-candidate-of-the-week)) |
-| Client-reported events | **Bounded** weight (obstacles, pickups, ATS movement) |
+| Self-declared seniority, category hopping | Categories, daily ranked profile lock, category cooldown, minimum field for titles, public context (section 3) |
+| Stack choice and coverage | Calibration per technology and level; bounded stack weight; coverage fallback; topic boundaries (section 4) |
+| Content variance | Category blueprint; shared daily families of calibrated equivalent variants (section 4) |
+| Randomness | A randomness budget; constrained generators; the same daily bot field per category (section 5) |
+| Client-reported events (obstacles, pickups, ATS movement) | **Bounded** weight; server re-simulation from input logs as the V1 target |
+| Latency, device, language, accessibility | Sections 6–9 |
+| Attempts | 3 per day, best counts |
+| Cross-day, cross-category | Section 10 |
+
+## 3. Smurfing and category hopping
+
+**What categories already solve:** declaring a lower seniority no longer lets anyone beat players of a *higher* band. It only moves the player into a different competition.
+
+**What remains:** a Senior who declares Junior can win the Junior board. We cannot verify seniority (neither can a CV, LinkedIn or a login). The design makes it **unattractive and visible** rather than impossible:
+
+| Control | Effect |
+|---|---|
+| **The result always carries its context** | "#1 competing as Junior Frontend Developer" appears next to the name and LinkedIn. The leaderboard's reward is professional visibility, and misrepresentation is visible to the same audience. |
+| **Daily ranked profile lock** | One category and one stack per player per UTC day |
+| **Category cooldown** (proposal: 7 days) | No hopping between bands or tracks every day |
+| **Minimum field for titles** (3 verified runs) | No free titles in empty categories |
+| **Report: "Misrepresented profile"** | Community reports go to review; obvious cases (e.g. a linked profile showing 10+ years in a Junior board) can be excluded from titles by an audited admin action |
+| **Attempts** (3 per day) | Limits farming |
+| **Anonymous titles carry no showcase value** | An anonymous smurf gains nothing but a number |
+
+Declaring a **higher** seniority is not an exploit: it means harder questions and stronger competitors.
+
+Residual risk: accepted and monitored (e.g. score distributions per band; Junior boards dominated by near-perfect runs).
 
 ## 4. Content equivalence
 
-A **question family** fills one blueprint slot. To be eligible for ranked, a family must satisfy:
+### Shared daily families (H2 track fundamentals, H3 seniority, F1 scenario)
 
-1. **The same topic** (e.g. "Redis eviction and expiry"), at the same tag granularity.
+The same family for everyone in the category (or band) that day. To be eligible for ranked, a family must have:
+
+1. **The same topic** at the same tag granularity (e.g. "API idempotency").
 2. **The same declared difficulty** (one level on the 1–5 scale).
-3. **The same format:** single choice, 4 options, the same structure of distractors.
+3. **The same format:** single choice, 4 options, comparable distractor structure.
 4. **Similar length:** prompts within ±20% characters; options within the general limits.
-5. **At least N variants** (initial: 8) so that sharing a single answer is useless.
-6. **Calibrated observed difficulty:** once a variant has enough attempts, its observed correct rate must stay within a tolerance of the family median (initial: ±15 percentage points). **Outliers are pulled from ranked** and reviewed. They are not adjusted automatically.
-7. **Bilingual parity:** both translations validated, with the same option IDs and the same correct option.
+5. **At least N variants** (initial: 6), so sharing a single answer is useless.
+6. **Calibrated observed difficulty:** once a variant has enough attempts, its correct rate must stay within a tolerance of the family median (initial: ±15 percentage points). Outliers are **pulled from ranked and reviewed**, never auto-adjusted.
+7. **Bilingual parity:** both translations validated, with the same option IDs and correct option.
 
-New variants start in casual or in a **shadow** state (served in ranked only after calibration data exists, or flagged as "uncalibrated") to avoid surprising difficulty. The exact mechanism is in Part 2.
+### Stack families (H1, the stack part of F1)
 
-**Job-derived questions** are equivalent by construction: the same job, the same templates, different facts and distractors drawn from the same posting.
+Different players get different technologies at the **same difficulty level**. Extra requirements:
 
-## 5. Randomness budget
+- **Calibration per technology and level:** the observed correct rate of a technology's level-*n* family must stay within a tolerance of the **band-wide target for level *n*** (initial targets: level 1 ≈ 75–85% correct, level 2 ≈ 65–75%, level 3 ≈ 55–65%, level 4 ≈ 45–55%, among players of that band). Families outside the range are excluded from ranked until fixed.
+- **Bounded weight:** stack-influenced slots are at most ~35% of answer points (≈ 16% of the total score) in Senior+, and less in lower bands (see [game modes › bounded personalization](../product/game-modes.md#35-bounded-personalization)).
+- **Coverage fallback:** without an eligible family for any of the player's technologies, the slot uses the track fundamentals pool at the same difficulty.
+- **Topic boundaries:** never a technology outside the player's stack, track fundamentals or shared fundamentals.
+
+### New content
+
+New variants and families start in casual, or in a **ranked preview** category, to gather calibration data before they count for titles. The exact mechanism is in Part 2.
+
+### Job-derived questions
+
+These are equivalent by construction: the same templates for everyone, applied to each player's own posting. Every fact is equally visible to its reader.
+
+## 5. Randomness budget (ranked)
 
 | Element | Randomized per run? | Constraint |
 |---|---|---|
-| Daily Job | ❌ The same for all | — |
-| Blueprint (stages, slots, difficulties, timers) | ❌ The same for all | — |
+| Daily Company and theme | ❌ The same for everyone | — |
+| Category Blueprint (slots, band difficulties, timers, ATS composition) | ❌ The same within the category | — |
+| Shared family per slot (H2, H3, F1) | ❌ The same within the category (or band) that day | — |
 | Variant within a family | ✅ | Family equivalence rules |
-| Job-derived question (which fact) | ✅ | All facts are equally visible in the posting |
-| Option order | ✅ | Correct position balanced across a run |
-| Question order within a stage | ✅ | Only among slots with equal difficulty |
-| ATS stream | ✅ | Fixed counts, density and reachability; maximum lane-change demand |
-| Obstacle layout | ✅ | Equivalent density per segment; never during gates |
-| Bot field | ❌ The same daily field | — |
+| Stack technology for H1 | ✅ Among the player's eligible technologies | Calibrated per technology and level |
+| Job posting | ✅ Personal (from the snapshot) | Generator quality rules |
+| Job-derived question (which fact) | ✅ | All facts equally visible |
+| Option order | ✅ | Correct position balanced across the run |
+| Question order within a stage | ✅ | Only among equal-difficulty slots |
+| ATS stream | ✅ | Fixed counts, density, reachability, maximum lane-change demand |
+| Obstacle layout | ✅ | Equivalent density; never during gates |
+| Bot field | ❌ The same daily field per category | — |
 | Seed | ✅ Per run, server-side only | Never sent to the client |
 
 ## 6. Latency
 
-- Answer times are measured **by the server**: from the moment the challenge content is sent to the moment the answer arrives.
-- A small fixed tolerance (initial: 300 ms) is subtracted before bucketing.
-- Coarse speed buckets mean a 100–200 ms network difference rarely changes points.
-- Server region matters for a bilingual audience spanning Europe and the Americas. The hosting region choice (Part 2) considers both; time windows are generous relative to typical latency.
+- Answer times are measured **by the server**, from the moment the content is sent to the moment the answer arrives.
+- A small fixed tolerance (initial: 300 ms) is subtracted before bucketing; coarse speed buckets mean that 100–200 ms network differences rarely change points.
+- The hosting region (Part 2) considers both Europe and the Americas; time windows are generous relative to typical latency.
 
 ## 7. Device
 
-- Answering by **tap** (mobile) or **keys 1–4** (desktop) is as fast as steering into a door.
-- Obstacle and pickup effects are bounded, so steering skill matters little for ranked scores.
-- Monitored: the ranked score distribution by device class. A persistent gap triggers a design review.
+- Answering by **tap** or **keys 1–4** is as fast as steering into a door.
+- Obstacle and pickup effects are bounded.
+- Monitored: score distribution by device class per category.
 
 ## 8. Language
 
 - Ranked questions are active only when **both** translations are validated.
-- Translators preserve technical meaning and keep option lengths comparable.
-- Monitored: correct rate by locale for the same question. Significant gaps flag the question for review.
+- Monitored: correct rate by locale for the same question; gaps flag the question.
 
 ## 9. Accessibility
 
-- Ranked timers are the same for everyone and generous for comfortable reading.
-- Reduced motion, color-independent cues and direct answer input change presentation and input methods, never the content or the timing.
+- Ranked timers are identical within a category and generous for comfortable reading.
+- Reduced motion, color-independent cues and direct answer input change presentation and input methods only.
 - "Relaxed timers" exist **only in casual**.
 
-## 10. Monitoring
+## 10. Cross-day and cross-category
+
+- **Within a category, across days** (Candidate of the Week): the blueprint is identical every day; only themed families vary. Monitored, with the field-relative index as the fallback (see [leaderboards](../product/leaderboards.md#7-candidate-of-the-week-per-category)).
+- **Across categories:** **no comparison** in the MVP. The spotlight shows champions side by side, never ranked against each other. A normalized global view (percentile within category) is an experimental V1 option (see [leaderboards › global comparison](../product/leaderboards.md#3-global-comparison-alternatives)).
+
+## 11. Monitoring
 
 | Signal | What it would reveal |
 |---|---|
-| Correct-rate spread within a family | A variant is easier or harder than its siblings |
+| Correct-rate spread within a shared family | A variant is easier or harder than its siblings |
+| Correct rate per technology and level within a band | A stack is easier than others |
+| Score distribution by declared stack within a category | Stack shopping advantage |
+| Score distribution per band (e.g. Junior boards full of near-perfect runs) | Smurfing |
+| Category changes per player | Category hopping |
 | Correct rate by locale | Translation issues |
 | Score distribution by device class | Device advantage |
-| Score distribution by daily track | Cross-day bias (Candidate of the Week) |
-| Answer-speed distribution by region (coarse) | Latency disadvantage |
-| Score gain from attempt 1 → 3 | How much grinding or memorizing helps |
+| Score distribution by Daily Company theme within a category | Cross-day bias |
+| Score gain from attempt 1 → 3 | How much replaying helps |
 
-Fairness reviews are manual and documented (decision log or ADR). Nothing is auto-adjusted in the MVP.
+Fairness reviews are manual and documented in the decision log or an ADR. Nothing is auto-adjusted in the MVP.

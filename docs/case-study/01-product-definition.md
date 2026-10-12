@@ -4,7 +4,7 @@
 
 ## Summary
 
-The brief described one game. Analysing it surfaced tensions that turned it into **two modes**, a **two-pool content model**, and a scoring design that only trusts what the server can verify. These notes record each turning point while it is fresh: the problem, the decision, and why it might interest other developers.
+The brief described one game. Analysing it surfaced tensions that turned it into **two modes**, a **two-pool content model**, and a scoring design that only trusts what the server can verify. Then the maintainer's review **rejected the first ranked design** (one global daily job). That produced the central principle of the product: **compete as who you are**, with profile snapshots, categories (track × seniority band) and results that always carry their context (turning point 11). These notes record each turning point while it is fresh: the problem, the decision, and why it might interest other developers.
 
 ## Turning points
 
@@ -16,12 +16,11 @@ The brief described one game. Analysing it surfaced tensions that turned it into
 - **Twist:** retired competitive questions **graduate** into the open packs, so the private pool feeds the public bank over time.
 - **Article angle:** "Security can't depend on code being secret, but it can depend on *data* being secret. Know which is which."
 
-### 2. Self-declared seniority is an exploit
+### 2. Self-declared seniority is an exploit (first answer, later revised)
 
-- **Problem:** the brief wanted difficulty adapted to seniority *and* a single fair ranking. Seniority is self-declared. If juniors get easier questions, everyone declares Trainee; if seniors get multipliers, everyone declares Principal.
-- **Decision:** two modes. **Casual** adapts everything to the profile. **Ranked (Daily Challenge)** gives everyone the same job, the same blueprint and equivalent questions; the profile is identity only.
-- **Framing that made it click:** *"In ranked, the job sets the bar, not your title."* That is also how real hiring works.
-- **Article angle:** personalization vs fairness is a real product trade-off, and separating modes is often cleaner than balancing formulas.
+- **Problem:** the brief wanted difficulty adapted to seniority *and* a fair ranking. Seniority is self-declared. If juniors get easier questions in one global ranking, everyone declares Trainee; if seniors get multipliers, everyone declares Principal.
+- **First decision (revision 1):** two modes. Casual adapted to the profile; ranked gave everyone **the same global daily job**, with the profile as identity only ("the job sets the bar, not your title").
+- **What happened next:** the maintainer rejected it. See turning point 11.
 
 ### 3. The browser is an untrusted terminal, even for the fun parts
 
@@ -37,12 +36,12 @@ The brief described one game. Analysing it surfaced tensions that turned it into
 
 ### 5. "237 candidates applied" can be true
 
-- **Idea:** in ranked, everyone applies to the same Daily Job, so the lobby can show the **real number of players** who started today's challenge. For honesty, small numbers are replaced by "Be one of the first candidates today". Never fake activity.
+- **Idea:** in ranked, every player applies to the same **Daily Company**, so the lobby can show the **real number of players** who applied today (in total and in their category). Small numbers are replaced by "Be one of the first candidates today". Never fake activity.
 
 ### 6. Comparing champions across days
 
-- **Problem:** Candidate of the Week compares Daily Champions from different jobs.
-- **Decision (MVP):** make days comparable by construction (the same blueprint, the same Mid–Senior level, the same maximum score) and use the raw score. Record daily distributions; switch to a field-relative index if the data shows bias.
+- **Problem:** Candidate of the Week compares Daily Champions from different days.
+- **Decision:** compare only within a category, where the blueprint is identical every day; raw score in the MVP; a field-relative index if the data shows bias.
 
 ### 7. Salary negotiation as a graded question first
 
@@ -61,11 +60,30 @@ The brief described one game. Analysing it surfaced tensions that turned it into
 - "Which hook would you use to manage local state? useState / useDocker / useSQL / useCache" became a question with plausible distractors and a single unambiguous answer. "Manage local state" also allows `useReducer`.
 - "Which technology would you use to decouple async processes? Kafka / CSS / LocalStorage / FTP" was too trivial for the Senior level it targeted. It became a replay-and-fan-out scenario.
 
+### 11. Revision: competing as who you are
+
+- **Date:** 2026-10-12, during the review of Part 1.
+- **What was wrong:** revision 1 solved fairness by making ranked **impersonal**: one global daily job, and the profile reduced to a label. The maintainer's verdict: Andrea (Junior Frontend) should never have to compete in a Senior Backend job just because that was the global challenge of the day. The original idea of the product is that anyone can **compete from their own professional profile**.
+- **Lesson:** I had optimized for the *easiest* fairness (everyone identical) instead of the *right* fairness (comparable people compared with each other). Fairness doesn't require identical challenges, only **comparable challenges among comparable people**.
+- **New design:**
+  - **Profile-first:** name → seniority → role → stack, validated by the server and frozen into a **profile snapshot** per run. Every decision uses the snapshot; the client never says "who it is" again.
+  - **Categories = track × seniority band** (Junior = Trainee + Junior; Mid; Senior+ = Senior, Lead, Staff, Principal). 9 official categories at launch, others activated progressively when content allows. No hundreds of empty boards.
+  - **Daily Challenge = Daily Company + Category Blueprint + personal job:** everyone applies to the same fictional company that day (a shared story), each with a job built for their profile, inside a blueprint that keeps difficulty identical within the category.
+  - **Bounded personalization:** the stack changes *which* topics some questions are about (≤ ~16% of the total score in Senior+), never *how hard* they are; stack families are calibrated per technology and level.
+  - **Context everywhere:** "Ricardo scored 18,492 points competing as a Senior Fullstack Developer · Node.js · PHP · React". Results never appear without their context, and history keeps the context even if the profile changes.
+  - **No global ranking in the MVP:** raw scores from different challenges aren't comparable. A cross-category spotlight shows champions side by side; a normalized global view may come later.
+- **New problem it creates:** smurfing (a Senior declaring Junior) can't be verified. Mitigation by design: the reward of the leaderboard is visibility, and the result is publicly labeled "competing as Junior…" next to the name and LinkedIn. **The showcase is the reward, and the showcase is also the deterrent.** Plus a daily profile lock, a category cooldown, a minimum field for titles, and reports.
+- **Cost:** about 2.5× more competitive content than revision 1, mitigated by content reuse across tracks and bands, coverage fallbacks and content-gated activation.
+- **Article angle:** "My first fairness design was technically clean and wrong for the product." It's a good example of how a product principle ("compete as who you are") should drive the architecture, not the other way around.
+
 ## Alternatives discarded (Part 1)
 
 - One ranking with seniority-based difficulty (exploitable).
+- One global daily job for everyone (revision 1; impersonal, rejected by the maintainer).
+- A curated daily job per category (doesn't respect the individual stack; heavy curation).
+- A raw global ranking across categories (compares different challenges).
+- Dynamic pooling of small categories (titles would change meaning daily).
 - Seniority multipliers (exploitable the other way).
-- Seniority leagues (unverifiable eligibility; postponed).
 - The same questions for everyone (shared in minutes).
 - A ranked-only product (loses personalization and learning).
 - Unlimited ranked attempts (grinding, harvesting).
@@ -76,11 +94,13 @@ These are written down now so the "lessons learned" chapter can be honest:
 
 1. An ATS game over will feel iconic, not frustrating (first-run pass rate ~80%).
 2. 3 ranked attempts per day is the right number.
-3. Juniors will still play ranked despite the Mid–Senior bar.
+3. Players will understand category boards and won't miss a single global champion.
 4. ≥ 30% of delivered ranked runs will opt into a public profile.
 5. Reading questions while running on a phone will work with slow motion and 140-character prompts.
 6. Runs will land at 2.5–4 minutes.
 7. Most traffic will come from LinkedIn on mobile.
+8. The 9 launch categories will each get enough daily runs to feel alive.
+9. Smurfing will be rare, because results are publicly labeled with their context.
 
 ## Open questions handed to the maintainer for review
 

@@ -24,7 +24,7 @@ Feeling: absurdity, frantic fun, "beat the machine".
 - Move between lanes to **collect relevant keywords** and **avoid irrelevant ones**.
 - **Relevant** = keywords in the run's job posting (stack and key requirements), including catalog aliases ("Postgres" counts as PostgreSQL).
   - Casual: the job was generated from the player's profile, so job keywords overlap with the player's stack.
-  - Ranked: only the Daily Job's keywords count. The player's profile is irrelevant.
+  - Ranked: the same rule applied to the player's own job (built from their snapshot). The **composition** (counts, density, reachability, speed curve) is fixed per category, so every player in the category faces an equivalent scan with their own keywords.
 - **Irrelevant** = other technologies and buzzword traps.
 - **Composition (initial):** 18 tokens in ~25 s, of which 11 are relevant and 7 irrelevant. Speed ramps up slightly. Generation guarantees that every relevant token is reachable (no two must-collect tokens in far-apart lanes at the same moment).
 

@@ -30,7 +30,7 @@
 - **Decision:** Docker is the official documented path for Postgres and Redis. Documentation work (Parts 1–2) does not block on Docker being installed.
 
 ### D-007 · Two modes: Casual and Ranked
-- **Status:** Accepted (the concrete design is proposed in D-010)
+- **Status:** Accepted; concrete design revised by D-028–D-033 (both modes are profile-based)
 - **Decision:** Casual / Personalized (personalization and fun) and Ranked / Daily Challenge (fairness). Self-declared seniority must not affect ranked difficulty.
 
 ### D-008 · Community packs vs competitive pool
@@ -44,17 +44,17 @@
 ## 2026-10-12 · Part 1: product and game design proposals
 
 ### D-010 · Ranked design: "the job sets the bar"
-- **Status:** Proposed
+- **Status:** **Superseded** by D-028–D-033 (rejected in review: one global job ignores the player's profile)
 - **Decision:** one Daily Job per UTC day for everyone; a Daily Blueprint (fixed stages, slots, difficulty curve 2-2-2 / 2-3-4 / 4, timers, ATS composition, bot field); equivalent question families; shuffled options; a server-side seed; the profile is identity only.
-- **Alternatives:** seniority-based difficulty, multipliers, leagues, Elo-like rating, identical questions, ranked-only. See [game modes](../product/game-modes.md#5-alternatives-considered).
+- **Alternatives:** seniority-based difficulty, multipliers, leagues, Elo-like rating, identical questions, ranked-only. See [game modes](../product/game-modes.md#6-alternatives-considered).
 
 ### D-011 · Fixed Mid–Senior level for Daily Jobs (MVP)
-- **Status:** Proposed
+- **Status:** **Superseded** by D-029 (difficulty now follows the category's band)
 - **Context:** keeps scores comparable across days (Candidate of the Week).
 - **Consequence:** favors experienced players; juniors compete on memory, ATS and speed; casual is their space.
 
 ### D-012 · Daily track rotation as content
-- **Status:** Proposed
+- **Status:** **Superseded** by D-031 (Daily Company instead of a track rotation)
 - **Decision:** the daily track rotates by a configured schedule (e.g. Mon Frontend · Tue Backend · Wed Fullstack · Thu DevOps & Cloud · Fri Backend · Sat Frontend · Sun Fullstack). The Weekly Top 7 then showcases diverse disciplines.
 
 ### D-013 · 3 ranked attempts per day, best counts
@@ -62,7 +62,7 @@
 - **Alternatives:** 1 (Wordle tension), unlimited (grinding, harvesting).
 
 ### D-014 · Candidate of the Week by raw score (MVP)
-- **Status:** Proposed
+- **Status:** **Superseded** by D-034 (Candidate of the Week per category)
 - **Decision:** the highest raw score among the 7 verified Daily Champions, made fair by D-010/D-011. Switch to a field-relative index if data shows bias.
 
 ### D-015 · Salary as a graded recruiter question in the MVP
@@ -93,7 +93,7 @@
 - **Status:** Proposed
 
 ### D-022 · Bots: one daily field in ranked; no rubber-banding
-- **Status:** Proposed
+- **Status:** Proposed, **amended** by D-031: one daily bot field **per category**
 - **Decision:** bot outcomes never depend on the player, so position is a pure function of the player's race time.
 
 ### D-023 · Humor questions are casual-only
@@ -106,7 +106,54 @@
 - **Status:** Proposed (the camera/perspective is validated by a prototype in the Phaser slice)
 
 ### D-026 · MVP content scope: 4 core tracks, other roles in early access
-- **Status:** Proposed
+- **Status:** Proposed, **amended** by D-029: 9 official ranked categories; 4 tracks with full casual coverage
 
 ### D-027 · North Star: Weekly Delivering Players; mission metric: profile discoveries
 - **Status:** Proposed
+
+## 2026-10-12 · Part 1, revision 2: profile-first ranked (after maintainer review)
+
+### D-028 · Compete as who you are (central principle)
+- **Status:** Accepted (direction from the maintainer); details Proposed
+- **Context:** revision 1 (D-010) forced every ranked player into one global daily job. The maintainer rejected it: anyone must be able to compete from their own professional profile.
+- **Decision:** every run (both modes) is played as a validated, **frozen profile snapshot** (seniority, role, stack). It shapes the job, the questions and the competition, and stays attached to the result forever. See [competitive identity](../product/competitive-identity.md).
+- **Article angle:** the right fairness is "comparable challenges among comparable people", not "identical challenges for everyone".
+
+### D-029 · Categories = track × seniority band
+- **Status:** Proposed
+- **Decision:** 10 tracks (role families) × 3 bands: Junior (Trainee, Junior), Mid, Senior+ (Senior, Lead, Staff, Principal). 9 official categories at launch (Frontend, Backend, Fullstack × 3 bands); Platform in preview; others casual-only with a "help unlock ranked" call to action.
+- **Alternatives:** 7 bands (empty boards), 2 bands (unfair), 4 bands (a future split); one track per role; super-families; dynamic pooling.
+
+### D-030 · Profile validation, snapshot and ranked lock
+- **Status:** Proposed
+- **Decision:** server validation (role, seniority, technologies, role compatibility rules, 1–12 technologies). An immutable snapshot per run; later requests carry no profile. Ranked profile locked for the UTC day after the first ranked run; ranked track or band changes at most every 7 days (tunable).
+
+### D-031 · Daily Challenge = Daily Company + Category Blueprint + personal job
+- **Status:** Proposed
+- **Decision:** one fictional Daily Company with a domain theme per UTC day, hiring across every track and level (secret until 00:00 UTC). A daily blueprint per category (band difficulty curve, shared families, ATS composition, bot field). Each player's job is generated on demand from their snapshot.
+- **Alternatives:** a global daily job (rejected); a curated daily job per category (ignores the individual stack, heavy curation); on-demand generation only (no daily element, weaker fairness).
+
+### D-032 · Content mix and topic boundaries
+- **Status:** Proposed
+- **Decision:** each run mixes job, stack, role-fundamentals, seniority and shared-fundamentals questions. Technical questions never target technologies outside the player's stack, track fundamentals or shared fundamentals. Ranked: H1 = stack (calibrated per technology and level), H2 = track fundamentals (shared daily family), H3 = seniority (shared daily family per band), F1 = scenario + stack. Coverage fallback to track fundamentals.
+
+### D-033 · Bounded stack personalization in ranked
+- **Status:** Proposed
+- **Decision:** stack-influenced slots ≤ ~35% of answer points (≈ 16% of the total score) in Senior+, less in lower bands; per-technology calibration targets; outlier families excluded.
+
+### D-034 · Category-first leaderboards; no global ranking in the MVP
+- **Status:** Proposed
+- **Decision:** category daily leaderboards; Daily Champion, Weekly Top 7 and Candidate of the Week per category; a minimum field of 3 runs for titles; a cross-category spotlight (not a ranking); a normalized global view as a V1 experiment at most.
+- **Alternatives:** a raw global ranking (never), a normalized index (later), a long-term rating (V2+).
+
+### D-035 · Competing context everywhere
+- **Status:** Proposed
+- **Decision:** results, leaderboard rows, champion cards, Weekly Top 7, share cards, history and future seasons always show "competing as {seniority} {role}" + stack chips (up to 5 + "+N"). The name and LinkedIn are current and revocable; the context is historical. Anonymous entries show only "Anonymous Candidate" and the score.
+
+### D-036 · Smurfing: make it unattractive and visible, not impossible
+- **Status:** Proposed
+- **Decision:** categories (no advantage against higher bands), public context labels, the daily lock, the category cooldown, the minimum field, "misrepresented profile" reports, audited exclusion from titles.
+
+### D-037 · MVP role catalog: 13 roles
+- **Status:** Proposed (follows the maintainer's revised list)
+- **Decision:** Engineering Manager, Product Manager and UX/UI Designer leave the MVP catalog (they need non-technical content); Software Architect is restricted to Senior and above (proposal).

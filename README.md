@@ -7,7 +7,8 @@
 **CV Rush** (provisional name) is an open-source, competitive 2D browser game about the hiring process. You found a job you want: grab your CV and race through recruiters, an ATS machine and interviews to deliver it at the company before the other candidates.
 
 - 🏃 2–5 minute runs, playable on phones and desktops
-- 🎯 **Casual** mode personalized to your role, seniority and stack, and a fair **Daily Challenge** with a Daily Champion and a Weekly Top 7
+- 🧑‍💻 **Compete as who you are:** pick your seniority, role and stack. You get a job built for you and compete against comparable profiles (e.g. Fullstack · Senior+)
+- 🎯 A **Casual** mode for practice, and a ranked **Daily Challenge** with Daily Champions and a Weekly Top 7 per category
 - 🛡️ Server-authoritative gameplay: questions are served just in time, and the server computes every result
 - 🌍 Spanish and English from day one
 - 🤝 Built to be contributable: add questions, technologies and translations without touching game code

@@ -1,12 +1,28 @@
 # Question strategy
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
 >
 > Product-level rules for questions. The Question Engine (selection strategies, interfaces, storage, schemas) is designed in Part 2.
 
 ## 1. Purpose
 
 Questions are a **mechanic of the race**, not the product. They must be fast to read, fair, fun to get right, educational to get wrong, and tied to the fantasy: the recruiter asks about the posting, the hiring manager asks technical questions, the final panel asks you to combine both.
+
+**They must correspond to what the player declared.** Every run's questions come from the player's frozen profile snapshot (seniority, role, stack) and their personal job posting. See [competitive identity](../product/competitive-identity.md).
+
+### 1.1 Content ingredients and topic boundaries
+
+Every run combines five ingredients:
+
+| Ingredient | Example for a Senior Fullstack (Node.js, PHP, React) | Typical slots |
+|---|---|---|
+| **Job** questions | "Which technology was NOT in the posting?" | R1–R3, part of F1 |
+| **Stack** questions | A Node.js event-loop question; a PHP question; a React question | H1, part of F1 |
+| **Role (track) fundamentals** | API design, data modeling, browser/server boundaries | H2 |
+| **Seniority** questions | Trade-offs, architecture, incidents, scaling | H3, F1 |
+| **Shared fundamentals** | HTTP, Git, testing, security basics | Inside role and seniority pools |
+
+**Topic boundaries:** technical questions only come from (a) the player's stack ∩ technologies with eligible content, (b) their track's fundamentals and (c) shared fundamentals. **Never an arbitrary technology:** no Swift, Kotlin or machine learning for a Fullstack web profile, unless it is part of their stack. Not every question is about a selected technology; role, seniority and shared fundamentals keep the run balanced and comparable.
 
 ## 2. Question model (product view)
 
@@ -54,7 +70,7 @@ Humor questions: at most 1 per run, in about 30% of casual runs. Low stakes (cor
 | 4 | **Architecture and reliability** | System-level trade-offs, performance, scaling, failure handling | "Process events for 3 services with replay?" |
 | 5 | **Distributed and organizational scale** | Consistency models, multi-region, platform-wide trade-offs | "Exactly-once semantics across services: what do you actually get?" |
 
-### Casual bands (Hiring Manager slots H1 / H2 / H3 · Final F1)
+### Casual: difficulty by exact seniority (H1 stack · H2 role · H3 seniority · F1 mixed)
 
 | Seniority | H1 | H2 | H3 | F1 | Notes |
 |---|---|---|---|---|---|
@@ -68,9 +84,15 @@ Humor questions: at most 1 per run, in about 30% of casual runs. Low stakes (cor
 
 Recruiter slots (R1–R3) are difficulty 2 for every seniority: they test reading, not seniority.
 
-### Ranked curve (identical for everyone)
+### Ranked: difficulty by band (identical within a category)
 
-R1–R3: 2 · H1: 2 · H2: 3 · H3: 4 · F1: 4. See the [Daily Blueprint](../product/game-modes.md#33-the-daily-blueprint-same-structure-equivalent-content).
+| Band | R1–R3 | H1 (stack) | H2 (role) | H3 (seniority) | F1 (mixed) |
+|---|---|---|---|---|---|
+| Junior (Trainee, Junior) | 2 | 1 | 2 | 2 | 2 |
+| Mid | 2 | 2 | 3 | 3 | 3 |
+| Senior+ (Senior, Lead, Staff, Principal) | 2 | 3 | 3 | 4 | 4 |
+
+See the [Category Blueprint](../product/game-modes.md#33-the-category-blueprint).
 
 ## 5. Selection rules
 
@@ -81,19 +103,23 @@ R1–R3: 2 · H1: 2 · H2: 3 · H3: 4 · F1: 4. See the [Daily Blueprint](../pro
 - Shuffle options per run; balance the correct position across the run.
 - Select at the moment the challenge starts (just-in-time), never in advance on the client.
 
+- Respect the **topic boundaries** (section 1.1); the profile always comes from the server-side snapshot, never from the request.
+
 **Casual**
 
-- Topics = the player's stack ∩ the generated job's stack (falling back to role-general topics).
-- Difficulty from the seniority band; mild adaptivity (after 2 consecutive technical misses, the next technical slot drops one level, never below the band floor).
+- Stack slots: the player's stack ∩ the generated job's stack (falling back to role fundamentals).
+- Difficulty from the exact seniority; mild adaptivity (after 2 consecutive technical misses, the next technical slot drops one level, never below the seniority's floor).
 - Avoid questions seen in the player's last 5 casual runs.
 - An optional humor question (category G).
 
 **Ranked**
 
-- Topics = the Daily Job's stack and track.
-- Technical slots draw a variant from an eligible **question family** (see [fairness](../game-design/fairness.md#4-content-equivalence)).
-- No adaptivity, no humor, no influence from the player's profile.
+- Difficulty from the **category's band curve**, identical for everyone in the category.
+- **Shared slots** (H2 role fundamentals, H3 seniority, F1 scenario) draw a variant from **the category's (or band's) shared daily family**, themed by the Daily Company.
+- **Stack slot** (H1, and the stack part of F1) draws from a calibrated family for **one of the player's technologies** at the band's level, chosen by the seed among eligible technologies. Coverage fallback: the track fundamentals pool at the same level.
+- No adaptivity, no humor.
 - Avoid serving the same variant to the same player across attempts on the same day.
+- Equivalence rules: see [fairness](../game-design/fairness.md#4-content-equivalence).
 
 ## 6. Templates and job-derived questions
 

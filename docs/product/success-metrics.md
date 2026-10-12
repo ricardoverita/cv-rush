@@ -1,6 +1,6 @@
 # Success metrics
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
 >
 > Targets are **hypotheses** to calibrate after launch, not promises. The event catalog and analytics pipeline are defined in Part 2.
 
@@ -38,6 +38,8 @@ Success is not just "number of runs". CV Rush succeeds when people **enjoy it, c
 | Performance | First playable | Time to an interactive game on 4G mid-range Android | < 5 s |
 | Performance | Frame rate | Share of sessions with sustained ≥ 30 fps | ≥ 95% |
 | Performance | API latency | p95 for challenge start and answer endpoints | < 300 ms |
+| Competition | Active categories | Categories reaching the minimum field (3 verified runs) per day | All 9 launch categories most days |
+| Competition | Runs per category | Daily ranked runs per category (median, p10) | Informs category splits or merges |
 | Integrity | Flagged runs | Runs failing verification ÷ ranked runs | Monitor; investigate spikes |
 | Integrity | Champion disqualifications | Per month | Ideally 0 |
 | Community | Contributors | Unique contributors per month (code, content, translations) | Growing |
@@ -54,6 +56,8 @@ These must not get worse while we optimize the metrics above:
 - Accessibility feedback.
 - Error and crash rate by browser (especially in-app browsers).
 - Mobile vs desktop score gap in ranked (device fairness).
+- Score gap by declared stack within a category (stack fairness).
+- Category change frequency and near-perfect runs in Junior boards (smurfing signals).
 - es vs en accuracy gap on the same questions (language fairness).
 
 ## 4. Funnel
@@ -75,7 +79,8 @@ flowchart LR
 | What share finish? | Completion and delivery rate |
 | Where do players abandon? | Abandonment by stage |
 | Which challenge eliminates the most players? | Failure distribution |
-| Which profiles play the most? | Runs by role and seniority (aggregated) |
+| Which profiles play the most? | Runs by role, seniority and category (aggregated) |
+| Which stacks are most common per role? | Stack combinations from run snapshots (aggregated) |
 | Which technologies are most popular? | Stack selections (aggregated) |
 | Which seniority has the highest completion rate? | Completion rate by declared seniority |
 | How long does a run take? | Run duration |

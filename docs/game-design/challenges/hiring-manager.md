@@ -20,13 +20,13 @@ Feeling: focused pressure, competence.
 
 ## Content (slots)
 
-| Slot | Ranked (Daily Blueprint) | Casual (by seniority) | Window |
-|---|---|---|---|
-| H1 | Stack question, difficulty 2 | Stack question at the band's lower level | 15 s |
-| H2 | Technical or situational, difficulty 3 | Technical or situational at the band's middle | 15 s |
-| H3 | Architecture or trade-off, difficulty 4 | Band's upper level; **Lead** gets a leadership situational question here | 15 s |
+| Slot | Content | Ranked (by band: Junior / Mid / Senior+) | Casual (by exact seniority) | Window |
+|---|---|---|---|---|
+| H1 | **Stack**: one of the player's technologies | Calibrated stack family at level 1 / 2 / 3 | The seniority's lower level | 15 s |
+| H2 | **Role (track) fundamentals** | The category's shared daily family at level 2 / 3 / 3 | The seniority's middle level | 15 s |
+| H3 | **Seniority**: situational, architecture, trade-offs | The band's shared daily family at level 2 / 3 / 4, themed by the Daily Company | The seniority's upper level; **Lead** gets a leadership situational question | 15 s |
 
-Casual bands by seniority are defined in [question strategy](../../questions/question-strategy.md#4-difficulty-scale-and-seniority-bands). Topics come from the job's stack (ranked) or from the player's stack ∩ the generated job (casual).
+Levels are defined in [question strategy](../../questions/question-strategy.md#4-difficulty-scale-and-seniority-bands). Topics always respect the player's **topic boundaries**: their stack, their track's fundamentals, shared fundamentals. A Senior Fullstack developer with Node.js, PHP and React may get a Node.js question in H1, an API-design question in H2 and a scaling trade-off in H3, and never a Swift question.
 
 ### Examples
 

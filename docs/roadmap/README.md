@@ -1,6 +1,6 @@
 # Roadmap
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
 >
 > No dates on purpose. Phases are ordered by dependency and by what we learn from players. GitHub milestones will mirror these phases once the repository is public.
 
@@ -14,7 +14,7 @@
 
 ## MVP (summary)
 
-Landing (SSR, es/en) · onboarding (name, seniority, role, stack picker) · Casual and Ranked modes · job generation and the Daily Job · a 2D runner (Phaser) with 4 stages: Recruiter Screening (incl. a graded salary question), ATS Scan, Hiring Manager, Final Interview · bots · CV Health · server-authoritative scoring · results and failure screens · public profile opt-in + LinkedIn · daily leaderboard, Daily Champion with automated verification, Weekly Top 7, Candidate of the Week · share pages and cards · question reports · accessibility basics · first-party analytics · moderation commands · open-source foundations.
+Landing (SSR, es/en) · profile-first onboarding (name, seniority, role, stack) with server-side validation and a frozen snapshot per run · Casual and Ranked modes · personal job generation and the Daily Company · 9 official ranked categories (Frontend, Backend, Fullstack × Junior, Mid, Senior+) · a 2D runner (Phaser) with 4 stages: Recruiter Screening (incl. a graded salary question), ATS Scan, Hiring Manager, Final Interview · bots · CV Health · server-authoritative scoring · results and failure screens · public profile opt-in + LinkedIn · category leaderboards with competing context, Daily Champion, Weekly Top 7 and Candidate of the Week per category, a cross-category spotlight · share pages and cards · question reports · accessibility basics · first-party analytics · moderation commands · open-source foundations.
 
 ## V1
 
@@ -26,8 +26,9 @@ Landing (SSR, es/en) · onboarding (name, seniority, role, stack picker) · Casu
 | **Admin panel v1** | Questions, reports, runs, moderation, champions, through a UI instead of commands |
 | **Question stats dashboard** | Balancing with data (expected vs observed difficulty) |
 | **Public champion pages** (opt-in, indexable) | SEO and showcase value |
-| **"Challenge a friend"** links | Social replay: the same job, equivalent questions |
-| **More role coverage** via community packs | Grow beyond the 4 core tracks |
+| **"Challenge a friend"** links | Social replay: the same profile and company, equivalent questions |
+| **More ranked categories** (Platform official; then Mobile, Quality, Data, Security, Architecture) | Content-gated activation, helped by community packs |
+| **Experimental normalized global view** (percentile within category) | A cross-category "top performers" view, never a champion title |
 | **Server-side re-simulation** of ATS and collisions from input logs | Tighter integrity for client-side mechanics |
 | **Private submission path** for competitive questions | Scale the competitive pool with trusted contributors |
 | **Personal stats page** | Mastery loop |
@@ -63,7 +64,9 @@ Real-time multiplayer races · company or university leagues · event mode for m
 | Login | Friction for the first run; not needed to validate fun | Champion disputes, cross-device demand, abuse through many identities |
 | Salary Negotiation stage | The pacing budget; the graded question delivers the joke | MVP playtests show the run has room and players love the salary question |
 | Ghosting and other hazards | Scope | The core loop is validated |
-| Leagues by seniority | Eligibility can't be verified; fragments a small audience | Verified identity exists and the audience is large |
+| Splitting bands or tracks (e.g. Senior+ → Senior \| Lead+) | Small fields at launch | The median daily field of a category stays above ~200 for 4 weeks |
+| A global ranking across categories | Raw scores are not comparable; normalization needs data | Several categories regularly reach the minimum field (then: experimental V1 view) |
+| Engineering Manager, Product Manager, UX/UI Designer | They need non-technical content of a different kind | A content plan and contributors for those roles |
 | Skill rating (Elo-like) | Needs identity, volume and calibrated content | After seasons and login |
 | Seasons | Needs history worth resetting | After a few months of data |
 | Skill Passport | Needs identity and enough runs per player | After login |

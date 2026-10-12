@@ -1,6 +1,6 @@
 # Public profile, LinkedIn exposure and privacy UX
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
 >
 > Product-level rules. Technical enforcement (validation, storage, retention, security) is defined in Part 2.
 
@@ -19,8 +19,9 @@
 | Data | Asked when | Required | Stored | Public |
 |---|---|---|---|---|
 | Display name | Onboarding | Yes (nicknames OK) | Yes | Only with the public profile on |
-| Seniority, role | Onboarding | Yes | Yes (with a snapshot per run) | Only with the public profile on |
-| Stack | Onboarding | Yes (min 1) | Yes (with a snapshot per run) | No (MVP); possibly in a future Skill Passport, by opt-in |
+| Seniority, role | Onboarding | Yes | Yes, with a **frozen snapshot per run** | Only with the public profile on, as the **competing context** of each result |
+| Stack | Onboarding | Yes (1–12) | Yes, with a frozen snapshot per run | Only with the public profile on, as stack chips next to each result (up to 5 + "+N") |
+| Category (track × band) | Derived | — | Yes, per run | The board an entry appears on (also for anonymous entries) |
 | Anonymous player identity | Automatically (essential cookie) | Yes | Yes | Never |
 | Runs, answers, timings | During play | — | Yes (for scoring, audit and anti-cheat) | Only score, race time, position and date, on leaderboards |
 | LinkedIn username | After a delivered ranked run | No | Yes, only if given | Only with the public profile on |
@@ -89,8 +90,9 @@ We cannot verify that a LinkedIn profile belongs to the player. Mitigations:
 ## 4. Consent UX details
 
 - The **toggle is off by default.** Both choices have equal visual weight.
-- **Live preview:** as the player toggles or edits, the card renders exactly as it will appear publicly.
-- **Anonymous listing:** "Anonymous Candidate" plus score and race time. No role, seniority or link.
+- **Live preview:** as the player toggles or edits, the card renders exactly as it will appear publicly, including the **competing context**: "Ricardo Vera · Senior Fullstack Developer · Node.js · PHP · React · 18,492 pts".
+- **Anonymous listing:** "Anonymous Candidate" plus score and race time, on their category's board. No exact seniority, role, stack or link: a rare combination could identify someone in a small field.
+- **Historical context:** the role, seniority and stack shown with a result are the run's frozen snapshot. The name and LinkedIn are the *current* public identity, so hiding or editing them updates every past entry, while each result keeps the context it was achieved with.
 - **Scope:** the choice applies to the player's public presence (all their leaderboard entries), not to a single run. It can be changed at any time.
 - **Recording:** each change stores a consent record (purpose, granted or withdrawn, timestamp, text version).
 
@@ -121,7 +123,7 @@ If both the device and the link are lost, a documented contact process handles r
 
 ## 7. Sharing and privacy
 
-- Share cards and share pages **respect the current public status**. With the profile public: "Alex Morgan · #1 today · 19,430 pts". Otherwise: "A Senior candidate scored 19,430 pts… Can you beat it?". Role and seniority appear only if public.
+- Share cards and share pages **carry the competing context and respect the current public status**. With the profile public: "Ricardo Vera scored 18,492 points competing as a Senior Fullstack Developer · Node.js · PHP · React · #1 today in Fullstack · Senior+". Otherwise: "A candidate scored 18,492 points in Fullstack · Senior+… Can you beat it?".
 - If a player hides their profile later, existing share pages update to the anonymous version (cached images are invalidated).
 - Share buttons use plain share URLs (LinkedIn, X, WhatsApp, copy link). **No third-party share SDKs or tracking pixels.**
 

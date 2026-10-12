@@ -8,19 +8,19 @@
 |---|---|---|---|
 | **Variety** | Session | New jobs, questions, bots, ATS streams, obstacle layouts, recruiter lines per run | New maps (startup, bank, big tech), new stages |
 | **Mastery** | Session | Personal bests per track; explanations in the casual review | Personal stats page; skill trends |
-| **Competition** | Meta | Daily Challenge, 3 attempts, "did I hold #1?", Weekly Top 7, Candidate of the Week | Seasons; challenge a friend |
-| **Social** | Meta | Share cards; discovering profiles on leaderboards | "Challenge a friend" links with the same job |
+| **Competition** | Meta | Daily Challenge in your category, 3 attempts, "did I hold #1?", Weekly Top 7 and Candidate of the Week per category | Seasons; challenge a friend; category splits as fields grow |
+| **Social** | Meta | Share cards; discovering profiles on leaderboards | "Challenge a friend" links with the same company and category |
 | **Collection** | Meta | — | Achievements, badges, skins, streaks (non-competitive) |
-| **Freshness** | Meta | Community content; daily track rotation | Seasonal content drops |
+| **Freshness** | Meta | Community content; a new **Daily Company** and theme every day | Seasonal content drops |
 
 ## 2. Sources of variety per run
 
 | Element | Casual | Ranked |
 |---|---|---|
-| Job posting | Generated per run | One per day |
-| Questions | Packs + templates, avoiding recently seen ones | Equivalent families per slot |
+| Job posting | Generated per run for the profile | Generated per run for the profile, at today's company |
+| Questions | Packs + templates, avoiding recently seen ones | Shared daily families per category + calibrated stack families |
 | Option order | Shuffled | Shuffled |
-| Bots | Random field | The daily field |
+| Bots | Random field | The category's daily field |
 | ATS stream | Generated | Generated under fairness constraints |
 | Obstacles and pickups | Generated | Generated with equivalent density |
 | Recruiter, manager and bot lines | Random from localized pools | Random from localized pools |
@@ -52,5 +52,5 @@
 
 - The provisional #1 is told when the day closes and invited to come back and check.
 - The landing page shows yesterday's result to returning players.
-- The Weekly Top 7 has a narrative: "4 days left this week; today is Backend day".
+- Each day has a new company to apply to ("Today Kestrel Pay is hiring"), and each category's Weekly Top 7 has a narrative: "4 days left this week".
 - No email or push notifications in the MVP (we don't collect contact data).

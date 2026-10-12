@@ -64,7 +64,7 @@ Alternatives kept open: a side-scrolling view (natural for landscape, weak in po
 | **Coffee** | Short speed boost |
 | **Proofreading** | CV +5 (never above 100) |
 
-**Integrity note.** Obstacle hits and pickups happen in the browser and cannot be fully verified. They have a **bounded** effect: at most one hit per obstacle, damage capped per segment, and pickups only claimable if the server spawned them for that segment. They are a small part of the score. The V1 target is for the server to recompute collisions from the player's input log. See [fairness](fairness.md#3-ranked-controls).
+**Integrity note.** Obstacle hits and pickups happen in the browser and cannot be fully verified. They have a **bounded** effect: at most one hit per obstacle, damage capped per segment, and pickups only claimable if the server spawned them for that segment. They are a small part of the score. The V1 target is for the server to recompute collisions from the player's input log. See [fairness](fairness.md#21-controls-at-a-glance).
 
 ## 4. Gates: how questions appear in the world
 

@@ -9,7 +9,7 @@
 1. **One central scoring module.** Score logic never lives in UI components or game scenes.
 2. **The server computes everything.** The client never sends a score, time, position or correctness. It sends actions.
 3. **Explainable.** Every result has a breakdown the player can read ("why did I get 18,492?"). No hidden factors.
-4. **Comparable in ranked.** Every ranked run of a day uses the same blueprint, so the same performance yields the same score.
+4. **Comparable within a category.** Every ranked run of a day in the same category (track × band) uses the same blueprint, so the same performance yields approximately the same score. Scores from **different categories are not compared**.
 5. **Verifiable signals weigh most.** Components the server can verify (answers, server-measured timings, position against simulated bots) carry most of the weight. Client-reported signals (obstacles, pickups, ATS movement) are **bounded**.
 6. **Device-neutral and language-neutral.** No component favors keyboard over touch, or one language over another.
 7. **Versioned.** Every run records the scoring version it was computed with, so old results stay explainable after rule changes.
@@ -30,24 +30,24 @@ Maximum score per run: **25,000** (initial).
 
 ### Details (initial values)
 
-- **Difficulty weights distribute points within a run; they do not inflate the total.** A difficulty-4 slot is worth twice a difficulty-2 slot, but the answers component always sums to 11,250 when everything is correct. So a declared Principal cannot outscore a Trainee in casual just by declaring a higher seniority, and ranked runs are identical by construction.
+- **Difficulty weights distribute points within a run; they do not inflate the total.** A difficulty-4 slot is worth twice a difficulty-2 slot, but the answers component always sums to 11,250 when everything is correct. So declaring a higher seniority never inflates a score, and ranked runs within a category share the same weights by construction.
 - **Speed buckets** (correct answers only): answered within the first 25% of the window → 100%; within 50% → 75%; within 75% → 50%; later → 25%. Buckets absorb small latency differences.
 - **Position:** #1 → 100%, #2 → 75%, #3 → 55%, #4 → 40%, #5 or lower → 25%.
 - **Graded options** (salary): `ALIGNED` 100%, `UNDERSELL` and `VAGUE` 25%, `OUT_OF_RANGE` 0% of the slot's points.
 
 ## 3. Illustrative breakdown
 
-A ranked run: Recruiter 3/3, ATS 92%, Technical 3/4 (missed H3), CV Health 75%, finished #2.
+A ranked run in **Fullstack · Senior+**: Recruiter 3/3, ATS 92%, Technical 3/4 (missed H3), CV Health 75%, finished #2. The result is presented with its context: *"scored 19,479 points competing as a Senior Fullstack Developer · Node.js · PHP · React"*.
 
 | Component | Calculation (illustrative) | Points |
 |---|---|---|
-| Answers | Slot weights R1–R3 = 2 each, H1 = 2, H2 = 3, H3 = 4, F1 = 4 (19 units). Missed H3 → 15 / 19 × 11,250 | 8,882 |
+| Answers | Senior+ slot weights R1–R3 = 2 each, H1 = 3, H2 = 3, H3 = 4, F1 = 4 (20 units). Missed H3 → 16 / 20 × 11,250 | 9,000 |
 | Answer speed | Average bucket 70% | 2,625 |
 | Final position | #2 → 75% | 2,250 |
 | ATS match | 92% | 2,300 |
 | CV Health | 75% | 1,875 |
 | Streak | Longest streak 5 of 7 | 1,429 |
-| **Total** | | **19,361** |
+| **Total** | | **19,479** |
 
 ## 4. Penalties
 

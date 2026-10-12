@@ -1,48 +1,64 @@
 # Job posting generation
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
 
 ## 1. Role of the job posting
 
 The job posting does two jobs:
 
-1. **Narrative briefing:** "this is the job you are applying to". It makes the run personal (casual) or shared (ranked).
+1. **Narrative briefing:** "this is *my* job". It is always generated **for the player's frozen profile snapshot** (seniority, role, stack), in both modes. Nobody plays someone else's job.
 2. **Source of truth for the run:** job-memory questions, recruiter questions, the salary question, ATS relevance and Final Interview scenarios are all derived from it.
 
-So it must be **coherent, readable in 30–45 seconds, and rich enough in facts** to ask about.
+So it must be **coherent with the profile, readable in 30–45 seconds, and rich enough in facts** to ask about.
 
 ## 2. Anatomy
 
 | Field | Example | Used by |
 |---|---|---|
-| Company | Kestrel Pay (fictional), sector, logo shape and color | Flavor, memory |
-| Title | Senior Fullstack Developer | Flavor, memory |
+| Company | Kestrel Pay (fictional), sector, domain theme, logo shape and color | Flavor, memory, themed scenarios |
+| Title | Senior Fullstack Developer (exact seniority + role from the snapshot) | Flavor, memory |
 | Location + work mode | Barcelona · Hybrid | Memory |
-| Salary range + currency | €50,000 – €60,000 | Memory, salary question |
-| Summary | 1–2 sentences about the team or product | Flavor |
-| Responsibilities | 4–6 bullets | Memory, Final Interview scenarios |
-| Stack | 6–8 technologies | Memory ("which was NOT in the posting?"), ATS relevance, Hiring Manager topics |
+| Salary range + currency | €45,000 – €60,000 | Memory, salary question |
+| Summary | 1–2 sentences about the team or product, themed by the company's domain | Flavor |
+| Responsibilities | 4–6 bullets from role and stack fragments | Memory, Final Interview scenarios |
+| Stack | 6–8 technologies, mostly from the player's stack | Memory ("which was NOT in the posting?"), ATS relevance, stack questions |
 | Experience | "5+ years building software" + 1–2 specific requirements | Memory |
 | Nice to have | 1–2 items | Memory, ATS (secondary) |
 | Perks | 2–3 items, at most one satirical ("Ping-pong table (unused since 2019)") | Humor, memory |
-| Applicant count | "237 candidates applied" | Lobby (real number in ranked) |
+| Applicant count | "237 candidates applied" | Lobby (real numbers in ranked) |
 
-**Length target:** ≤ ~120 words of body text, readable on a phone without scrolling much.
+**Length target:** ≤ ~120 words of body text, readable on a phone without much scrolling.
 
-## 3. Casual generation
+## 3. Generation from the profile snapshot (both modes)
 
-**Inputs:** role, seniority, stack, locale, seed.
+**Inputs:** the snapshot (exact seniority, role, track, stack), the mode, the target difficulty (band curve in ranked, exact seniority in casual), the locale, the seeds, and in ranked the **Daily Company**.
 
 **Rules:**
 
-- **Title** from role + seniority ("Senior Fullstack Developer", "Trainee QA Engineer").
-- **Stack:** 6–8 technologies, mostly a **subset of the player's selected stack**, prioritizing technologies typical for the role. If the player selected few technologies, add 1–2 role-typical ones. Technologies the player selected but the posting does *not* include become excellent "which was NOT in the posting?" distractors.
-- **Experience** by seniority: Trainee "no experience required, eager to learn" · Junior 0–2 years · Mid 2–4 years · Senior 5+ · Lead 7+ with team leadership · Staff 8+ · Principal 10+.
-- **Responsibilities** from role and stack fragments (e.g. Kafka → "Work with event-driven architecture"; React → "Build React interfaces").
-- **Salary range** from illustrative bands by seniority and location tier (authored content, not market data), formatted in the location's currency and the player's locale.
-- **Location** from a curated list of ~12 hubs, with work mode (On-site, Hybrid, Remote). The list covers Spanish- and English-speaking markets (e.g. Barcelona, Madrid, Lima, Mexico City, Bogotá, Buenos Aires, Santiago, London, Dublin, Berlin, Austin, Remote).
-- **Company** generated from name parts + sector + logo shape and color, checked against a blocklist of well-known brands to avoid real companies.
-- **Determinism:** the same inputs + seed always produce the same posting (for audit and debugging).
+- **Title** = exact seniority + role ("Staff Fullstack Developer", "Trainee QA Engineer").
+- **Stack:** 6–8 technologies.
+  - Mostly a **subset of the player's stack**, always including at least one technology from each of the role's **core categories** (Fullstack: frontend + backend).
+  - If the player selected few technologies, add 1–2 **role-typical** ones. They appear in the posting (realism, memory distractors), but **technical questions never target technologies outside the player's stack**.
+  - Technologies the player selected that the posting does *not* include become excellent "which was NOT in the posting?" distractors.
+  - Never technologies unrelated to the role (no Swift in a Fullstack web posting).
+- **Experience** by exact seniority: Trainee "no experience required, eager to learn" · Junior 0–2 years · Mid 2–4 years · Senior 5+ · Lead 7+ with team leadership · Staff 8+ · Principal 10+.
+- **Responsibilities** from role and stack fragments (e.g. Kafka → "Work with event-driven architecture"; React → "Build React interfaces"). In ranked they are themed by the Daily Company's domain.
+- **Salary range** from illustrative bands by exact seniority and location tier (authored content, not market data), formatted in the location's currency and the player's locale.
+- **Location and work mode** from a curated list of ~12 hubs across Spanish- and English-speaking markets (e.g. Barcelona, Madrid, Lima, Mexico City, Bogotá, Buenos Aires, Santiago, London, Dublin, Berlin, Austin, Remote).
+- **Askable facts:** every posting contains at least 8 distinct facts usable by job-memory templates (range, location, mode, years, 3+ stack items, 2+ responsibilities, a perk), so every player has the **same number and kind of facts** to be asked about.
+- **Determinism:** the same snapshot + seeds always produce the same posting (for audit and debugging).
+
+### Casual
+
+- **Company:** generated per run from name parts + sector + logo shape and color, checked against a blocklist of well-known brands.
+
+### Ranked: a personal job at the Daily Company
+
+- Every UTC day has one **Daily Company**: a fictional company with a name, sector, **domain theme** (e.g. "fintech, payments at scale"), HQ and offices, and 2–3 culture quirks. Today, it is "hiring across every track and level".
+- Each ranked player's posting is generated **on demand from their snapshot** at that company: Ricardo gets *Senior Fullstack Developer at Kestrel Pay*; Andrea gets *Junior Frontend Developer at Kestrel Pay*.
+- The **category blueprint** fixes what must be equal within a category: the template set, the number of facts, the salary question logic, the ATS composition (see [game modes](../product/game-modes.md#33-the-category-blueprint)).
+- **Daily Companies are scheduled in advance from a reviewed pool and are secret until 00:00 UTC.** No endpoint exposes future companies or themes.
+- No manual curation per category per day: the generator plus a reviewed company pool scale to new categories.
 
 ### Illustrative salary bands (Spain, EUR; content, not market data)
 
@@ -56,50 +72,64 @@ So it must be **coherent, readable in 30–45 seconds, and rich enough in facts*
 | Staff | €65K – €85K |
 | Principal | €75K – €95K |
 
-Bands live in content files per location tier and can be corrected by contributors. The UI says nothing about them being "market data".
+Bands live in content files per location tier and can be corrected by contributors. The UI never presents them as market data.
 
-## 4. Ranked: the Daily Job
+## 4. Localization
 
-- **Curated in advance** (generated with the same generator, then reviewed by a person) and **scheduled** for a UTC day.
-- **Secret until it opens at 00:00 UTC.** Future daily jobs are never exposed by any endpoint.
-- **The same for everyone that day.** The fixed **Mid–Senior** level keeps difficulty comparable across days.
-- The track rotates according to the schedule (see [game modes](../product/game-modes.md#32-the-daily-job)).
-- Reviewed for both locales before scheduling.
+- Fragments (summaries, responsibilities, perks, satirical lines, company quirks) are **authored per language**, not machine-translated at runtime. Spanish and English can carry different jokes with the same intent.
+- Technology names are never translated; role titles follow the catalog's translations (Spanish keeps the usual English titles).
+- Numbers, currencies and dates are formatted with the player's locale (`Intl`); the currency follows the job's location.
+- A run's posting is rendered in the run's language; facts (numbers, technologies) are language-independent, so questions about them have identical answers in both languages.
 
-## 5. Localization
+## 5. Quality rules
 
-- Fragments (summaries, responsibilities, perks, satirical lines) are **authored per language**, not machine-translated at runtime. Spanish and English can carry different jokes with the same intent.
-- Technology names are never translated.
-- Numbers, currencies and dates are formatted with the player's locale (`Intl`). The currency follows the job's location (EUR for Barcelona, USD for Austin, PEN or USD for Lima, as decided in the location content).
-- A run's job posting is rendered in the run's language; facts (numbers, technologies) are language-independent, so questions about them have identical answers in both languages.
-
-## 6. Quality rules
-
-- **Coherence:** no Junior posting asking for 10 years; no stack contradictions (e.g. "Kubernetes" as a frontend framework); the salary band matches the seniority.
-- **Askable facts:** each posting contains at least 8 distinct facts usable by job-memory templates (range, location, mode, years, 3+ stack items, 2+ responsibilities, a perk).
-- **Respectful satire:** at most one satirical flourish per posting; no mocking of real companies.
+- **Coherence:** the posting matches the snapshot. No Junior posting asking for 10 years, no stack contradictions, a salary band that matches the seniority, core categories always present.
+- **Askable facts:** at least 8 per posting (see above).
+- **Respectful satire:** at most one satirical flourish per posting; no real companies.
 - **Readable:** short bullets, no walls of text.
 
-## 7. Example (casual)
+## 6. Examples
+
+**Ranked, Ricardo (Senior · Fullstack · Node.js, NestJS, PHP, React, PostgreSQL, Redis, Kafka, Docker), Daily Company Kestrel Pay:**
 
 ```
-KESTREL PAY · Fintech
+KESTREL PAY · Fintech · Today's Daily Challenge
 Senior Fullstack Developer
-Barcelona · Hybrid · €50,000 – €60,000
+Barcelona · Hybrid · €45,000 – €60,000
 
 We're looking for a Senior Fullstack Developer to build high-availability
 payment services and web apps used by thousands of merchants.
 
 Responsibilities
-• Design REST APIs
-• Build scalable backend services
+• Design idempotent REST APIs for payments
+• Build scalable backend services in Node.js and PHP
 • Work with event-driven architecture
-• Build React interfaces
+• Build React interfaces for merchants
 • Optimize queries and caching
 
-Stack: Node.js · NestJS · React · PostgreSQL · Redis · Kafka · Docker · AWS
+Stack: Node.js · NestJS · PHP · React · PostgreSQL · Redis · Kafka · Docker
 Experience: 5+ years building software · distributed systems · relational databases
 Perks: Flexible hours · Learning budget · Ping-pong table (unused since 2019)
 ```
 
-The same posting in Spanish uses the Spanish fragments ("Buscamos un/a Senior Fullstack Developer…"), with identical facts.
+**Ranked, Andrea (Junior · Frontend · JavaScript, React, CSS), same day:**
+
+```
+KESTREL PAY · Fintech · Today's Daily Challenge
+Junior Frontend Developer
+Lima · Remote · US$18,000 – US$26,000
+
+Join our merchant dashboard team and help thousands of shops get paid on time.
+
+Responsibilities
+• Build accessible React components
+• Turn designs into responsive layouts with CSS
+• Fix UI bugs reported by merchants
+• Write unit tests for UI logic
+
+Stack: JavaScript · React · CSS · HTML · Jest
+Experience: 0–2 years · a portfolio or side projects welcome
+Perks: Mentorship program · Learning budget · "Fun Fridays" (mandatory)
+```
+
+The Spanish versions use the Spanish fragments ("Buscamos un/a Senior Fullstack Developer…"), with identical facts.

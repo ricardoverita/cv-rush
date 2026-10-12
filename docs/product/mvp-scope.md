@@ -1,6 +1,6 @@
 # MVP scope and explicit non-goals
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
 >
 > V1, V2, ideas and deliberately postponed features are in the [roadmap](../roadmap/README.md).
 
@@ -14,11 +14,12 @@ The MVP is the smallest product that can test this hypothesis **in public** with
 
 ### Experience
 
-- **Landing page:** server-rendered, indexable, es/en, with OpenGraph and Twitter metadata. Shows today's live leader, yesterday's champion and the Daily Challenge countdown.
-- **Onboarding:** name, seniority (7 levels), role (16 roles), stack picker (recommendations, categories, search, aliases, progressive suggestions, 1–15 selections).
-- **Two modes:** Daily Challenge (ranked) and Personalized run (casual). See [game modes](game-modes.md).
-- **Job posting screen** with a reading timer and **APPLY**; a lobby with "N candidates applied" and 3-2-1-GO.
-- **Results screen** with the explained score breakdown.
+- **Landing page:** server-rendered, indexable, es/en, with OpenGraph and Twitter metadata. Shows today's company, today's champions by category (spotlight) and the Daily Challenge countdown.
+- **Profile-first onboarding:** name, seniority (7 levels), role (13 roles), a stack picker adapted to the role (recommendations, role categories, search, aliases, progressive suggestions, role rules, 1–12 selections), and a **"Competing as"** card. See [competitive identity](competitive-identity.md).
+- **Server-side profile validation and a frozen profile snapshot per run**, including the ranked daily profile lock.
+- **Two modes, both profile-based:** Daily Challenge (ranked, by category) and Personalized run (casual). See [game modes](game-modes.md).
+- **Job posting screen** (a personal job; in ranked at today's company) with a reading timer and **APPLY**; a lobby with "N candidates applied" and 3-2-1-GO.
+- **Results screen with competing context** ("Ricardo scored 18,492 points competing as a Senior Fullstack Developer" + stack + category rank) and the explained score breakdown.
 - **Failure screen** (rejection email parody) and one-tap retry.
 - **Post-run review** (casual: full; ranked: results and topics) and **question reporting**.
 
@@ -42,24 +43,27 @@ The MVP is the smallest product that can test this hypothesis **in public** with
 
 | Content | MVP target |
 |---|---|
-| Roles in the catalog | 16 (all selectable) |
-| Core tracks with full casual coverage | **4**: Frontend, Backend, Fullstack, DevOps & Cloud |
-| Other roles | "Early access": job-derived, recruiter and general professional questions, plus a "Help us write questions for this role" call to action |
-| Technologies in the catalog | ~120, with categories, aliases and role recommendations |
-| Community question packs (public, bilingual) | ≥ 240 questions across the core tracks |
-| Competitive question pool (private, bilingual) | ≥ 200 questions in families for the 4 daily tracks |
+| Roles in the catalog | 13, mapped to 10 tracks (see [competitive identity](competitive-identity.md#22-tracks-competitive-families)) |
+| Seniority bands | 3: Junior (Trainee, Junior), Mid, Senior+ (Senior, Lead, Staff, Principal) |
+| **Official ranked categories** | **9**: Frontend, Backend, Fullstack × Junior, Mid, Senior+. Platform (DevOps & Cloud) × 3 in **preview** |
+| Tracks with full casual coverage | 4: Frontend, Backend, Fullstack, Platform |
+| Other tracks | Casual only: job-derived, recruiter and shared-fundamentals questions, plus a "Help us unlock ranked for {role}" call to action |
+| Technologies in the catalog | ~120, with categories, aliases, role recommendations and role compatibility rules (core and allowed categories) |
+| Community question packs (public, bilingual) | ≥ 300 questions across the 4 casual tracks and 3 levels |
+| Competitive question pool (private, bilingual) | **≈ 500 questions** (estimate): track fundamentals families per track × band (Fullstack reuses Frontend + Backend), seniority families per band, and stack families for ~12 priority technologies × 3 levels; plus ~24 scenario templates |
 | Job-derived question templates | ~15 (memory, recruiter, salary) |
-| Job generation | Templates for the 4 core tracks + a generic template; ~30 fictional companies; ~12 locations |
-| Daily jobs | A rotation schedule across the 4 core tracks, prepared at least 2 weeks ahead |
+| Job generation | Templates for every role (rich for the 4 casual tracks), ~30 fictional companies, ~12 locations |
+| Daily Companies | A reviewed pool, scheduled at least 2 weeks ahead, secret until published |
 | Bots | 5 archetypes, name pools per locale, ~30 localized lines |
 
 ### Leaderboards
 
-- Daily leaderboard (provisional, top 20 + own position).
-- **Daily Champion** with automated verification.
-- **Weekly Top 7.**
-- **Candidate of the Week** (raw-score rule; see [leaderboards](leaderboards.md#5-candidate-of-the-week)).
-- **3 ranked attempts per day**, best counts.
+- **Category leaderboards** (track × band): daily, provisional, top 20 + own position, with competing context on every row.
+- **Daily Champion per category** with automated verification and a minimum field of 3 runs.
+- **Weekly Top 7 per category.**
+- **Candidate of the Week per category** (raw score within the category; see [leaderboards](leaderboards.md#7-candidate-of-the-week-per-category)).
+- **Spotlight** of champions across categories (not a ranking). **No global ranking** in the MVP.
+- **3 ranked attempts per day**, best counts; ranked profile locked for the day; category cooldown.
 
 ### Profile, privacy and sharing
 
@@ -85,6 +89,8 @@ The MVP is the smallest product that can test this hypothesis **in public** with
 | Ghosting and other extra obstacles or challenges | Not included | V1 |
 | AI-generated questions | Not included; no runtime LLM dependency | V2 (offline generation with validation) |
 | Login (Google, GitHub) | Anonymous identity + management link | V1 |
+| A global ranking across categories | Spotlight only; per-category boards | V1 (experimental normalized view) |
+| Engineering Manager, Product Manager, UX/UI Designer roles | Not in the catalog | Later (they need non-technical content) |
 | Admin panel | Maintenance commands only | V1 |
 | Public champion pages | Not included | V1 |
 | Achievements, streaks, levels, skins, badges | Not included | V1/V2 |
@@ -98,7 +104,8 @@ The MVP is the smallest product that can test this hypothesis **in public** with
 - [ ] Median run length is between 2.5 and 4 minutes in playtests.
 - [ ] No question or answer key reaches the client before its challenge starts, and no answer key reaches it at all (verified by inspecting traffic).
 - [ ] Scores, times and positions are computed server-side only (verified by tampering tests).
-- [ ] The Daily Champion and Weekly Top 7 work across UTC day and week boundaries (tested with time travel in integration tests).
+- [ ] Daily Champions and Weekly Top 7 work per category across UTC day and week boundaries (tested with time travel in integration tests).
+- [ ] A run's profile cannot be changed after creation, and every result shows its snapshot context (verified by tampering tests).
 - [ ] es/en complete, with no missing keys (CI validation).
 - [ ] Content targets met, and every question passes `questions:validate`.
 - [ ] Privacy policy, terms and "What is public" are published; the legal review is done.

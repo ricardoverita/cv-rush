@@ -23,7 +23,7 @@ The repository is public. Some things must never be in it.
 | Game client, web app, API, domain, tooling | Runtime secrets, credentials, tokens |
 | **Community question packs** (with answers) | **Competitive question pool** (answer keys) |
 | Question **templates and generators** (logic) | Server-side seeds and per-run state |
-| Catalogs: roles, seniorities, technologies | Scheduled future **Daily Jobs** |
+| Catalogs: roles, seniorities, technologies | Scheduled future **Daily Companies** |
 | Translations | Player data, consent records, logs |
 | Docs, ADRs, case study | Moderation review data |
 | Example and seed data (fictional only) | Brand assets beyond what the brand policy allows |
@@ -57,6 +57,7 @@ Each step should be possible without understanding the steps above it.
 ## 5. Content flow between the open and private worlds
 
 - Community contributions are **public by nature**, so they feed **casual mode**.
+- **Unlocking ranked for a track is a community goal:** tracks that are casual-only show "Ranked coming soon for {role} — help us unlock it", linking to the content needed (e.g. "Mobile · Mid needs 3 more fundamentals families"). Contributions to community packs prove demand and help authors join the trusted reviewers who prepare competitive content.
 - The competitive pool is authored and reviewed privately (by the maintainer at first; trusted reviewers later).
 - **Retired competitive questions graduate to the open packs** after their competitive life: exposure limits reached or age. The open bank keeps growing with tested questions, and the private pool stays fresh.
 - A private submission path for competitive questions (from trusted contributors) is a V1 idea. Its licensing and contributor terms are part of the Part 2 license ADR.

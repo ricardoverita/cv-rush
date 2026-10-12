@@ -22,14 +22,14 @@ Feeling: climax.
 
 | Slot | Ranked | Casual | Window |
 |---|---|---|---|
-| F1 | **Mixed** question, difficulty 4: combines the job context (memory) with the stack and architecture | Mixed, at the top of the seniority band | 20 s |
+| F1 | **Mixed**, at the band's top level (2 / 3 / 4 for Junior / Mid / Senior+): the Daily Company's scenario + the player's job and stack | Mixed, at the top of the exact seniority's range | 20 s |
 
 A mixed question references the job posting, so it rewards both reading and knowledge. Example for a job mentioning event-driven services and Redis caching:
 
 > **EN:** At this company, checkout latency spikes when the product cache expires under peak load. What should you try first?
 > A) Stagger expirations and refresh hot keys ahead of expiry ✅ · B) Disable the cache during peaks · C) Double the database instance size · D) Move the cache into each browser's LocalStorage
 
-Sources: competitive pool (ranked), community packs (casual), or **scenario templates** that inject facts from the job into an authored scenario.
+Sources: **scenario templates** that inject facts from the player's job (company domain, responsibilities, one of their technologies) into an authored scenario, shared within the category that day (ranked); community packs or random scenarios (casual).
 
 ## Resolution and effects
 
