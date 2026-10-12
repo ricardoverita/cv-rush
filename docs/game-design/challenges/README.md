@@ -44,7 +44,7 @@ Every challenge is documented with these sections:
 1. **Just-in-time.** A challenge's content is created or selected by the server **only when the runner reaches it**. Nothing about future challenges exists on the client.
 2. **Single-use and ephemeral.** Each challenge instance and question has its own ID, a deadline, and accepts **one** answer. Duplicates and late answers are rejected.
 3. **The server decides outcomes.** The client sends *intents* ("selected option B"); the server replies with *results* ("correct: false; effects: CV_DAMAGE 10, SLOWDOWN").
-4. **No answer keys on the client.** Neither before nor after answering. In casual mode, explanations and correct answers come only in the post-run review.
+4. **No answer keys on the client.** Neither before nor after answering. In practice runs, explanations and correct answers come only in the post-run review (from the practice partition).
 5. **Semantic codes, not sentences.** Results and effects use codes (`CV_DAMAGE`, `ATS_FAILED`); the client translates them.
 6. **Order is enforced.** A challenge can only start when the run is in the right state (e.g. no Final Interview while in Recruiter Screening).
 7. **Bounded client-reported events.** Anything only the browser can observe (collisions, pickups, ATS movement) has a capped effect.
@@ -60,6 +60,8 @@ Every challenge is documented with these sections:
 | `ATS_BONUS` | Starting bonus for the ATS match |
 | `FINAL_BOOST` | Large speed boost for the final sprint |
 | `BOT_ELIMINATED` | A bot leaves the race (narrative) |
+| `XP_GAIN` | "+XP" feedback after a correct answer (provisional; the authoritative XP is awarded with the result) |
+| `COMBO_UP` / `COMBO_LOST` | The streak of correct answers grows or resets |
 | `APPLICATION_REJECTED` | The run ends (with a reason code) |
 
 ## 4. A question gate, end to end (product view)
@@ -71,7 +73,7 @@ sequenceDiagram
   P->>S: Runner reached the checkpoint
   S->>S: Check run state, open challenge, pick question for the slot
   S-->>P: Prompt, options, time window (no answer key)
-  Note over P: Gate shown, slow motion, timer mirrors the server deadline
+  Note over P: Answer junction in the level, slow motion, the gate timer mirrors the server deadline
   P->>S: Selected option (once)
   S->>S: Check deadline and single use, grade, compute effects
   S-->>P: correct or incorrect, effects, updated CV Health
@@ -84,7 +86,7 @@ A "Game Mechanic Proposal" should cover:
 
 - [ ] Which hiring-process moment it represents (it must reinforce the [core fantasy](../../product/vision.md#2-core-fantasy)).
 - [ ] Every section of the anatomy above.
-- [ ] How it stays **fair in ranked** (or why it is casual-only).
+- [ ] How it stays **fair in ranked** (or why it is practice-only).
 - [ ] What the server can verify, and how client-reported events are bounded.
 - [ ] Its impact on run duration (the pacing budget).
 - [ ] Its humor, checked against the guardrails.

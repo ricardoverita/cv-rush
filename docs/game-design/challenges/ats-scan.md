@@ -14,16 +14,16 @@ Feeling: absurdity, frantic fun, "beat the machine".
 
 ## Presentation
 
-- The track turns into a 4-lane conveyor belt inside the machine.
-- **Keyword tokens** come down the lanes: technology names and buzzwords ("Synergy", "Rockstar", "Ninja", "10x").
+- The level turns into a conveyor belt inside the machine, with **four stacked levels** the runner can jump or drop between.
+- **Keyword tokens** ride along the levels: technology names and buzzwords ("Synergy", "Rockstar", "Ninja", "10x").
 - A large **ATS MATCH** meter (for example "82%") with a visible **threshold marker** (70%).
 - At the end, a stamp: **ATS APPROVED** or **APPLICATION REJECTED** (the CV goes through the shredder, in a comic way).
 
 ## Mechanic
 
-- Move between lanes to **collect relevant keywords** and **avoid irrelevant ones**.
+- Jump and drop between levels to **collect relevant keywords** and **avoid irrelevant ones**.
 - **Relevant** = keywords in the run's job posting (stack and key requirements), including catalog aliases ("Postgres" counts as PostgreSQL).
-  - Casual: the job was generated from the player's profile, so job keywords overlap with the player's stack.
+  - Practice: the job was generated from the player's profile, so job keywords overlap with the player's stack.
   - Ranked: the same rule applied to the player's own job (built from their snapshot). The **composition** (counts, density, reachability, speed curve) is fixed per category, so every player in the category faces an equivalent scan with their own keywords.
 - **Irrelevant** = other technologies and buzzword traps.
 - **Composition (initial):** 18 tokens in ~25 s, of which 11 are relevant and 7 irrelevant. Speed ramps up slightly. Generation guarantees that every relevant token is reachable (no two must-collect tokens in far-apart lanes at the same moment).
@@ -53,7 +53,7 @@ The brief suggested −10 CV per ATS mistake. This design uses −5 per irreleva
 ## Integrity
 
 - The server **generates the token stream** at the start of the scan (from the run's seed) and sends it then. Knowing the stream gives little advantage: it is a reflex task, and the relevant keywords are in the job posting anyway.
-- The client reports the player's **inputs**. The MVP validates token IDs, timing windows, duplicates and physical plausibility (no collecting tokens in two lanes at once). The **target** (V1) is for the server to **re-simulate the scan from the input log** and compute pickups itself.
+- The client reports the player's **inputs**. The MVP validates token IDs, timing windows, duplicates and physical plausibility (no collecting tokens on two levels at once). The **target** (V1) is for the server to **re-simulate the scan from the input log** and compute pickups itself.
 - A perfect script can still reach 100%. That is why the ATS weight in the score is **bounded (~10%)** and the ATS acts mainly as a gate. Perfect ATS runs combined with inhumanly fast answers are flagged for verification.
 
 ## Bots
@@ -69,7 +69,7 @@ Bots run their own scans by archetype (the "Keyword Stuffer" excels here). **2�
 
 - Tokens carry text and an icon; relevance is never signaled by color. The player must judge relevance, which is the skill.
 - Reduced motion: no camera shake, simplified shredder animation. Token speed is unchanged (fairness).
-- Tap a lane directly, or swipe, or use the keys.
+- Tap a level directly, swipe, or use the keys.
 
 ## Telemetry
 

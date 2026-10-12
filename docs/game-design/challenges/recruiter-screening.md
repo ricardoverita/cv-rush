@@ -16,7 +16,7 @@ Feeling: quick judgment, light pressure, humor.
 ## Presentation
 
 - The race slows to screening pace. The recruiter walks alongside the field, with speech bubbles (localized lines).
-- Three gates in sequence; each shows a prompt banner and four doors A–D, mirrored by answer buttons.
+- Three answer junctions in sequence: the recruiter asks from a billboard or speech bubble; the level splits into four paths A–D with option signs.
 - After each answer, the recruiter reacts with a short line (correct: "Love it!"; wrong: "Hmm, interesting…"; timeout: "Hello? Are you still there?").
 
 ## Content (slots)
@@ -27,7 +27,7 @@ Feeling: quick judgment, light pressure, humor.
 | R2 | Job memory or recruiter | Generated from the job posting | 2 | 10 s |
 | R3 | Recruiter / salary (graded) | Salary template using the job's salary range | 2 | 10 s |
 
-Casual: R1 or R2 can be replaced by a **humor question** (at most 1 per run, about 30% of runs; low stakes). Ranked: never.
+Practice: R1 or R2 can be replaced by a **humor question** (at most 1 per run, about 30% of runs; low stakes). Ranked: never.
 
 ### Example job-memory prompts
 
@@ -57,7 +57,7 @@ Generation: the aligned option is a value inside the range; undersell ≈ 60% of
 
 ## Input
 
-Steer into a door, tap an answer button, or press 1–4. See [gates](../run-structure.md#4-gates-how-questions-appear-in-the-world).
+Jump or drop into a path, tap a path sign, or press 1–4. See [answer junctions](../run-structure.md#4-answer-junctions-questions-inside-the-world).
 
 ## Resolution and effects
 
@@ -84,4 +84,4 @@ The stage cannot end the run by itself, except through CV Health reaching 0.
 
 ## Tunables
 
-Window per question, damage per wrong answer, ATS bonus per correct answer, speed boost and slowdown magnitudes, humor probability (casual), number of bots eliminated, salary option generation ratios.
+Window per question, damage per wrong answer, ATS bonus per correct answer, speed boost and slowdown magnitudes, humor probability (practice), number of bots eliminated, salary option generation ratios.

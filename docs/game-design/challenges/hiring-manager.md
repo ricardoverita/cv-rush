@@ -20,7 +20,7 @@ Feeling: focused pressure, competence.
 
 ## Content (slots)
 
-| Slot | Content | Ranked (by band: Junior / Mid / Senior+) | Casual (by exact seniority) | Window |
+| Slot | Content | Ranked (by band: Junior / Mid / Senior+) | Practice (by exact seniority) | Window |
 |---|---|---|---|---|
 | H1 | **Stack**: one of the player's technologies | Calibrated stack family at level 1 / 2 / 3 | The seniority's lower level | 15 s |
 | H2 | **Role (track) fundamentals** | The category's shared daily family at level 2 / 3 / 3 | The seniority's middle level | 15 s |

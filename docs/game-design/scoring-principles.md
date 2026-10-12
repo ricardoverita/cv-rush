@@ -1,6 +1,6 @@
 # Scoring principles (product level)
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 3)**
 >
 > This document defines **what the score rewards and why**. The exact formula, its configuration and its versioning are designed in Part 2 (Scoring Engine + ADR "score calculation server-side").
 
@@ -76,6 +76,10 @@ Reasons: totals never go negative, breakdowns stay readable, and the cost of a m
 
 The public **"How scoring works"** page (es/en) lists the components, their approximate weights, what improves each one, and what the score does **not** mean: it is not a measure of professional ability. It does **not** publish verification thresholds or anti-cheat heuristics.
 
-## 8. Tunables
+## 8. Score and XP
+
+The score measures **one run**; XP measures **progress over time**. XP is derived from the result (completion + score-based XP + bonuses) by the progression rules in [progression](progression.md#2-xp). Rankings use scores; levels use XP. In-run "+XP" popups after correct answers are feedback only; the authoritative XP comes with the result.
+
+## 9. Tunables
 
 Maximum score, component weights, slot difficulty weights, speed bucket boundaries, position table, graded option percentages, streak scaling. Changes to any of these create a **new scoring version**.

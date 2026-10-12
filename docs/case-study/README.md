@@ -27,10 +27,12 @@ Rule: **write it when it happens.** Retroactive notes lose the interesting parts
 | 05-server-authoritative.md | The browser as an untrusted terminal | Part 2 / S2 |
 | 06-anti-cheat.md | Integrity with fully public source code | Part 2+ |
 | 07-i18n.md | i18n from the domain: semantic codes, localized questions | Part 2 / S1 |
-| 08-leaderboards.md | UTC days, verification, champions | S6–S7 |
+| 08-leaderboards.md | UTC days, categories, verification, champions | Slices |
 | 09-open-source.md | Making the project contributable | Part 3 |
 | 10-launch.md | Launch and first metrics | Launch |
 | 11-lessons-learned.md | What we would do differently | Ongoing |
+| 12-developer-network.md | From a game to a developer network: provisional identity, claiming, XP and progression | Part 2 / V1 |
+| 13-ai-content-pipeline.md | AI-generated question pools with validation instead of a runtime LLM | Part 2 / slices |
 
 ## Entry template (for the decision log)
 

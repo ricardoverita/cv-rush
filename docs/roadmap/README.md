@@ -1,81 +1,92 @@
 # Roadmap
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
 >
-> No dates on purpose. Phases are ordered by dependency and by what we learn from players. GitHub milestones will mirror these phases once the repository is public.
+> No dates on purpose. Phases follow the [product evolution](../product/product-evolution.md): **Game → Developer Network → Jobs → Recruiter Platform**. Each stage starts only when the previous one works. GitHub milestones will mirror these phases once the repository is public.
 
-## How to read this
+## Overview
 
-- **MVP**: the smallest public product that tests the core hypothesis. Exact scope: [MVP scope](../product/mvp-scope.md).
-- **V1**: improvements we expect to need soon after launch, prioritized by data.
-- **V2**: bigger bets that need an audience, content volume or identity first.
-- **Ideas**: interesting, unscheduled.
-- **Deliberately postponed**: things from the original brief that we chose *not* to do yet, with the reason and the trigger to revisit.
+| Phase | Product stage | Theme |
+|---|---|---|
+| **MVP** | Stage 1 · Game | A fun runner played as your profile, with persistent progress |
+| **V1** | Stage 1 polish → Stage 2 begins | Accounts and claiming, public developer pages, richer rankings, curated content |
+| **V2** | Stage 2 complete | A developer network worth keeping: seasons, badges, Open to Work, community content at scale |
+| **V3** | Stage 3 · Jobs | Companies, real job postings, Play to Apply, applications |
+| **Later** | Stage 4 · Recruiter Platform | Recruiter accounts, developer search over discoverable profiles, applicant views |
 
 ## MVP (summary)
 
-Landing (SSR, es/en) · profile-first onboarding (name, seniority, role, stack) with server-side validation and a frozen snapshot per run · Casual and Ranked modes · personal job generation and the Daily Company · 9 official ranked categories (Frontend, Backend, Fullstack × Junior, Mid, Senior+) · a 2D runner (Phaser) with 4 stages: Recruiter Screening (incl. a graded salary question), ATS Scan, Hiring Manager, Final Interview · bots · CV Health · server-authoritative scoring · results and failure screens · public profile opt-in + LinkedIn · category leaderboards with competing context, Daily Champion, Weekly Top 7 and Candidate of the Week per category, a cross-category spotlight · share pages and cards · question reports · accessibility basics · first-party analytics · moderation commands · open-source foundations.
+Landing · **provisional developer identity** (name, seniority, role, stack, email and/or LinkedIn, privacy consent) · a Job Challenge generated for the frozen profile snapshot · a **2D side-scrolling runner** with Recruiter, ATS, Hiring Manager and Final Interview · 5–10 in-world A/B/C/D questions per run from **AI-generated, validated pools** · bots · CV Health · server-computed score, **XP and CV Rush Level** · **history** and **last active** · **ranked (3/day) and practice runs** · category rankings (daily, weekly) with the Daily Champion per category, Season 0 (Beta) · optional public LinkedIn · sharing · a **private "My profile" page** with initial stats · i18n es/en · accessibility basics · first-party analytics · moderation commands · open-source foundations.
 
-## V1
+Exact scope: [MVP scope](../product/mvp-scope.md).
 
-| Item | Why |
-|---|---|
-| **Salary Negotiation stage** (`salaryNegotiation`) | Deepen the most relatable joke into a mechanic |
-| **Ghosting** challenge or hazard (`ghostingChallenge`) | A signature hiring-process moment |
-| **Optional login** (GitHub, Google) | Cross-device identity, verified champions, more attempts protection |
-| **Admin panel v1** | Questions, reports, runs, moderation, champions, through a UI instead of commands |
-| **Question stats dashboard** | Balancing with data (expected vs observed difficulty) |
-| **Public champion pages** (opt-in, indexable) | SEO and showcase value |
-| **"Challenge a friend"** links | Social replay: the same profile and company, equivalent questions |
-| **More ranked categories** (Platform official; then Mobile, Quality, Data, Security, Architecture) | Content-gated activation, helped by community packs |
-| **Experimental normalized global view** (percentile within category) | A cross-category "top performers" view, never a champion title |
-| **Server-side re-simulation** of ATS and collisions from input logs | Tighter integrity for client-side mechanics |
-| **Private submission path** for competitive questions | Scale the competitive pool with trusted contributors |
-| **Personal stats page** | Mastery loop |
-| **Light achievements** (non-competitive) | Collection loop |
-| **New maps or themes** (startup, bank, big tech) | Variety |
-| **Music and sound polish** | Game feel |
-| **PR preview deployments** | Easier review of UI, mechanics and translations |
-| **Casual "personal track" leaderboards** (if validated) | Recognition for casual play, separate from champions |
-
-## V2
+## V1 (Stage 1 polish → Stage 2 begins)
 
 | Item | Why |
 |---|---|
-| **AI-assisted question pipeline** (offline, structured output, validation, human review) | Scale content without a runtime LLM dependency |
-| **Seasons** | Long-term competition and content drops without losing history |
-| **Skill Passport** (opt-in) | Long-term player identity; "CV Rush results, not a certification" |
-| **Sponsored challenges** under public integrity rules | Sustainability |
-| **Public read-only API** | Leaderboards, champions, aggregated stats |
-| **Talent insights** (aggregated, anonymized reports) | "State of the Stack" style content |
-| **More languages** | Reach (e.g. Portuguese) |
-| **Ghost runs** of real top players | Competitive replay against real timelines |
-| **Recruiter challenges exploration** (opt-in candidates) | Only after the game is loved; see [future platform](../product/future-platform.md) |
+| **Accounts** (email verification, GitHub, Google) and **claiming provisional profiles**, with merges | Turn provisional progress into a durable identity ([identity and accounts](../product/identity-and-accounts.md)) |
+| **Public developer pages** (`/developers/{slug}`, per-section toggles, indexable once claimed) | The network's core asset |
+| Weekly Top 7 and Candidate of the Week (per category) | Weekly narrative |
+| Technology rankings; XP/level rankings | Progression features |
+| Experimental normalized global view | Cross-category "top performers", never a title |
+| **Curated content**: human review of AI pools, first community question packs (open, practice), calibration tooling | Quality and gradual replacement of AI content |
+| Category cooldown | Anti-hopping |
+| More ranked categories (Platform official, then practice-only tracks) | Growth, content-gated |
+| Salary Negotiation stage, Ghosting | Signature hiring-process moments |
+| Server-side re-simulation of ATS and collisions from input logs | Integrity |
+| Admin panel v1 (content, reports, runs, moderation, titles) | Operations |
+| "Challenge a friend" links | Social replay with the same company and category |
+| Music and sound polish; new level themes (startup, bank, big tech) | Game feel and variety |
+| PR preview deployments | Contributor experience |
+
+## V2 (Stage 2 complete)
+
+| Item | Why |
+|---|---|
+| **Seasons** with season XP and resets (history preserved) | Long-term competition |
+| **Badges**, portfolio link, voluntary **Open to Work** | Profile richness |
+| Public history and technology stats sections (opt-in) | Visibility |
+| Community question packs at scale; a curated competitive pool with families and calibration | Content quality and contributor community |
+| Public read-only API (rankings, public profiles, aggregates) | Ecosystem |
+| Aggregated, anonymized talent insights ("State of the Stack") | Community value |
+| More languages (e.g. Portuguese) | Reach |
+| Ghost runs of real top players | Competitive replay |
+
+## V3 (Stage 3 · Jobs)
+
+| Item | Why |
+|---|---|
+| `Company` (real) and verified company profiles | Trust |
+| `JobPosting` published by companies | Real jobs |
+| **Play to Apply**: a Job Challenge derived from a real posting | The game as an application path |
+| `Application` with explicit per-application consent; the developer chooses what's shared | Voluntary applications |
+| **Legal review** (employment, anti-discrimination, automated decisions, AI regulation) | A hard prerequisite |
+
+## Later (Stage 4 · Recruiter Platform)
+
+Company accounts · recruiter accounts · developer search over **discoverable** public profiles (separate consent) · applicant dashboards · opt-in messaging · possibly paid plans. Guardrails in [product evolution](../product/product-evolution.md#4-guardrails-apply-to-every-stage).
 
 ## Ideas (unscheduled)
 
-Real-time multiplayer races · company or university leagues · event mode for meetups and hackathons · a streamer mode · a seasonal "Hiring Freeze" event · cosmetic skins for the CV · "Hall of Fame" of all-time champions · Technical Assignment, Culture Fit and Referral Boost challenges.
+Real-time multiplayer races · company or university leagues · an event mode for meetups and hackathons · a streamer mode · a seasonal "Hiring Freeze" event · cosmetic CV skins · a Hall of Fame · Technical Assignment, Culture Fit and Referral Boost challenges · an Elo-like long-term rating.
 
 ## Deliberately postponed
 
 | Postponed | Why not now | Revisit when |
 |---|---|---|
-| AI-generated questions | Cost, latency, trust; needs a validation pipeline | Content coverage gaps are measured and the review capacity exists |
-| Login | Friction for the first run; not needed to validate fun | Champion disputes, cross-device demand, abuse through many identities |
-| Salary Negotiation stage | The pacing budget; the graded question delivers the joke | MVP playtests show the run has room and players love the salary question |
-| Ghosting and other hazards | Scope | The core loop is validated |
-| Splitting bands or tracks (e.g. Senior+ → Senior \| Lead+) | Small fields at launch | The median daily field of a category stays above ~200 for 4 weeks |
-| A global ranking across categories | Raw scores are not comparable; normalization needs data | Several categories regularly reach the minimum field (then: experimental V1 view) |
-| Engineering Manager, Product Manager, UX/UI Designer | They need non-technical content of a different kind | A content plan and contributors for those roles |
-| Skill rating (Elo-like) | Needs identity, volume and calibrated content | After seasons and login |
-| Seasons | Needs history worth resetting | After a few months of data |
-| Skill Passport | Needs identity and enough runs per player | After login |
-| Recruiter features | "First a good game, later a talent platform" | Clear player demand and an ethical framework in place |
-| Sponsors page | Nothing to sponsor yet | Meaningful traffic or community |
-| Achievements, streaks, skins | Not needed to validate the hypothesis | Retention data suggests they help |
-| Public API | No consumers yet | External interest |
-| Real multiplayer | Huge complexity; bots deliver the feeling | Strong demand and a stable core |
-| Native apps | The web reaches everyone through links | Never, unless distribution data says otherwise |
+| Accounts and claiming | Friction for the first run; a provisional identity covers the MVP | Retention proves the profile is worth keeping (V1) |
+| Public developer pages | Needs claimed identities to be trustworthy and indexable | With accounts (V1) |
+| Hand-written question banks at scale | Too slow for a first version | Once AI pools prove the system; curation replaces them gradually |
+| Weekly Top 7, Candidate of the Week | Simplify the MVP | V1 |
+| Seasons (resets, season XP) | Needs history worth resetting | V2 (Season 0 tagging from day one) |
+| Category cooldown | The daily lock covers the main risk | V1 |
+| Splitting bands or tracks | Small fields at launch | The median daily field of a category stays above ~200 for 4 weeks |
+| A global competitive ranking | Raw scores are not comparable | Data supports normalization (V1, experimental) |
+| Jobs, applications, companies | "First a fun developer game" | Stage 2 gates are met |
+| Recruiter features, messaging, paid plans | Needs a network and a legal framework first | Stage 3 works |
+| Engineering Manager, Product Manager, UX/UI Designer roles | Need non-technical content | A content plan for those roles |
+| Real-time multiplayer | Huge complexity; bots deliver the feeling | Strong demand and a stable core |
+| Native apps | Links reach everyone on the web | Distribution data says otherwise |
 
 ## Non-goals
 

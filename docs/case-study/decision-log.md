@@ -30,7 +30,7 @@
 - **Decision:** Docker is the official documented path for Postgres and Redis. Documentation work (Parts 1–2) does not block on Docker being installed.
 
 ### D-007 · Two modes: Casual and Ranked
-- **Status:** Accepted; concrete design revised by D-028–D-033 (both modes are profile-based)
+- **Status:** Accepted; reframed by D-043 as **ranked runs and practice runs**, both profile-based
 - **Decision:** Casual / Personalized (personalization and fun) and Ranked / Daily Challenge (fairness). Self-declared seniority must not affect ranked difficulty.
 
 ### D-008 · Community packs vs competitive pool
@@ -38,7 +38,7 @@
 - **Decision:** open Community Question Packs for practice, casual, learning, contributors and tests; a private Competitive Question Pool for ranked, plus templates, job-derived questions and (later) validated AI.
 
 ### D-009 · "First a good game, later a talent platform"
-- **Status:** Accepted
+- **Status:** **Superseded** by D-038 (staged evolution: Game → Developer Network → Jobs → Recruiter Platform)
 - **Decision:** keep future analytics, recruiter features, Skill Passport and Seasons possible, without building them or polluting the MVP. Privacy by design.
 
 ## 2026-10-12 · Part 1: product and game design proposals
@@ -86,11 +86,11 @@
 - **Decision:** verifiable components carry ~80% of the weight; client-reported ones are bounded. Race time is computed by the server.
 
 ### D-020 · Ranked post-run review without competitive answer keys
-- **Status:** Proposed
+- **Status:** Proposed, **amended** by D-045: practice runs reveal answers from a separate practice partition
 - **Decision:** ranked reviews show results and topics for competitive questions; answer keys stay private until retirement. Job-derived explanations are shown.
 
 ### D-021 · Retired competitive questions graduate to community packs
-- **Status:** Proposed
+- **Status:** Deferred: applies to the later curated content system (D-045)
 
 ### D-022 · Bots: one daily field in ranked; no rubber-banding
 - **Status:** Proposed, **amended** by D-031: one daily bot field **per category**
@@ -100,16 +100,16 @@
 - **Status:** Proposed
 
 ### D-024 · LinkedIn and public profile only after delivered ranked runs; off by default; management link
-- **Status:** Proposed
+- **Status:** **Superseded** by D-041 (email and/or LinkedIn at onboarding; visibility private by default)
 
 ### D-025 · Portrait-first 4-lane runner; answers as doors with mirrored buttons
-- **Status:** Proposed (the camera/perspective is validated by a prototype in the Phaser slice)
+- **Status:** **Superseded** by D-048 (side-scrolling platformer with in-world answer junctions)
 
 ### D-026 · MVP content scope: 4 core tracks, other roles in early access
-- **Status:** Proposed, **amended** by D-029: 9 official ranked categories; 4 tracks with full casual coverage
+- **Status:** **Superseded** by D-045 (AI-generated pools instead of hand-written volume targets)
 
 ### D-027 · North Star: Weekly Delivering Players; mission metric: profile discoveries
-- **Status:** Proposed
+- **Status:** **Superseded** by D-047 (Weekly Active Developers + retention)
 
 ## 2026-10-12 · Part 1, revision 2: profile-first ranked (after maintainer review)
 
@@ -125,11 +125,11 @@
 - **Alternatives:** 7 bands (empty boards), 2 bands (unfair), 4 bands (a future split); one track per role; super-families; dynamic pooling.
 
 ### D-030 · Profile validation, snapshot and ranked lock
-- **Status:** Proposed
+- **Status:** Proposed; the **category cooldown is deferred to V1** (D-043); validation, snapshot and daily lock stay
 - **Decision:** server validation (role, seniority, technologies, role compatibility rules, 1–12 technologies). An immutable snapshot per run; later requests carry no profile. Ranked profile locked for the UTC day after the first ranked run; ranked track or band changes at most every 7 days (tunable).
 
 ### D-031 · Daily Challenge = Daily Company + Category Blueprint + personal job
-- **Status:** Proposed
+- **Status:** Proposed, **amended** by D-039: the Daily Challenge is a feature on top of Job Challenges, not the center
 - **Decision:** one fictional Daily Company with a domain theme per UTC day, hiring across every track and level (secret until 00:00 UTC). A daily blueprint per category (band difficulty curve, shared families, ATS composition, bot field). Each player's job is generated on demand from their snapshot.
 - **Alternatives:** a global daily job (rejected); a curated daily job per category (ignores the individual stack, heavy curation); on-demand generation only (no daily element, weaker fairness).
 
@@ -142,7 +142,7 @@
 - **Decision:** stack-influenced slots ≤ ~35% of answer points (≈ 16% of the total score) in Senior+, less in lower bands; per-technology calibration targets; outlier families excluded.
 
 ### D-034 · Category-first leaderboards; no global ranking in the MVP
-- **Status:** Proposed
+- **Status:** Proposed, **amended** by D-046: MVP has daily and weekly category rankings + Daily Champion; Weekly Top 7 and Candidate of the Week move to V1
 - **Decision:** category daily leaderboards; Daily Champion, Weekly Top 7 and Candidate of the Week per category; a minimum field of 3 runs for titles; a cross-category spotlight (not a ranking); a normalized global view as a V1 experiment at most.
 - **Alternatives:** a raw global ranking (never), a normalized index (later), a long-term rating (V2+).
 
@@ -157,3 +157,53 @@
 ### D-037 · MVP role catalog: 13 roles
 - **Status:** Proposed (follows the maintainer's revised list)
 - **Decision:** Engineering Manager, Product Manager and UX/UI Designer leave the MVP catalog (they need non-technical content); Software Architect is restricted to Senior and above (proposal).
+
+## 2026-10-12 · Part 1, revision 3: developer network (after the second maintainer review)
+
+### D-038 · Staged product evolution
+- **Status:** Accepted (maintainer direction)
+- **Decision:** Game → Developer Network → Jobs → Recruiter Platform. "First build a fun developer game. Then a developer network. Then jobs. Then recruiter features." Each stage has gates. See [product evolution](../product/product-evolution.md).
+
+### D-039 · The domain is centered on the Developer and their progress
+- **Status:** Accepted (direction); details Proposed
+- **Decision:** Developer → profile → game session → game result → XP → history → rankings; later job → job challenge → application → recruiter. The Daily Challenge (Daily Company) is a feature; rankings, history and stats are projections over immutable results. **Job Challenge is source-agnostic** (generated, daily, later a real job posting). See [domain concepts](../product/domain-concepts.md).
+
+### D-040 · Provisional Developer identity before accounts
+- **Status:** Accepted (direction); details Proposed
+- **Decision:** a server-generated Developer ID created at onboarding; recognised by a device credential and a management link; accounts attach later. See [identity and accounts](../product/identity-and-accounts.md).
+
+### D-041 · Email and/or LinkedIn at onboarding, as unverified claim identifiers
+- **Status:** Accepted (direction); "at least one of the two" Proposed
+- **Decision:** `contactEmail` (private, always; never in public surfaces, analytics or logs), `linkedinUsername` (public only with consent) and `profileVisibility` (private by default) are separate. Both identifiers carry a verification status (`unverified` in the MVP). This supersedes the earlier non-goal of collecting no email.
+
+### D-042 · Account claim and merge strategy
+- **Status:** Proposed
+- **Decision:** claims require proof of control (verified email, provider email, device credential, management link). No merges on unverified data. Several provisional Developers can merge into one: results re-associated, XP ledger entries moved (awarded once per result), projections rebuilt, one ranking entry per period, aliases for old links. "This isn't me" detaches a mismatched email.
+
+### D-043 · Run types: ranked and practice
+- **Status:** Proposed
+- **Decision:** ranked = the first 3 runs per UTC day (category blueprint, rankings, daily profile lock); practice = unlimited (exact-seniority difficulty, explanations, XP). The category cooldown moves to V1.
+
+### D-044 · Progression model
+- **Status:** Proposed
+- **Decision:** Game Score ≠ XP ≠ CV Rush Level ≠ declared seniority. An append-only XP ledger; XP = completion + score/50 + bonuses; diminishing returns after 10 runs/day; level step = 300 + 25·k. History with frozen context; skill stats as gameplay statistics with minimum samples and strict wording; `lastActiveAt` shown coarsely. See [progression](../game-design/progression.md).
+
+### D-045 · MVP questions: AI-generated, validated, stored pools
+- **Status:** Accepted (direction); pipeline details Proposed
+- **Decision:** ~20 questions per context (technology × level, track fundamentals × level, seniority × band); structured output; schema and rule validation, dedupe, independent cross-check; versioned storage in the private database; ranked and practice partitions; asynchronous refills on exposure; never on the request path; gradual replacement by curated and community content. Rankings run as **Season 0 (Beta)**.
+
+### D-046 · Rankings as a progression feature
+- **Status:** Proposed
+- **Decision:** MVP: category daily and weekly rankings, Daily Champion per category (+250 XP), Season 0 tagging. V1: Weekly Top 7, Candidate of the Week, technology and XP rankings, an experimental normalized global view. V2: Seasons with resets and season XP.
+
+### D-047 · Metrics re-centered on developers
+- **Status:** Proposed
+- **Decision:** North Star = Weekly Active Developers; health = 4-week retention; mission = profile discoveries; network readiness = developers with an email and with public profiles. Progression events (`xp_awarded`, `level_up`…) and no personal data in analytics.
+
+### D-048 · Side-scrolling platformer with in-world answer junctions
+- **Status:** Accepted (direction); details Proposed
+- **Decision:** auto-run, jump, drop, choose paths, boosts; questions delivered by in-world characters; the level splits into four paths A–D with option signs; the runner physically enters the answer (tapping a sign or pressing 1–4 moves the runner there). Original visual identity: no Nintendo/Mario assets, characters, blocks, sounds or levels.
+
+### D-049 · Private profile page in the MVP; public developer pages designed for Stage 2
+- **Status:** Proposed
+- **Decision:** "My profile" (private) ships in the MVP. `/developers/{slug}` with per-section toggles comes with accounts; provisional public pages are not indexed by search engines.

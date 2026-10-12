@@ -1,8 +1,8 @@
 # Competitive identity: compete as who you are
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 2)**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 3)**
 >
-> **Central principle of the product.** It replaces the first ranked design (one global daily job for everyone), which forced every player into the same position regardless of their profile. See the [decision log](../case-study/decision-log.md) (D-028 onwards) and the [case-study notes](../case-study/01-product-definition.md#11-revision-competing-as-who-you-are).
+> **Central principle of competition.** It replaces the first ranked design (one global daily job for everyone), which forced every player into the same position regardless of their profile. Since revision 3, the profile also belongs to a persistent **Developer** (see [identity and accounts](identity-and-accounts.md)) and every result feeds their progression (see [progression](../game-design/progression.md)). See the [decision log](../case-study/decision-log.md) (D-028 onwards) and the [case-study notes](../case-study/01-product-definition.md#11-revision-competing-as-who-you-are).
 
 ## 1. The principle
 
@@ -47,12 +47,12 @@ A **track** groups roles that are fairly compared with the same kind of content.
 | **Backend** | Backend Developer | **Official** |
 | **Fullstack** | Fullstack Developer | **Official** |
 | **Platform** (DevOps & Cloud) | DevOps Engineer, Cloud Engineer | Preview → official when content is ready |
-| Mobile | Mobile Developer | Casual only |
-| Quality | QA Engineer, QA Automation Engineer | Casual only |
-| Data Engineering | Data Engineer | Casual only |
-| Data Science & ML | Data Scientist, Machine Learning Engineer | Casual only |
-| Security | Cybersecurity Engineer | Casual only |
-| Architecture | Software Architect (Senior and above, proposed) | Casual only |
+| Mobile | Mobile Developer | Practice only |
+| Quality | QA Engineer, QA Automation Engineer | Practice only |
+| Data Engineering | Data Engineer | Practice only |
+| Data Science & ML | Data Scientist, Machine Learning Engineer | Practice only |
+| Security | Cybersecurity Engineer | Practice only |
+| Architecture | Software Architect (Senior and above, proposed) | Practice only |
 
 **Why group these roles:** DevOps and Cloud engineers share most of their content (containers, CI/CD, IaC, cloud services), and so do QA and QA Automation. Data Engineering and Data Science are kept apart because pipelines and statistics are different skills.
 
@@ -99,13 +99,13 @@ Categories have a lifecycle, managed as configuration:
 
 ```mermaid
 stateDiagram-v2
-  [*] --> CasualOnly: role exists, content thin
-  CasualOnly --> RankedPreview: competitive content threshold met
+  [*] --> PracticeOnly: role exists, pools thin
+  PracticeOnly --> RankedPreview: pool size and quality threshold met
   RankedPreview --> Ranked: calibration data sufficient
   Ranked --> Ranked: split or merge by new ruleset version
 ```
 
-- **Casual only:** playable in casual; the ranked option shows "Ranked coming soon for Mobile — help us unlock it", linking to the contribution guide. The content gap becomes a contributor funnel.
+- **Practice only:** playable in practice runs (with XP, history and stats); the ranked option shows "Ranked coming soon for Mobile — help us unlock it", linking to the contribution guide. The content gap becomes a contributor funnel.
 - **Ranked preview:** ranked runs are possible, with a leaderboard labeled **Preview**: no champions, no Weekly Top 7. The runs calibrate question difficulty.
 - **Ranked (official):** leaderboards, Daily Champion, Weekly Top 7, Candidate of the Week.
 - **Split or merge:** a band can be split (Senior+ → Senior | Lead+) or tracks split (Platform → DevOps | Cloud) when fields are consistently large, or merged if dead. Each change is a new **ruleset version**; history keeps the categories that existed when results were achieved.
@@ -125,7 +125,8 @@ The client *asks* to play as a profile. The server **validates** it before creat
 | Technologies | Exist and are active; deduplicated; **1–12** selected |
 | Stack compatibility | Each role defines **core** technology categories (at least one technology required from each) and **allowed** categories (anything else is rejected). Fullstack: core = Frontend + Backend; allowed = Databases, Caching/Search, Messaging, Cloud, Infrastructure, Testing. Frontend: core = Frontend (web). Mobile: core = Mobile. |
 | Display name | Moderation rules (see [privacy](public-profile-and-privacy.md#6-display-names-and-moderation)) |
-| Mode | Ranked requires the category to be in preview or official, attempts left today, and a profile consistent with today's ranked lock (section 6) |
+| Run type | Ranked requires the category to be in preview or official, ranked runs left today, and a profile consistent with today's ranked lock (section 6) |
+| Claim identifiers (at developer creation) | At least one of email (format check, stored unverified and private) or LinkedIn (normalized `/in/` username, stored unverified). See [privacy](public-profile-and-privacy.md). |
 
 Errors use semantic codes (`PROFILE_ROLE_UNKNOWN`, `PROFILE_TECHNOLOGY_INCOMPATIBLE`, `RANKED_PROFILE_LOCKED`…), translated by the client.
 
@@ -140,7 +141,7 @@ When the server creates a run, it stores an **immutable snapshot** of the compet
 | Role + track | Fullstack Developer · Fullstack |
 | Category | Fullstack · Senior+ |
 | Technologies (ordered) | Node.js, NestJS, PHP, React, PostgreSQL, Redis, Kafka, Docker |
-| Mode | Ranked |
+| Run type | Ranked |
 | Locale | es |
 | Versions | Catalog, ruleset, blueprint, scoring |
 
@@ -155,8 +156,8 @@ Rules:
 
 To prevent category hopping (farming several categories in a day) and stack shopping:
 
-- **Daily lock:** the first ranked run of a UTC day locks the player's ranked profile (role, seniority, stack) **until the end of that day**. The 3 daily ranked attempts all use the same category and stack. Casual stays completely free.
-- **Category cooldown (proposal):** changing track or band for ranked is allowed at most **once every 7 days**. Real promotions are fine; hopping between categories every day is not. A tunable.
+- **Daily lock:** the first ranked run of a UTC day locks the player's ranked profile (role, seniority, stack) **until the end of that day**. The 3 daily ranked runs all use the same category and stack. Practice runs stay completely free.
+- **Category cooldown (V1, proposal):** changing track or band for ranked at most **once every 7 days**. Real promotions are fine; hopping between categories every day is not. Deferred from the MVP to keep it simple; the daily lock covers the main risk.
 
 The profile screen states it before a ranked run: "You'll compete today as **Senior Fullstack Developer** · Node.js · PHP · React… This ranked profile is locked until 00:00 UTC (19:00 your time)."
 
@@ -172,12 +173,12 @@ The competing context travels with every result:
 
 | Surface | What it shows |
 |---|---|
-| Results screen | The sentence above, the stack, the category and provisional rank ("#1 of 41 today in Fullstack · Senior+"), ATS, Recruiter, Technical, CV Health, position |
+| Results screen | The sentence above, the stack, the category and provisional rank ("#1 of 41 today in Fullstack · Senior+"), ATS, Recruiter, Technical, CV Health, position, XP earned and the CV Rush Level |
 | Category leaderboard row | Name, exact seniority + role, stack chips, score, LinkedIn |
 | Daily Champion, Weekly Top 7, Candidate of the Week | The same context |
 | Share card and share page | The same context (respecting public or anonymous status) |
-| Personal history | Every past run with its snapshot context |
-| Public profile and future seasons, Skill Passport | Results always shown with their context |
+| History (My profile) | Every past run with its snapshot context, company, result and XP |
+| Public developer page (Stage 2), seasons, applications (Stage 3) | Results always shown with their context |
 
 Display rules:
 

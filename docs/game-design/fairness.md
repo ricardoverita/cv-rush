@@ -1,6 +1,6 @@
 # Fairness strategy
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 2)**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 3)**
 >
 > The *why* is in [competitive identity](../product/competitive-identity.md) and [game modes](../product/game-modes.md). This document explains **how ranked fairness holds within a category** and how we monitor it.
 
@@ -8,7 +8,7 @@
 
 > Two players **in the same category** (track × band), with the same skill, on the same day, should get approximately the same score, whatever their device, their language, or the technologies they chose. **Players in different categories are not compared.**
 
-Casual mode optimizes for personalization. Fairness there means "no frustrating unfairness", not comparability.
+Practice runs optimize for personalization. Fairness there means "no frustrating unfairness", not comparability.
 
 ## 2. Sources of unfairness
 
@@ -63,6 +63,8 @@ Residual risk: accepted and monitored (e.g. score distributions per band; Junior
 
 ## 4. Content equivalence
 
+> **MVP note (revision 3):** question pools are AI-generated, validated and cross-checked, with ~20 questions per context, and rankings run as **Season 0 (Beta)**. Shared slots draw **the same daily selection** of a pool for everyone in the category. The full family and calibration rules below are the **target** for curated content, applied progressively as data and curation grow.
+
 ### Shared daily families (H2 track fundamentals, H3 seniority, F1 scenario)
 
 The same family for everyone in the category (or band) that day. To be eligible for ranked, a family must have:
@@ -86,7 +88,7 @@ Different players get different technologies at the **same difficulty level**. E
 
 ### New content
 
-New variants and families start in casual, or in a **ranked preview** category, to gather calibration data before they count for titles. The exact mechanism is in Part 2.
+New questions start in practice partitions, or in a **ranked preview** category, to gather calibration data before they count for titles. The exact mechanism is in Part 2.
 
 ### Job-derived questions
 
@@ -105,7 +107,7 @@ These are equivalent by construction: the same templates for everyone, applied t
 | Job-derived question (which fact) | ✅ | All facts equally visible |
 | Option order | ✅ | Correct position balanced across the run |
 | Question order within a stage | ✅ | Only among equal-difficulty slots |
-| ATS stream | ✅ | Fixed counts, density, reachability, maximum lane-change demand |
+| ATS stream | ✅ | Fixed counts, density, reachability, maximum level-change demand |
 | Obstacle layout | ✅ | Equivalent density; never during gates |
 | Bot field | ❌ The same daily field per category | — |
 | Seed | ✅ Per run, server-side only | Never sent to the client |
@@ -118,7 +120,7 @@ These are equivalent by construction: the same templates for everyone, applied t
 
 ## 7. Device
 
-- Answering by **tap** or **keys 1–4** is as fast as steering into a door.
+- Answering by **tapping a path sign** or **keys 1–4** is as fast as platforming into the path.
 - Obstacle and pickup effects are bounded.
 - Monitored: score distribution by device class per category.
 
@@ -131,11 +133,11 @@ These are equivalent by construction: the same templates for everyone, applied t
 
 - Ranked timers are identical within a category and generous for comfortable reading.
 - Reduced motion, color-independent cues and direct answer input change presentation and input methods only.
-- "Relaxed timers" exist **only in casual**.
+- "Relaxed timers" exist **only in practice runs**.
 
 ## 10. Cross-day and cross-category
 
-- **Within a category, across days** (Candidate of the Week): the blueprint is identical every day; only themed families vary. Monitored, with the field-relative index as the fallback (see [leaderboards](../product/leaderboards.md#7-candidate-of-the-week-per-category)).
+- **Within a category, across days** (Candidate of the Week): the blueprint is identical every day; only themed families vary. Monitored, with the field-relative index as the fallback (see [leaderboards](../product/leaderboards.md#7-candidate-of-the-week-per-category--v1)).
 - **Across categories:** **no comparison** in the MVP. The spotlight shows champions side by side, never ranked against each other. A normalized global view (percentile within category) is an experimental V1 option (see [leaderboards › global comparison](../product/leaderboards.md#3-global-comparison-alternatives)).
 
 ## 11. Monitoring

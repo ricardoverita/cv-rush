@@ -1,10 +1,10 @@
 # Job posting generation
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: Job Challenges)**
 
 ## 1. Role of the job posting
 
-The job posting does two jobs:
+Every run is a **Job Challenge**: a job posting plus the challenge blueprint (see [Job Challenges](../product/game-modes.md#1-every-run-is-a-job-challenge-for-your-profile)). The job posting does two jobs:
 
 1. **Narrative briefing:** "this is *my* job". It is always generated **for the player's frozen profile snapshot** (seniority, role, stack), in both modes. Nobody plays someone else's job.
 2. **Source of truth for the run:** job-memory questions, recruiter questions, the salary question, ATS relevance and Final Interview scenarios are all derived from it.
@@ -31,7 +31,7 @@ So it must be **coherent with the profile, readable in 30–45 seconds, and rich
 
 ## 3. Generation from the profile snapshot (both modes)
 
-**Inputs:** the snapshot (exact seniority, role, track, stack), the mode, the target difficulty (band curve in ranked, exact seniority in casual), the locale, the seeds, and in ranked the **Daily Company**.
+**Inputs:** the snapshot (exact seniority, role, track, stack), the mode, the target difficulty (band curve in ranked, exact seniority in practice), the locale, the seeds, and in ranked the **Daily Company**.
 
 **Rules:**
 
@@ -48,7 +48,7 @@ So it must be **coherent with the profile, readable in 30–45 seconds, and rich
 - **Askable facts:** every posting contains at least 8 distinct facts usable by job-memory templates (range, location, mode, years, 3+ stack items, 2+ responsibilities, a perk), so every player has the **same number and kind of facts** to be asked about.
 - **Determinism:** the same snapshot + seeds always produce the same posting (for audit and debugging).
 
-### Casual
+### Practice runs
 
 - **Company:** generated per run from name parts + sector + logo shape and color, checked against a blocklist of well-known brands.
 
@@ -133,3 +133,13 @@ Perks: Mentorship program · Learning budget · "Fun Fridays" (mandatory)
 ```
 
 The Spanish versions use the Spanish fragments ("Buscamos un/a Senior Fullstack Developer…"), with identical facts.
+
+## 7. From fictional jobs to real jobs (Stage 3)
+
+| Job Challenge source | Company | Posting | When |
+|---|---|---|---|
+| `generated` | Random fictional company | Generated for the profile | MVP, practice runs |
+| `daily` | The Daily Company (fictional) | Generated for the profile at that company | MVP, ranked runs |
+| `job_posting` | A real, verified company | Published by the company; the challenge is derived from its stack and requirements | Stage 3: **Play to Apply** |
+
+Everything downstream (stages, questions, results, XP, history) works the same way for all three sources. For `job_posting`, the facts of the run come from the real posting, and the developer's profile still defines the competing context. Real companies are never satirized: humor stays in the generic hiring-process elements.

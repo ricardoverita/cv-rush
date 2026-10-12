@@ -4,7 +4,7 @@
 
 ## Summary
 
-The brief described one game. Analysing it surfaced tensions that turned it into **two modes**, a **two-pool content model**, and a scoring design that only trusts what the server can verify. Then the maintainer's review **rejected the first ranked design** (one global daily job). That produced the central principle of the product: **compete as who you are**, with profile snapshots, categories (track × seniority band) and results that always carry their context (turning point 11). These notes record each turning point while it is fresh: the problem, the decision, and why it might interest other developers.
+The brief described one game. Analysing it surfaced tensions that turned it into **two modes**, a **two-pool content model**, and a scoring design that only trusts what the server can verify. Then the maintainer's review **rejected the first ranked design** (one global daily job). That produced the central principle of the product: **compete as who you are**, with profile snapshots, categories (track × seniority band) and results that always carry their context (turning point 11). A second review (revision 3) **changed the north star**: CV Rush is no longer only a game with a daily leaderboard but the entry point to a **developer network**, which can later grow into jobs and recruiter features. The domain is now centered on the developer and their persistent progress (turning points 12–15). These notes record each turning point while it is fresh: the problem, the decision, and why it might interest other developers.
 
 ## Turning points
 
@@ -76,6 +76,32 @@ The brief described one game. Analysing it surfaced tensions that turned it into
 - **Cost:** about 2.5× more competitive content than revision 1, mitigated by content reuse across tracks and bands, coverage fallbacks and content-gated activation.
 - **Article angle:** "My first fairness design was technically clean and wrong for the product." It's a good example of how a product principle ("compete as who you are") should drive the architecture, not the other way around.
 
+### 12. Revision 3: from a game to a developer network
+
+- **Date:** 2026-10-12, second review of Part 1.
+- **What changed:** the maintainer reframed the product: *Game → Developer Network → Jobs → Recruiter Platform*. The game stays the entry point, with all its theme (CV, runner, recruiters, ATS, interviews, bots, humor), but the **asset is the persistent developer profile**: results, XP, levels, history, stats, visibility.
+- **Domain consequence:** the center moves from `DailyChallenge` to `Developer → profile → game session → result → XP → history → rankings`, later `job → job challenge → application → recruiter`. The Daily Challenge becomes a **feature** (a Daily Company for ranked runs). Rankings become **projections** over results.
+- **Key abstraction:** the **Job Challenge** is source-agnostic: a generated job today, a real company's posting tomorrow ("Play to Apply"). That single decision is what lets jobs arrive later without redesigning the game.
+- **Article angle:** "Design the domain for the product you'll have in two years, build only the part you need now." The MVP still builds only the game, but its center of gravity is the developer.
+
+### 13. Developer before account
+
+- **Problem:** start fast (no accounts) *and* never lose progress when accounts arrive.
+- **Decision:** a server-generated **Developer** owns everything from the first run; accounts **attach** later through a claim backed by proof of control (verified email, device credential, management link). Typed email and LinkedIn are stored as **unverified claim identifiers**, never as proof, never merged on, and the email is never public.
+- **Article angle:** "Your user table is not your identity model." Separating the persistent actor from the authentication method makes "sign up later" trivial and safe.
+
+### 14. Score, XP and level are different things, and so is seniority
+
+- **Decision:** Game Score (one run), XP (append-only ledger), CV Rush Level (derived from XP), and declared seniority (never derived). "Junior Backend, CV Rush Level 30" is a valid and honest profile.
+- **Ranked vs practice runs:** XP for every run, rankings only for the first 3 ranked runs a day, because pools of ~20 questions per context would make unlimited ranked runs a memorization contest.
+
+### 15. AI-generated pools instead of 500 hand-written questions
+
+- **Problem:** revision 2 required ~500 private, calibrated questions before launch, which is unrealistic for a first version.
+- **Decision:** ~20 questions per context, **AI-generated with structured output**, validated server-side (schema, rules, dedupe, independent cross-check), stored, versioned and served just in time, with ranked and practice partitions. Generation happens ahead of time or asynchronously, never on the request path. Rankings run as **Season 0 (Beta)** while curated content gradually replaces AI content.
+- **Side effect that helps security:** AI pools live in the private database, not in the public repository, so the "open-source answer key" problem from turning point 1 doesn't affect the MVP.
+- **Article angle:** how to use an LLM as an offline content pipeline with validation, instead of a runtime dependency.
+
 ## Alternatives discarded (Part 1)
 
 - One ranking with seniority-based difficulty (exploitable).
@@ -83,6 +109,10 @@ The brief described one game. Analysing it surfaced tensions that turned it into
 - A curated daily job per category (doesn't respect the individual stack; heavy curation).
 - A raw global ranking across categories (compares different challenges).
 - Dynamic pooling of small categories (titles would change meaning daily).
+- The Daily Challenge as the center of the domain (revision 2; reframed as a feature in revision 3).
+- Mandatory accounts in the MVP (too much friction) and anonymous-only play (progress would be lost).
+- An LLM call per question at runtime (latency, cost, dependency).
+- Unlimited ranked runs with small pools (memorization).
 - Seniority multipliers (exploitable the other way).
 - The same questions for everyone (shared in minutes).
 - A ranked-only product (loses personalization and learning).
@@ -101,6 +131,9 @@ These are written down now so the "lessons learned" chapter can be honest:
 7. Most traffic will come from LinkedIn on mobile.
 8. The 9 launch categories will each get enough daily runs to feel alive.
 9. Smurfing will be rare, because results are publicly labeled with their context.
+10. Most new developers will accept giving an email or LinkedIn before the first run.
+11. XP and levels will measurably improve D7 and 4-week retention.
+12. AI-generated, cross-checked questions will keep the report rate below 1%.
 
 ## Open questions handed to the maintainer for review
 

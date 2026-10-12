@@ -1,6 +1,6 @@
 # Open-source and community strategy (product level)
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 3)**
 >
 > Licensing is decided in a Part 2 ADR (direction under study: Apache-2.0 for code, CC BY 4.0 for content packs, branding not licensed). Repository mechanics (templates, CI, guides) come in Part 3.
 
@@ -21,10 +21,10 @@ The repository is public. Some things must never be in it.
 | Open (in the repository) | Private (never in the repository) |
 |---|---|
 | Game client, web app, API, domain, tooling | Runtime secrets, credentials, tokens |
-| **Community question packs** (with answers) | **Competitive question pool** (answer keys) |
+| Community question packs (later, with answers) and a **fake sample pool** for local development | **Question pools** (AI-generated in the MVP, curated later) and their answer keys |
 | Question **templates and generators** (logic) | Server-side seeds and per-run state |
 | Catalogs: roles, seniorities, technologies | Scheduled future **Daily Companies** |
-| Translations | Player data, consent records, logs |
+| Translations | Developer data: **emails**, LinkedIn usernames, consent records, device credentials, results, logs |
 | Docs, ADRs, case study | Moderation review data |
 | Example and seed data (fictional only) | Brand assets beyond what the brand policy allows |
 
@@ -49,16 +49,17 @@ Each step should be possible without understanding the steps above it.
 
 ## 4. Recognition
 
-- **In-game attribution:** community questions show "Question by @handle" in the casual post-run review. This motivates contributors and honors the attribution requirement of a CC BY license.
+- **In-game attribution:** community questions show "Question by @handle" in the practice post-run review. This motivates contributors and honors the attribution requirement of a CC BY license.
 - A **contributors page** on the site and in the repository.
 - **Changelog credits** for content and code.
 - "Top contributor of the month" may come later. It is recognition only; it never affects game results.
 
 ## 5. Content flow between the open and private worlds
 
-- Community contributions are **public by nature**, so they feed **casual mode**.
-- **Unlocking ranked for a track is a community goal:** tracks that are casual-only show "Ranked coming soon for {role} — help us unlock it", linking to the content needed (e.g. "Mobile · Mid needs 3 more fundamentals families"). Contributions to community packs prove demand and help authors join the trusted reviewers who prepare competitive content.
-- The competitive pool is authored and reviewed privately (by the maintainer at first; trusted reviewers later).
+- Community contributions are **public by nature**, so they feed **practice runs**.
+- **Unlocking ranked for a track is a community goal:** tracks that are practice-only show "Ranked coming soon for {role} — help us unlock it", linking to the content needed (e.g. "Mobile · Mid needs more validated questions"). Contributions to community packs prove demand and help authors join the trusted reviewers who prepare competitive content.
+- **In the MVP**, the private pools are AI-generated, validated and stored (see [content strategy](../questions/content-strategy.md)). Community packs and human curation arrive in V1–V2 and gradually replace AI content.
+- Later, the curated competitive pool is authored and reviewed privately (by the maintainer at first; trusted reviewers later).
 - **Retired competitive questions graduate to the open packs** after their competitive life: exposure limits reached or age. The open bank keeps growing with tested questions, and the private pool stays fresh.
 - A private submission path for competitive questions (from trusted contributors) is a V1 idea. Its licensing and contributor terms are part of the Part 2 license ADR.
 

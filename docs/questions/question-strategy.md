@@ -1,6 +1,6 @@
 # Question strategy
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: AI-generated pools in the MVP)**
 >
 > Product-level rules for questions. The Question Engine (selection strategies, interfaces, storage, schemas) is designed in Part 2.
 
@@ -33,14 +33,17 @@ Every run combines five ingredients:
 | `tracks` / `roles` | Which disciplines it fits |
 | `technologies[]` | Catalog technology IDs (e.g. `redis`) |
 | `topics[]` / `tags[]` | A finer taxonomy for selection, equivalence and analytics (e.g. `caching.expiry`) |
-| `seniority.min` / `seniority.max` | The casual eligibility range |
+| `seniority.min` / `seniority.max` | The practice eligibility range |
 | `difficulty` | 1–5 (section 4) |
 | `format` | `single_choice` (4 options) or `graded` |
 | `options[]` | Language-independent option IDs |
 | `correctOptionId` or grades | **Never sent to the client** |
 | `translations.{es,en}` | Prompt, option texts, explanation |
-| `source` | `community`, `competitive`, `job_derived` or `template` |
-| `family` | Its equivalence family (competitive) |
+| `source` | `ai_generated`, `curated`, `community`, `job_derived` or `template` |
+| `verificationLevel` | `auto_validated`, `cross_checked`, `human_reviewed`, `curated` (or `quarantined`) |
+| `partition` | `ranked` or `practice` (for pool questions) |
+| `context` | The pool it belongs to (e.g. Redis × level 3) |
+| `family` | Its equivalence family (later, for curated competitive content) |
 | `author` | For attribution (community) |
 | `status` | Draft, in review, active, retired, deprecated |
 
@@ -51,14 +54,14 @@ The exact schema, IDs and storage are defined in Part 2.
 | Cat. | Name | Used in | Modes | Source | Example |
 |---|---|---|---|---|---|
 | A | **Job memory / understanding** | Recruiter, Final (partially) | Both | Job-derived | "What salary range did the posting offer?" |
-| B | **Stack** | Hiring Manager | Both | Packs / pool | "Which Redis feature fits a leaderboard?" |
-| C | **Technical (general)** | Hiring Manager | Both | Packs / pool | "Which HTTP status fits a validation error?" |
-| D | **Situational** | Hiring Manager, Final | Both | Packs / pool / scenario templates | "Your API traffic doubles overnight. What do you check first?" |
-| E | **Architecture** | Hiring Manager H3, Final | Mid+ in casual; ranked H3/F1 | Packs / pool | "Process millions of events without blocking APIs?" |
+| B | **Stack** | Hiring Manager | Both | Pools | "Which Redis feature fits a leaderboard?" |
+| C | **Technical (general)** | Hiring Manager | Both | Pools | "Which HTTP status fits a validation error?" |
+| D | **Situational** | Hiring Manager, Final | Both | Pools / scenario templates | "Your API traffic doubles overnight. What do you check first?" |
+| E | **Architecture** | Hiring Manager H3, Final | Mid+ in practice; ranked H3/F1 | Pools | "Process millions of events without blocking APIs?" |
 | F | **Recruiter** | Recruiter | Both | Templates (graded) | "The band was €50K–€60K. Your expectation?" |
-| G | **Humor / trick** | Recruiter (replacing R1 or R2) | **Casual only** | Packs | "The posting asks for 10 years of a 2-year-old framework. Best reply?" |
+| G | **Humor / trick** | Recruiter (replacing R1 or R2) | **Practice only** | Pools | "The posting asks for 10 years of a 2-year-old framework. Best reply?" |
 
-Humor questions: at most 1 per run, in about 30% of casual runs. Low stakes (correct = small bonus, wrong = no damage). The intended answer must be obvious once you get the joke. Never in ranked.
+Humor questions: at most 1 per run, in about 30% of practice runs. Low stakes (correct = small bonus, wrong = no damage). The intended answer must be obvious once you get the joke. Never in ranked.
 
 ## 4. Difficulty scale and seniority bands
 
@@ -70,7 +73,7 @@ Humor questions: at most 1 per run, in about 30% of casual runs. Low stakes (cor
 | 4 | **Architecture and reliability** | System-level trade-offs, performance, scaling, failure handling | "Process events for 3 services with replay?" |
 | 5 | **Distributed and organizational scale** | Consistency models, multi-region, platform-wide trade-offs | "Exactly-once semantics across services: what do you actually get?" |
 
-### Casual: difficulty by exact seniority (H1 stack · H2 role · H3 seniority · F1 mixed)
+### Practice runs: difficulty by exact seniority (H1 stack · H2 role · H3 seniority · F1 mixed)
 
 | Seniority | H1 | H2 | H3 | F1 | Notes |
 |---|---|---|---|---|---|
@@ -84,7 +87,7 @@ Humor questions: at most 1 per run, in about 30% of casual runs. Low stakes (cor
 
 Recruiter slots (R1–R3) are difficulty 2 for every seniority: they test reading, not seniority.
 
-### Ranked: difficulty by band (identical within a category)
+### Ranked runs: difficulty by band (identical within a category)
 
 | Band | R1–R3 | H1 (stack) | H2 (role) | H3 (seniority) | F1 (mixed) |
 |---|---|---|---|---|---|
@@ -96,27 +99,30 @@ See the [Category Blueprint](../product/game-modes.md#33-the-category-blueprint)
 
 ## 5. Selection rules
 
-**Both modes**
+**All runs**
 
 - Fill each blueprint slot with a question matching its category, difficulty and topics.
 - No repeats within a run; diverse topics within a stage.
 - Shuffle options per run; balance the correct position across the run.
 - Select at the moment the challenge starts (just-in-time), never in advance on the client.
+- Draw from the **context's pool**, preferring higher verification levels, never `quarantined` questions.
+- Prefer questions the developer **hasn't seen** (per-developer exposure); a low unseen count triggers an asynchronous pool refill.
 
 - Respect the **topic boundaries** (section 1.1); the profile always comes from the server-side snapshot, never from the request.
 
-**Casual**
+**Practice runs**
 
 - Stack slots: the player's stack ∩ the generated job's stack (falling back to role fundamentals).
 - Difficulty from the exact seniority; mild adaptivity (after 2 consecutive technical misses, the next technical slot drops one level, never below the seniority's floor).
-- Avoid questions seen in the player's last 5 casual runs.
+- Use the **practice partition** of each pool; avoid questions seen in the developer's last 5 practice runs.
 - An optional humor question (category G).
 
-**Ranked**
+**Ranked runs**
 
 - Difficulty from the **category's band curve**, identical for everyone in the category.
-- **Shared slots** (H2 role fundamentals, H3 seniority, F1 scenario) draw a variant from **the category's (or band's) shared daily family**, themed by the Daily Company.
-- **Stack slot** (H1, and the stack part of F1) draws from a calibrated family for **one of the player's technologies** at the band's level, chosen by the seed among eligible technologies. Coverage fallback: the track fundamentals pool at the same level.
+- Use the **ranked partition** of each pool, at verification level `cross_checked` or higher.
+- **Shared slots** (H2 role fundamentals, H3 seniority, F1 scenario) draw from **the same daily selection** of the category's (or band's) pool for everyone in the category, themed by the Daily Company.
+- **Stack slot** (H1, and the stack part of F1) draws from the pool of **one of the developer's technologies** at the band's level, chosen by the seed among technologies with a usable pool. Coverage fallback: the track fundamentals pool at the same level.
 - No adaptivity, no humor.
 - Avoid serving the same variant to the same player across attempts on the same day.
 - Equivalence rules: see [fairness](../game-design/fairness.md#4-content-equivalence).
@@ -140,7 +146,7 @@ Parameters come from the run's seed, so a lookup table of answers doesn't help.
 
 ## 7. Option rules
 
-- **4 options** (lanes A–D) for single choice; graded questions also use 4.
+- **4 options** (paths A–D) for single choice; graded questions also use 4.
 - **Exactly one correct option** (single choice), or explicit grades (graded).
 - **Plausible distractors** of similar length and style. A partially correct distractor is allowed only if the correct option is clearly better and the explanation says why.
 - No "all of the above" or "none of the above". No joke distractors outside humor questions.
@@ -151,15 +157,17 @@ Parameters come from the run's seed, so a lookup table of answers doesn't help.
 
 | | During the run | Post-run review |
 |---|---|---|
-| Casual | Correct or incorrect + effects | Prompt, all options, the correct answer, the explanation, attribution |
-| Ranked, job-derived and templates | Correct or incorrect + effects | Prompt, the player's answer, the correct answer and the explanation (the facts are public anyway) |
-| Ranked, competitive pool | Correct or incorrect + effects | Prompt, the player's answer, correct or incorrect, the topic. **No answer key** until the question retires. |
+| Practice run | Correct or incorrect + effects | Prompt, all options, the correct answer, the explanation (practice partition; attribution for community questions later) |
+| Ranked run, job-derived and templates | Correct or incorrect + effects | Prompt, the developer's answer, the correct answer and the explanation (the facts are public anyway) |
+| Ranked run, ranked partition | Correct or incorrect + effects | Prompt, the developer's answer, correct or incorrect, the topic. **No answer key.** |
+
+The ranked/practice partition is what lets practice teach (by revealing answers) without exposing the ranked answers.
 
 ## 9. Localization
 
 - The prompt, options and explanation are translated; **option IDs and the correct option are language-independent**.
 - A run's question language is fixed at run start.
-- Ranked requires both translations to be validated; casual can serve a question in the locales it supports.
+- Ranked requires both translations to be validated; practice can serve a question in the locales it supports.
 - Validation tooling checks: missing translations, mismatched option sets, length limits per locale.
 
 ## 10. Reporting questions
@@ -191,15 +199,16 @@ Example flag: a question labeled **Junior / difficulty 1** with an **18% correct
 - Every served question is recorded as `questionId@version` + locale + option order + answer + timings + result.
 - Past runs can always show exactly what the player saw, even after the question changed. This matters for audits, Daily Champion disputes and debugging.
 
-## 13. AI-generated questions (future)
+## 13. AI-generated questions
 
-Hybrid by design, not in the MVP:
+**In the MVP**, most pool questions are AI-generated, validated and stored (see the [content strategy pipeline](content-strategy.md#3-ai-generated-questions-the-mvp-pipeline)):
 
-- **Offline generation** to produce drafts; never on the request path of a run.
-- **Structured output** (question, options, correct option, explanation, difficulty, technology, seniority), validated against the schema.
-- **Server-side validation** plus **human review** before anything becomes active; competitive questions also need calibration.
-- Valid generated questions are **stored and reused** like authored ones (with a `source: ai_assisted` marker).
-- Ranked prioritizes verified questions. Unreviewed AI output never reaches ranked.
+- Generated **ahead of time or asynchronously per context**, never on the request path of a run, and never per frame or per challenge.
+- **Structured output** (question, options A–D, correct option, explanation, technology, difficulty, seniority, role, es + en), validated against the schema.
+- **Server-side validation:** rules, deduplication and an independent cross-check; quarantine on reports or outlier stats.
+- **Stored and reused**, versioned, with `source = ai_generated` and a verification level.
+- **Ranked** uses `cross_checked` or better, and its rankings are **Season 0 (Beta)**.
+- **Gradually replaced** by curated and community content with higher verification levels.
 
 ## 14. Example (illustrative format, not the final schema)
 

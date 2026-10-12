@@ -1,100 +1,96 @@
-# Success metrics
+# Success metrics and analytics
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
 >
-> Targets are **hypotheses** to calibrate after launch, not promises. The event catalog and analytics pipeline are defined in Part 2.
+> Targets are **hypotheses** to calibrate after launch. The event catalog and pipeline are defined in Part 2.
 
 ## 1. Philosophy
 
-Success is not just "number of runs". CV Rush succeeds when people **enjoy it, come back, share it, contribute to it, and discover other professionals through it**. The metrics reflect all of that, with privacy-preserving, first-party, aggregated measurement.
+CV Rush succeeds when developers **enjoy it, come back, build a profile they care about, share it, contribute to it, and discover other developers through it**. Later stages add jobs and recruiters. Measurement is privacy-preserving, first-party and aggregated.
 
-- **North Star metric:** **Weekly Delivering Players**, the number of distinct players who deliver at least one CV in a week (any mode). It captures fun (they finished), reach and health better than raw runs.
-- **Mission metric:** **Weekly profile discoveries**, the outbound clicks from CV Rush to public player profiles (LinkedIn) per week. It measures the "help professionals get discovered" promise.
+- **North Star (Stage 1): Weekly Active Developers (WAD)**, distinct developers who complete at least one run in a week.
+- **Health metric: 4-week retention**, the share of new developers still active in their 4th week. Persistent progress only matters if people return.
+- **Mission metric: profile discoveries**, the outbound clicks from CV Rush to public developer profiles (LinkedIn, later public pages) per week.
+- **Network readiness (toward Stage 2):** the share of active developers with a claim identifier (email) and the share with a public profile.
 
 ## 2. Metric tree
 
 | Area | Metric | Definition | Initial hypothesis |
 |---|---|---|---|
-| Acquisition | Landing visitors | Unique visitors per day | — |
-| Acquisition | Share-driven visits | Visits arriving via share links | ≥ 30% of visits after month 1 |
-| Activation | Start rate | Visitors who start a run ÷ visitors | ≥ 40% |
-| Activation | Onboarding completion | Profiles completed ÷ onboarding started | ≥ 85% |
-| Engagement | Completion rate | Runs ending as delivered or failed (not abandoned) ÷ runs started | ≥ 80% |
-| Engagement | Delivery rate | Delivered ÷ runs started | 50–70% (too high means too easy) |
-| Engagement | Runs per player per session | — | ≥ 2 |
+| Acquisition | Visitors; share-driven visits | Unique visitors; visits from share links | Share-driven ≥ 30% after month 1 |
+| Activation | Onboarding completion | Developers created ÷ onboarding started | ≥ 75% (email/LinkedIn adds friction) |
+| Activation | Identity step drop-off | Drop at the email/LinkedIn step | Watch closely; alternative flow ready |
+| Activation | First run start rate | Developers who start a run ÷ developers created | ≥ 90% |
+| Engagement | Completion rate | Delivered or failed (not abandoned) ÷ started | ≥ 80% |
+| Engagement | Delivery rate | Delivered ÷ started | 50–70% |
+| Engagement | Games per developer | Per session, per week | ≥ 2 per session |
 | Engagement | Run duration | p50 / p90 | p50 2.5–4 min; p90 ≤ 5 min |
-| Retention | D1 / D7 return | Players returning the next day or week | D1 ≥ 15%; D7 ≥ 8% |
-| Retention | Ranked habit | Players with ranked runs on ≥ 3 days per week | — |
-| Virality | Share rate | Shares ÷ delivered runs | ≥ 5% |
-| Virality | Share conversion | Runs started from share visits ÷ share visits | ≥ 25% |
-| Showcase | Public opt-in rate | Public profiles ÷ delivered ranked runs | ≥ 30% |
-| Showcase | LinkedIn added | Public profiles with LinkedIn ÷ public profiles | ≥ 50% |
-| Showcase | Profile discoveries | LinkedIn clicks from leaderboards per week (mission metric) | Growing week over week |
-| Game balance | Failure distribution | Share of failures by stage (`ATS_FAILED`, `CV_DESTROYED` by stage) | No single stage > 50% of failures |
+| Engagement | Ranked vs practice mix | Share of practice runs after ranked runs are used | Signals appetite beyond rankings |
+| **Progression** | XP distribution | XP per developer (percentiles) | — |
+| **Progression** | Level distribution | Developers per level band | A healthy long tail |
+| **Progression** | Time to level 5 / 10 | Days from creation | — |
+| **Progression** | Profile page views | Developers opening "My profile" | ≥ 40% of returning developers |
+| Retention | New vs returning developers | Per day and week | — |
+| Retention | D1 / D7 / 4-week retention | Cohorts by creation week | D1 ≥ 15%; D7 ≥ 8% |
+| Retention | Last-active distribution | Active today / this week / this month / dormant | — |
+| Retention | Replay rate | Developers with ≥ 2 runs in a session | ≥ 50% |
+| Virality | Share rate; share conversion | Shares ÷ delivered runs; runs from share visits | ≥ 5%; ≥ 25% |
+| Showcase | Public visibility rate | Public developers ÷ active developers | ≥ 30% |
+| Showcase | LinkedIn displayed | Public developers showing LinkedIn | ≥ 50% of public |
+| Showcase | Profile discoveries | LinkedIn clicks from CV Rush per week | Growing |
+| Network readiness | Email provided | Active developers with an email | Growing |
+| Competition | Active categories | Categories with ≥ 3 verified ranked runs per day | All 9 launch categories most days |
+| Game balance | Failure distribution | Failures by stage and reason | No stage > 50% of failures |
 | Game balance | ATS pass rate (first run) | — | ~80% |
+| Content quality | Technical accuracy | Correct ÷ answered, by technology, level, band, locale | Within expected bands |
 | Content quality | Question report rate | Reports ÷ questions served | < 1% |
-| Content quality | Difficulty deviation | Observed vs expected difficulty per question | Flag outliers for review |
-| Content quality | Repeat rate | Share of questions a player has already seen (casual) | < 10% in a player's first 10 runs |
-| Performance | First playable | Time to an interactive game on 4G mid-range Android | < 5 s |
-| Performance | Frame rate | Share of sessions with sustained ≥ 30 fps | ≥ 95% |
-| Performance | API latency | p95 for challenge start and answer endpoints | < 300 ms |
-| Competition | Active categories | Categories reaching the minimum field (3 verified runs) per day | All 9 launch categories most days |
-| Competition | Runs per category | Daily ranked runs per category (median, p10) | Informs category splits or merges |
-| Integrity | Flagged runs | Runs failing verification ÷ ranked runs | Monitor; investigate spikes |
-| Integrity | Champion disqualifications | Per month | Ideally 0 |
-| Community | Contributors | Unique contributors per month (code, content, translations) | Growing |
-| Community | Content PRs | Merged question, technology and translation PRs | Growing |
-| Community | Stars, forks | GitHub stars and forks | Context only |
-| Sustainability | Cost per 1,000 runs | Hosting cost ÷ runs × 1,000 | Tracked |
+| Content quality | AI question rejection rate | Generated questions failing validation | Tracked (pipeline quality) |
+| Content quality | Pool exposure | Share of a context's pool already seen by its active players | Triggers pool refills |
+| Content quality | Repeat rate | Questions a developer has already seen | < 10% in the first 10 runs |
+| Performance | First playable; fps; API p95 | — | < 5 s on 4G; ≥ 30 fps in 95% of sessions; < 300 ms |
+| Integrity | Flagged runs; voided XP; disqualifications | — | Investigate spikes |
+| Community | Contributors; content PRs; translations | — | Growing |
+| Cost | Cost per 1,000 runs; AI generation cost per validated question | — | Tracked |
+| *Stage 3 (future)* | Job views; Play to Apply starts; applications | — | — |
 
 ## 3. Guardrail metrics
 
-These must not get worse while we optimize the metrics above:
+Privacy complaints and takedowns · any email exposure (target: zero, alert) · rejected-name and report rates · accessibility feedback · error rate by browser · mobile vs desktop score gap in ranked · es vs en accuracy gap on the same questions · score gap by declared stack within a category · XP farming signals (runs per developer per day, voided XP).
 
-- Privacy complaints and takedown requests.
-- Rejected display name rate and offensive content reports.
-- Accessibility feedback.
-- Error and crash rate by browser (especially in-app browsers).
-- Mobile vs desktop score gap in ranked (device fairness).
-- Score gap by declared stack within a category (stack fairness).
-- Category change frequency and near-perfect runs in Junior boards (smurfing signals).
-- es vs en accuracy gap on the same questions (language fairness).
-
-## 4. Funnel
+## 4. Funnels
 
 ```mermaid
 flowchart LR
-  visit["Landing visit"] --> start["Run started"] --> job["Job posting viewed"] --> applied["Applied"] --> race["Race started"]
-  race --> recruiter["Recruiter passed"] --> ats["ATS passed"] --> hm["Hiring Manager done"] --> final["Final done"] --> delivered["CV delivered"]
-  delivered --> optin["Public profile"] --> linkedin["LinkedIn added"]
+  visit["Landing visit"] --> onboarding["Onboarding started"] --> identity["Email or LinkedIn given"] --> consent["Consent given"] --> created["Developer created"]
+  created --> started["Run started"] --> delivered["CV delivered"] --> xp["XP awarded"]
+  xp --> again["Played again"]
+  xp --> returned["Returned another day"]
+  delivered --> public["Public visibility"] --> linkedin["LinkedIn shown"]
   delivered --> shared["Shared"]
-  delivered --> replay["Played again"]
 ```
 
-## 5. Questions we want to be able to answer
+## 5. Questions we want to answer
 
 | Question | Metric or analysis |
 |---|---|
-| What share of visitors start a run? | Start rate |
-| What share finish? | Completion and delivery rate |
-| Where do players abandon? | Abandonment by stage |
-| Which challenge eliminates the most players? | Failure distribution |
-| Which profiles play the most? | Runs by role, seniority and category (aggregated) |
-| Which stacks are most common per role? | Stack combinations from run snapshots (aggregated) |
-| Which technologies are most popular? | Stack selections (aggregated) |
-| Which seniority has the highest completion rate? | Completion rate by declared seniority |
-| How long does a run take? | Run duration |
-| How many players come back? | D1/D7 return, ranked habit |
-| How many share their result? | Share rate |
-| How many visit LinkedIn profiles from the leaderboard? | Profile discoveries |
-| Which questions are hardest, ambiguous or broken? | Question stats + reports |
-| Which topics do players fail most? | Accuracy by topic and technology (aggregated) |
+| How many new and returning developers? | New vs returning, cohorts |
+| How many games per developer? | Games per developer |
+| When were developers last active? | Last-active distribution |
+| What share replays? | Replay rate |
+| How are XP and levels distributed? | XP and level distributions |
+| What share finishes? Where do they abandon? | Completion, abandonment by stage |
+| Which challenge eliminates the most? | Failure distribution |
+| How accurate are developers technically, and where do they struggle? | Accuracy by technology, topic, level (aggregated) |
+| Which stacks, roles and declared seniorities are most common? | Aggregated snapshots |
+| How many share and how many visit LinkedIn profiles? | Share rate, profile discoveries |
+| How many developers are ready to claim an account? | Email provided |
+| *(Stage 3)* How many play to apply and apply? | Job funnel |
 
-These answers feed game balancing, UX, difficulty and question quality. Changes are made by people reviewing data, not by automatic adjustment, at least initially.
+The answers feed balancing, UX, difficulty and content quality, through people reviewing data, not automatic adjustment.
 
 ## 6. Measurement principles
 
-- First-party events defined in the domain (e.g. `game_finished`, `ats_failed`), independent of any provider. Providers like PostHog, Plausible or OpenTelemetry can be plugged in later.
-- Analytics never influence game logic, and game logic never depends on analytics being available.
+- First-party **domain events** (e.g. `developer_created`, `game_finished`, `xp_awarded`, `level_up`, `ats_failed`), independent of any provider. PostHog, Plausible or OpenTelemetry can be plugged in later.
+- **Analytics never influence game logic**, and game logic never depends on analytics being available. Progression (XP, levels) is domain data, not analytics.
+- Events carry a pseudonymous developer ID and non-sensitive metadata. **Never** names, emails or LinkedIn usernames.
 - Aggregates are published only above a minimum group size.
-- Personal data (names, LinkedIn usernames) never travels in analytics events.

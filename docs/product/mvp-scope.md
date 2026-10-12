@@ -1,132 +1,130 @@
 # MVP scope and explicit non-goals
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
 >
-> V1, V2, ideas and deliberately postponed features are in the [roadmap](../roadmap/README.md).
+> The MVP is **Stage 1 (Game)** of the [product evolution](product-evolution.md), built so that Stages 2–4 don't require redoing the domain. V1, V2 and later items are in the [roadmap](../roadmap/README.md).
 
 ## 1. MVP goal
 
-**Hypothesis to validate:** a 3-minute hiring-process race is fun enough to **replay** and **share**, and a fair **Daily Challenge** creates **return visits**.
+**Hypothesis to validate:** a 3-minute hiring-process runner, played as your own developer profile, is fun enough to **replay**, and **persistent progress** (XP, levels, history, rankings) makes developers **come back** and **keep their profile**.
 
-The MVP is the smallest product that can test this hypothesis **in public** without compromising the foundations: server authority, fairness, privacy and contributability. It is not a demo. Everything in scope is built to production quality, and everything out of scope has a place prepared for it.
+It is a public product, not a demo: everything in scope is production quality, and everything out of scope has a prepared place in the domain.
 
-## 2. In scope
+## 2. In scope (the 26-step core)
 
-### Experience
+| # | Item | Notes |
+|---|---|---|
+| 1 | **Landing** | Server-rendered, indexable, es/en, OpenGraph/Twitter metadata; today's company, leaders by category, countdown |
+| 2 | **Provisional developer identity** | A server-generated `Developer`, a device credential, a management link. See [identity and accounts](identity-and-accounts.md). |
+| 3 | Name | Moderated; never the email |
+| 4 | Seniority | 7 levels |
+| 5 | Role | 13 roles, 10 tracks |
+| 6 | Stack | Role-adapted picker: recommendations, categories, search, aliases, suggestions, compatibility rules; 1–12 technologies |
+| 7 | **Email and/or LinkedIn** | At least one; stored **unverified**; email private; LinkedIn normalized |
+| 8 | **Privacy consent** | Terms/privacy (required), public visibility (off by default), email communication (off by default); recorded per purpose |
+| 9 | **Generate a Job Challenge** | A job for the frozen profile snapshot; the Daily Company for ranked runs, a random company for practice |
+| 10 | **2D race** | A side-scrolling platformer/runner (Phaser, confirmed by ADR in Part 2); run, jump, avoid obstacles, choose paths, collect boosts |
+| 11 | **5–10 questions per run** from a larger pool | 7 by default; questions appear in the world as A/B/C/D paths |
+| 12 | Recruiter Screening | 3 questions, including the graded salary question |
+| 13 | ATS Scan | The ATS 9000 conveyor; threshold; game over on failure |
+| 14 | Hiring Manager | 3 technical questions (stack, role fundamentals, seniority) |
+| 15 | Final Interview | 1 mixed question; Final Boost |
+| 16 | Deliver CV | The delivery animation |
+| 17 | **Result** | With competing context: "scored 18,492 points competing as a Senior Fullstack Developer" + stack |
+| 18 | **Score** | Server-computed, explained breakdown |
+| 19 | **XP** | Server-computed, append-only ledger, anti-farming rules |
+| 20 | **Level** | The CV Rush Level, derived from XP; never confused with seniority |
+| 21 | **History saved** | Every run with its snapshot context, Job Challenge, result and XP |
+| 22 | **Last active** | `lastActiveAt`; shown coarsely |
+| 23 | **Ranking** | Category rankings (daily and weekly) from ranked runs; Daily Champion per category; Season 0 (Beta) |
+| 24 | **Optional public LinkedIn** | Shown only when the developer is public; normalized `/in/` username; unverified |
+| 25 | **Play again** | ≤ 2 taps; ranked runs (3/day), then practice runs |
+| 26 | **Basic developer profile with initial stats** | A private "My profile" page: level, XP, games, best ranks, history, technology stats (minimum sample), visibility settings |
 
-- **Landing page:** server-rendered, indexable, es/en, with OpenGraph and Twitter metadata. Shows today's company, today's champions by category (spotlight) and the Daily Challenge countdown.
-- **Profile-first onboarding:** name, seniority (7 levels), role (13 roles), a stack picker adapted to the role (recommendations, role categories, search, aliases, progressive suggestions, role rules, 1–12 selections), and a **"Competing as"** card. See [competitive identity](competitive-identity.md).
-- **Server-side profile validation and a frozen profile snapshot per run**, including the ranked daily profile lock.
-- **Two modes, both profile-based:** Daily Challenge (ranked, by category) and Personalized run (casual). See [game modes](game-modes.md).
-- **Job posting screen** (a personal job; in ranked at today's company) with a reading timer and **APPLY**; a lobby with "N candidates applied" and 3-2-1-GO.
-- **Results screen with competing context** ("Ricardo scored 18,492 points competing as a Senior Fullstack Developer" + stack + category rank) and the explained score breakdown.
-- **Failure screen** (rejection email parody) and one-tap retry.
-- **Post-run review** (casual: full; ranked: results and topics) and **question reporting**.
+### Also in scope (foundations)
 
-### Run
+- **Two run types:** ranked (3/day, category blueprint, rankings) and practice (exact-seniority difficulty, explanations, XP). See [game modes](game-modes.md).
+- **Profile snapshot per run** and the **ranked daily profile lock**.
+- **Bots** (5 archetypes, elimination funnel), **CV Health**, obstacles and pickups.
+- **Questions:** AI-generated, validated, stored pools (~20 per context, ranked and practice partitions), job-derived templates, just-in-time serving, no answer keys on the client. See [content strategy](../questions/content-strategy.md).
+- **Sharing:** a result page with an OpenGraph image; LinkedIn, X, WhatsApp, copy link (plain URLs, no SDKs).
+- **Privacy pages:** privacy policy, terms, "What is public" (es/en); hide and delete via the management link.
+- **i18n:** es/en, locale-prefixed URLs, detection with English fallback, a remembered manual switch, semantic codes from the backend.
+- **Accessibility:** equivalent inputs (tap a path sign or press 1–4), non-color cues, contrast, large targets, reduced motion, relaxed timers in practice.
+- **Integrity:** server-authoritative runs, a state machine, single-use challenges with expiry, rate limits, ranked attempt limits, automated champion verification, XP anti-farming.
+- **Observability and analytics:** structured logs (with email masking), request and session IDs, error tracking, basic metrics, provider-agnostic analytics events including progression events.
+- **Moderation and operations:** maintenance commands (hide a profile, invalidate a run and void its XP, revoke a title, quarantine a question), all audited.
+- **Open source:** the repository foundations from Part 3, with a small **sample question pool** in the repository so contributors can run everything locally without AI keys.
 
-- A 2D race in Phaser (the engine choice is confirmed in a Part 2 ADR). **Portrait-first** on mobile; landscape and desktop supported.
-- **4 lanes**, auto-run, lane switching and jumping. Keyboard (arrows/WASD, Space, 1–4) and touch (swipe, tap) controls.
-- **4 race segments + final sprint**; the company HQ visible on the horizon and growing with progress.
-- **2 obstacle types** and **2 pickup types** (see [run structure](../game-design/run-structure.md#3-race-layer)).
-- **Bot field** of 9 bots with 5 archetypes and an elimination funnel (see [bots](../game-design/bots.md)).
-- **CV Health** with visual damage states (see [CV Health](../game-design/cv-health.md)).
-
-### Stages
-
-- **Recruiter Screening:** 3 questions, including a graded **salary expectation** question (the full Salary Negotiation stage is V1).
-- **ATS Scan:** the ATS 9000 conveyor, match meter, threshold and game over on failure.
-- **Hiring Manager:** 3 technical questions.
-- **Final Interview:** 1 mixed question and the Final Boost.
-
-### Content
+## 3. Content targets (simplified)
 
 | Content | MVP target |
 |---|---|
-| Roles in the catalog | 13, mapped to 10 tracks (see [competitive identity](competitive-identity.md#22-tracks-competitive-families)) |
-| Seniority bands | 3: Junior (Trainee, Junior), Mid, Senior+ (Senior, Lead, Staff, Principal) |
-| **Official ranked categories** | **9**: Frontend, Backend, Fullstack × Junior, Mid, Senior+. Platform (DevOps & Cloud) × 3 in **preview** |
-| Tracks with full casual coverage | 4: Frontend, Backend, Fullstack, Platform |
-| Other tracks | Casual only: job-derived, recruiter and shared-fundamentals questions, plus a "Help us unlock ranked for {role}" call to action |
-| Technologies in the catalog | ~120, with categories, aliases, role recommendations and role compatibility rules (core and allowed categories) |
-| Community question packs (public, bilingual) | ≥ 300 questions across the 4 casual tracks and 3 levels |
-| Competitive question pool (private, bilingual) | **≈ 500 questions** (estimate): track fundamentals families per track × band (Fullstack reuses Frontend + Backend), seniority families per band, and stack families for ~12 priority technologies × 3 levels; plus ~24 scenario templates |
-| Job-derived question templates | ~15 (memory, recruiter, salary) |
-| Job generation | Templates for every role (rich for the 4 casual tracks), ~30 fictional companies, ~12 locations |
-| Daily Companies | A reviewed pool, scheduled at least 2 weeks ahead, secret until published |
+| Roles / tracks / bands | 13 roles · 10 tracks · 3 bands |
+| Official ranked categories | 9 (Frontend, Backend, Fullstack × Junior, Mid, Senior+); Platform in preview; others practice-only |
+| Technologies in the catalog | ~120, with categories, aliases, role recommendations and compatibility rules |
+| **Question pools** | **~20 validated questions per context** (technology × level, track fundamentals × level, seniority × band), bilingual, AI-generated and stored, split into ranked and practice partitions. Pre-generated for launch contexts; long-tail contexts generated asynchronously when first needed. |
+| Job-derived templates | ~15 (memory, recruiter, salary) |
+| Job generation | Templates for every role; ~30 fictional companies; ~12 locations |
+| Daily Companies | A reviewed pool, scheduled ≥ 2 weeks ahead |
 | Bots | 5 archetypes, name pools per locale, ~30 localized lines |
 
-### Leaderboards
+The large community question-pack system (open-source packs, curated competitive pools, calibration at scale) comes later. The MVP is designed so curated content can **gradually replace** AI-generated questions.
 
-- **Category leaderboards** (track × band): daily, provisional, top 20 + own position, with competing context on every row.
-- **Daily Champion per category** with automated verification and a minimum field of 3 runs.
-- **Weekly Top 7 per category.**
-- **Candidate of the Week per category** (raw score within the category; see [leaderboards](leaderboards.md#7-candidate-of-the-week-per-category)).
-- **Spotlight** of champions across categories (not a ranking). **No global ranking** in the MVP.
-- **3 ranked attempts per day**, best counts; ranked profile locked for the day; category cooldown.
+## 4. Not in the MVP
 
-### Profile, privacy and sharing
-
-- Public profile opt-in (off by default), live preview, optional LinkedIn with normalization, private management link, hide and delete.
-- Display name moderation (es/en) and "report this profile".
-- **Share:** a result page with an OpenGraph image; LinkedIn, X, WhatsApp and copy-link buttons (plain URLs, no SDKs).
-- Privacy policy, terms and the "What is public" page (es/en).
-
-### Platform qualities
-
-- **i18n:** es/en with locale-prefixed URLs, automatic detection with English fallback, a manual switch that is remembered, and no hardcoded copy. Backend errors and events use semantic codes.
-- **Accessibility:** direct answer input (tap or keys 1–4), non-color cues, contrast, large targets, `prefers-reduced-motion`, optional relaxed timers in casual.
-- **Integrity:** server-authoritative runs, a session state machine, single-use challenges with expiry, rate limiting, attempt limits, automated champion verification. See [risks](risks.md) here; the technical design is in Part 2.
-- **Observability and analytics:** structured logs with request and session IDs, error tracking, basic metrics, a provider-agnostic analytics event layer with a first-party sink.
-- **Moderation and operations:** no admin UI. Internal maintenance commands (scripts or CLI) to hide a profile, invalidate a run, revoke a champion and deactivate a question, all audited.
-- **Open source:** the repository foundations from Part 3 (docs, contribution guides, validation tooling, CI, seeds, Docker for local services).
-
-## 3. Cut from the brief for the MVP (and where they went)
-
-| Brief item | MVP decision | Moved to |
-|---|---|---|
-| Salary Negotiation as its own stage | A graded recruiter question | V1 (`salaryNegotiation` flag) |
-| Ghosting and other extra obstacles or challenges | Not included | V1 |
-| AI-generated questions | Not included; no runtime LLM dependency | V2 (offline generation with validation) |
-| Login (Google, GitHub) | Anonymous identity + management link | V1 |
-| A global ranking across categories | Spotlight only; per-category boards | V1 (experimental normalized view) |
-| Engineering Manager, Product Manager, UX/UI Designer roles | Not in the catalog | Later (they need non-technical content) |
-| Admin panel | Maintenance commands only | V1 |
-| Public champion pages | Not included | V1 |
-| Achievements, streaks, levels, skins, badges | Not included | V1/V2 |
-| Seasons, Skill Passport | Not included; domain prepared | V2 |
-| Recruiter features, sponsors page | Not included | V2+ |
-| PR preview deployments | Prepared for, not set up | V1 |
-
-## 4. Definition of done for the MVP launch
-
-- [ ] A complete run is playable on a mid-range Android phone in LinkedIn's in-app browser, on iOS Safari, and on desktop Chrome, Firefox and Safari.
-- [ ] Median run length is between 2.5 and 4 minutes in playtests.
-- [ ] No question or answer key reaches the client before its challenge starts, and no answer key reaches it at all (verified by inspecting traffic).
-- [ ] Scores, times and positions are computed server-side only (verified by tampering tests).
-- [ ] Daily Champions and Weekly Top 7 work per category across UTC day and week boundaries (tested with time travel in integration tests).
-- [ ] A run's profile cannot be changed after creation, and every result shows its snapshot context (verified by tampering tests).
-- [ ] es/en complete, with no missing keys (CI validation).
-- [ ] Content targets met, and every question passes `questions:validate`.
-- [ ] Privacy policy, terms and "What is public" are published; the legal review is done.
-- [ ] Moderation commands work and are audited.
-- [ ] At least 20 external playtesters have completed runs; top issues are fixed.
-- [ ] Case-study notes are up to date.
+| Not now | Where it goes |
+|---|---|
+| Accounts (passwords, Google, GitHub, LinkedIn sign-in), email verification, profile claiming | V1 (Stage 2); designed now |
+| Public developer pages (`/developers/{slug}`), portfolio, Open to Work, badges | V1–V2 (Stage 2); designed now |
+| Weekly Top 7, Candidate of the Week, technology and XP rankings | V1 |
+| Seasons (resets, season XP) | V2; Season 0 tagging from day one |
+| Salary Negotiation stage, Ghosting | V1 |
+| Community question packs at scale, curated competitive pool, calibration tooling | V1–V2 |
+| Category cooldown | V1 |
+| Admin panel | V1 (commands in the MVP) |
+| **Jobs: companies, real postings, Play to Apply, applications** | Stage 3 |
+| **Recruiter dashboard, company accounts, developer search, messaging, paid plans** | Stage 4 |
+| Advanced skill certification | Never as a certification |
+| Engineering Manager, Product Manager, UX/UI Designer roles | Later (non-technical content) |
 
 ## 5. Explicit non-goals
 
-These are product-wide positions, not just MVP cuts:
+1. **No certification.** CV Rush results are gameplay statistics, never a measure of professional ability.
+2. **No recruiter SaaS in the MVP.** No companies, jobs, applications, search or messaging.
+3. **No mandatory accounts in the MVP.** A provisional identity that can be claimed later.
+4. **No public email, ever.** The email is a private claim and contact identifier, never a username, a slug, a ranking label or an analytics property.
+5. **No collection of CV files, location, age, gender** or other personal data beyond the profile, email and LinkedIn.
+6. **No runtime LLM dependency on the request path.** Questions are generated ahead of time or asynchronously, validated and stored.
+7. **No monetization, ads or tracking pixels** in the MVP.
+8. **No real-time multiplayer.** Rivals are bots.
+9. **No native mobile apps.**
+10. **No microservices.** A modular monolith first.
+11. **No pay-to-win and no sponsor influence** on rankings or questions. Levels give no gameplay advantage.
+12. **No LinkedIn API integration or scraping.** We only store the username the developer gives us.
+13. **No mocking of real companies or real people.**
+14. **No copied game assets.** Original visual identity; no Nintendo or Mario assets, characters, sounds or levels.
 
-1. **No hiring assessment or certification.** CV Rush never claims to measure professional ability or predict job performance.
-2. **No real-time multiplayer** in the MVP. Rivals are bots.
-3. **No mandatory accounts** in the MVP.
-4. **No runtime dependency on an LLM** to serve a question.
-5. **No monetization, ads or tracking pixels** in the MVP.
-6. **No collection of email, CV files, location, age, gender** or other personal data beyond the profile described.
-7. **No B2B recruiter product** in the MVP.
-8. **No native mobile apps.** It is a web product.
-9. **No microservices.** A modular monolith first.
-10. **No pay-to-win, and no sponsor influence on rankings or questions.** Ever.
-11. **No LinkedIn API integration or scraping.** We only store a username the player gives us.
-12. **No mocking of real companies or real people.**
-13. **No AAA graphics.** Readable, fast and charming beats detailed.
+## 6. Open questions
+
+1. **Email/LinkedIn before the first run, or right after it** ("Save your 460 XP")? The first maximizes identity; the second reduces friction. Recommendation: before (as requested), measure drop-off, and keep the alternative ready.
+2. Is "at least one of email or LinkedIn" the right minimum, or should email be required (it's the only verifiable one)?
+3. Should the first 3 runs of the day be ranked by default?
+4. Are Season 0 rankings labeled "Beta" acceptable for launch?
+
+## 7. Definition of done for the MVP launch
+
+- [ ] A complete run is playable on a mid-range Android phone in LinkedIn's in-app browser, on iOS Safari, and on desktop Chrome, Firefox and Safari.
+- [ ] Median run length is between 2.5 and 4 minutes in playtests.
+- [ ] No question or answer key reaches the client before its challenge starts, and no ranked answer key reaches it at all (verified by inspecting traffic).
+- [ ] Scores, positions, XP and levels are computed server-side only (verified by tampering tests).
+- [ ] A run's profile cannot change after creation; every result shows its snapshot context.
+- [ ] The email never appears in any public surface, HTML, share card, analytics event or log (verified by automated checks).
+- [ ] A provisional developer's history, XP and rankings survive across sessions on the same device and via the management link.
+- [ ] Category rankings and Daily Champions work across UTC day and week boundaries (integration tests with time travel).
+- [ ] AI-generated questions pass the validation pipeline; reported questions are quarantined.
+- [ ] es/en complete, with no missing keys (CI validation).
+- [ ] Privacy policy, terms and "What is public" published; legal review done (email processing included).
+- [ ] Moderation commands work and are audited.
+- [ ] At least 20 external playtesters completed runs; top issues fixed.
+- [ ] Case-study notes up to date.

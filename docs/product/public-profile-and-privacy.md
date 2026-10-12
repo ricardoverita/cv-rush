@@ -1,142 +1,148 @@
-# Public profile, LinkedIn exposure and privacy UX
+# Privacy, visibility and LinkedIn
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 2: profile-first)**
+> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
 >
-> Product-level rules. Technical enforcement (validation, storage, retention, security) is defined in Part 2.
+> Product-level rules. Technical enforcement (storage, encryption, retention, logging) is defined in Part 2. Identity and claiming are in [identity and accounts](identity-and-accounts.md); profile contents are in [developer profile](developer-profile.md).
 
 ## 1. Principles
 
-1. **Data minimization.** We ask only for what the game needs: a name, a seniority, a role and a stack. No email, phone, CV file, location, age or gender.
-2. **Public by choice.** Finishing a run never implies public exposure. The public profile is **off by default**.
-3. **Preview before publishing.** The player sees exactly what will be public before confirming.
-4. **Easy to undo.** Hiding the public profile is one action and takes effect immediately everywhere.
-5. **No dark patterns.** "Stay anonymous" is as visible and as easy as "Show my profile". No pre-checked boxes, guilt copy or nagging.
-6. **One consent per purpose.** Appearing on leaderboards and adding a LinkedIn link are separate choices. Each consent is recorded with its purpose, its timestamp and the version of the text shown.
-7. **Transparency.** A plain-language **"What is public"** page (es/en) explains what we store, what is public, and how to hide or delete it.
+1. **Data minimization.** Name, seniority, role, stack, and email and/or LinkedIn. No CV files, phone, location, age or gender.
+2. **Three separate things:** `contactEmail` (private, always), `publicLinkedIn` (public only with consent) and `profileVisibility` (private by default). One never implies another.
+3. **Private by default.** Playing, even finishing #1, never makes anyone public.
+4. **Preview before publishing.** The developer sees exactly what will be public.
+5. **Easy to undo.** Hiding the public profile takes effect everywhere, immediately.
+6. **No dark patterns.** "Stay private" is as visible as "Show me". No pre-checked boxes, guilt copy or nagging.
+7. **One consent per purpose**, recorded with its text version and timestamp: terms and privacy (required), public visibility, LinkedIn display, email communication.
+8. **Verification is never implied.** Unverified identifiers are labeled as such internally and never shown as "verified".
+9. **Transparency:** a plain-language **"What is public"** page (es/en).
 
 ## 2. What we ask, store and publish
 
 | Data | Asked when | Required | Stored | Public |
 |---|---|---|---|---|
-| Display name | Onboarding | Yes (nicknames OK) | Yes | Only with the public profile on |
-| Seniority, role | Onboarding | Yes | Yes, with a **frozen snapshot per run** | Only with the public profile on, as the **competing context** of each result |
-| Stack | Onboarding | Yes (1–12) | Yes, with a frozen snapshot per run | Only with the public profile on, as stack chips next to each result (up to 5 + "+N") |
-| Category (track × band) | Derived | — | Yes, per run | The board an entry appears on (also for anonymous entries) |
-| Anonymous player identity | Automatically (essential cookie) | Yes | Yes | Never |
-| Runs, answers, timings | During play | — | Yes (for scoring, audit and anti-cheat) | Only score, race time, position and date, on leaderboards |
-| LinkedIn username | After a delivered ranked run | No | Yes, only if given | Only with the public profile on |
+| Display name | Onboarding | Yes (nicknames OK) | Yes | Only when public |
+| Seniority, role, stack | Onboarding | Yes | Current profile + a **frozen snapshot per run** | Only when public, as the competing context of each result |
+| **Email** (`contactEmail`) | Onboarding (email and/or LinkedIn required) | One of email/LinkedIn | Yes, **protected**, with `emailVerificationStatus = unverified` | **Never** |
+| **LinkedIn** (`linkedinUsername`) | Onboarding or later | One of email/LinkedIn | Username only, with `linkedinVerificationStatus = unverified` | Only when public **and** LinkedIn display is consented |
+| Profile visibility | Onboarding, changeable anytime | — | Yes | — |
+| Developer ID, device credentials, management link | Automatic | — | Yes | Never |
+| Runs, answers, timings, XP, level, history, stats | During play | — | Yes (scoring, progression, audit, anti-cheat) | Ranking rows show score, race time, position and date (+ level optionally) when public. History and stats are private in the MVP. |
+| Last active | Automatic | — | Exact timestamp | Coarse only ("Active this week"), and only where the developer is public |
 | Consent records | When choosing | — | Yes | Never |
-| IP address, user agent | Each request | — | Transient, for rate limiting and abuse prevention (retention defined in Part 2) | Never |
+| IP address, user agent | Each request | — | Transient, for rate limiting and abuse prevention | Never |
 | Question reports | Post-run, optional | No | Yes | Never (aggregated counts may be published) |
 
-## 3. LinkedIn exposure flow
+## 3. The email: private, always
 
-**When:** only after a **delivered ranked run**. Casual results are not on public leaderboards in the MVP, so LinkedIn is not offered there. Casual results screens invite the player to try the Daily Challenge instead.
+The email serves **only**:
+
+- **future account claiming** (once verified; see [identity and accounts](identity-and-accounts.md));
+- **recovery** of a provisional profile (later, through verification);
+- **communication**, **only** with its own consent (off by default).
+
+It is **never** used as a public username, slug or label, and **never** appears in:
+
+leaderboards · public pages · HTML (including hidden fields or metadata) · share cards and share pages · the public API · analytics events · logs (masked) · error messages shown to other users.
+
+In the developer's own profile it is shown masked (`r••••@example.com`), with "change" and "delete" actions.
+
+## 4. LinkedIn
+
+### 4.1 When and how it is shown
+
+- Collected at onboarding (as a claim identifier and an optional public link) or later.
+- **Shown publicly only if** the developer is public **and** consented to display LinkedIn.
+- Always shown as a link we build: `https://www.linkedin.com/in/{username}`, opening in a new tab, marked as user-generated and nofollow.
+
+### 4.2 Accepted input (product rules)
+
+Accepted, all normalized to `https://www.linkedin.com/in/<username>`:
+
+- `ricardovera`
+- `linkedin.com/in/ricardovera`
+- `www.linkedin.com/in/ricardovera/`
+- `https://linkedin.com/in/ricardovera`
+- `https://www.linkedin.com/in/ricardovera`
+- Country subdomains: `pe.linkedin.com/in/ricardovera`
+
+Rejected, with a friendly explanation:
+
+- Non-profile paths: `/company/`, `/jobs/`, `/posts/`, `/feed/`, `/pub/`, `/school/`, anything that is not `/in/<username>`.
+- Other domains, lookalike domains, URL shorteners, redirects.
+- Any scheme other than http(s): `javascript:`, `data:`, etc.
+- Query strings and fragments are dropped, not stored.
+
+**Only the username is stored**, with `linkedinVerificationStatus = unverified`. Exact validation rules are in Part 2.
+
+### 4.3 What we cannot verify
+
+We cannot verify that a LinkedIn profile belongs to the developer, and even a future LinkedIn sign-in doesn't confirm the public profile URL. Mitigations: "Report this profile" on every public surface; immediate admin hiding (audited); public pages of **provisional** developers are **not indexed** by search engines; the "What is public" page explains that links are self-declared.
+
+### 4.4 Visibility flow
 
 ```mermaid
 flowchart TD
-  results["Results: application delivered (ranked)"] --> ask{"Show my profile on the public leaderboard?"}
-  ask -->|"Stay anonymous"| anon["Listed as Anonymous Candidate<br/>score only"]
-  ask -->|"Show my profile"| preview["Preview of the public card"]
-  preview --> addLi{"Add LinkedIn? (optional)"}
-  addLi -->|"Skip"| pub["Public: name, role, seniority, score"]
-  addLi -->|"Add"| validate{"Valid personal profile?"}
-  validate -->|"No"| explain["Explain accepted formats"] --> addLi
-  validate -->|"Yes"| pubLi["Public card with View LinkedIn"]
-  anon --> manage["Manage later: same device or private link"]
-  pub --> manage
-  pubLi --> manage
+  onboarding["Onboarding: privacy and visibility"] --> choice{"Show me on public rankings?"}
+  choice -->|"Stay private (default)"| private["Rankings: Anonymous Candidate + score<br/>history and stats private"]
+  choice -->|"Show me"| preview["Preview of the public card:<br/>name, seniority, role, stack, level"]
+  preview --> liChoice{"Show my LinkedIn? (if given)"}
+  liChoice -->|"No"| pub["Public card without LinkedIn"]
+  liChoice -->|"Yes"| pubLi["Public card with View LinkedIn"]
+  private --> later["Change anytime: My profile or management link"]
+  pub --> later
+  pubLi --> later
+  results["After a run (if private): optional nudge with preview"] --> choice
 ```
 
 **Copy (draft):**
 
 | | English | Español |
 |---|---|---|
-| Title | You made it. Now let people discover you. | Lo lograste. Ahora deja que te descubran. |
-| Toggle | Show my profile on the public leaderboard | Mostrar mi perfil en el ranking público |
-| Alternative | Stay anonymous | Seguir como anónimo |
-| LinkedIn field | LinkedIn profile (optional) | Perfil de LinkedIn (opcional) |
-| Helper | Your profile URL or just your username, e.g. `linkedin.com/in/your-name` | La URL de tu perfil o solo tu usuario, p. ej. `linkedin.com/in/tu-nombre` |
+| Identity step | Keep your progress. Add your email and/or LinkedIn so you can claim your profile when CV Rush accounts arrive. | Conserva tu progreso. Añade tu email y/o LinkedIn para reclamar tu perfil cuando lleguen las cuentas de CV Rush. |
+| Email helper | Private. Never shown to anyone. | Privado. Nunca se muestra a nadie. |
+| Visibility toggle | Show my profile on public rankings | Mostrar mi perfil en los rankings públicos |
+| Alternative | Stay private | Mantenerme privado |
+| Results nudge | You made it. Want people to discover you? | Lo lograste. ¿Quieres que te descubran? |
 
-### 3.1 Accepted LinkedIn input (product rules)
+## 5. Managing your data without an account
 
-Accepted, all normalized to `https://www.linkedin.com/in/<username>`:
-
-- `your-name`
-- `linkedin.com/in/your-name`
-- `www.linkedin.com/in/your-name/`
-- `https://linkedin.com/in/your-name`
-- `https://www.linkedin.com/in/your-name`
-- Country subdomains, e.g. `pe.linkedin.com/in/your-name`
-
-Rejected, each with a friendly explanation:
-
-- Non-profile paths: `/company/`, `/jobs/`, `/posts/`, `/feed/`, `/pub/`, `/school/`, anything that is not `/in/<username>`.
-- Other domains, lookalike domains, URL shorteners and redirects.
-- Any scheme other than http(s): `javascript:`, `data:`, etc.
-- Query strings and fragments are dropped rather than stored.
-
-**Only the username is stored.** The link is always built by us from a fixed template. Links open in a new tab and are marked as user-generated and nofollow. The exact validation rules are specified in Part 2.
-
-### 3.2 What we cannot verify
-
-We cannot verify that a LinkedIn profile belongs to the player. Mitigations:
-
-- Every public card has a **"Report this profile"** action (impersonation, offensive content, spam).
-- Admins can hide a public profile immediately; hiding is audited.
-- The "What is public" page states that links are self-declared.
-- A future optional login (V1) can make a "verified" status possible. LinkedIn sign-in is not planned, because it does not give us the public profile URL and it raises privacy expectations.
-
-## 4. Consent UX details
-
-- The **toggle is off by default.** Both choices have equal visual weight.
-- **Live preview:** as the player toggles or edits, the card renders exactly as it will appear publicly, including the **competing context**: "Ricardo Vera · Senior Fullstack Developer · Node.js · PHP · React · 18,492 pts".
-- **Anonymous listing:** "Anonymous Candidate" plus score and race time, on their category's board. No exact seniority, role, stack or link: a rare combination could identify someone in a small field.
-- **Historical context:** the role, seniority and stack shown with a result are the run's frozen snapshot. The name and LinkedIn are the *current* public identity, so hiding or editing them updates every past entry, while each result keeps the context it was achieved with.
-- **Scope:** the choice applies to the player's public presence (all their leaderboard entries), not to a single run. It can be changed at any time.
-- **Recording:** each change stores a consent record (purpose, granted or withdrawn, timestamp, text version).
-
-## 5. Managing a profile without accounts
-
-There is no login in the MVP, so two mechanisms let players manage their public presence:
-
-1. **Same device:** the anonymous player cookie identifies the player. "Edit public profile" is available from results and leaderboard screens.
-2. **Private management link:** the first time a player makes their profile public, they get a private link ("Save this link to edit or remove your public profile from any device"). It can be regenerated, which invalidates the old one.
-
-Actions:
+- **Same device:** the device credential gives access to "My profile" (edit, visibility, delete).
+- **Other devices:** the private **management link** (regenerable). It is shown after onboarding, with "Save this link" and "copy" actions.
 
 | Action | Effect |
 |---|---|
-| Hide public profile | All entries immediately show as "Anonymous Candidate". Share pages and images update. |
-| Edit | Change the display name, role, seniority or LinkedIn. Display names are re-moderated. |
-| Delete my data | Deletes the profile and the LinkedIn username. Game records are anonymized and kept for aggregated statistics and leaderboard integrity. A champion slot becomes "Anonymous Candidate". |
+| Hide public profile | All entries immediately show "Anonymous Candidate"; share pages and images update |
+| Edit profile | Name (re-moderated), seniority, role, stack (except during the ranked daily lock), email, LinkedIn |
+| Delete my data | Deletes the profile, email and LinkedIn. Game results are anonymized and kept for aggregates and ranking integrity (a title becomes "Anonymous Candidate"). |
 
-If both the device and the link are lost, a documented contact process handles requests (the exact channel is defined before launch).
+If both the device and the link are lost, a documented contact process handles requests (manual in the MVP).
 
 ## 6. Display names and moderation
 
-- 2–32 characters. Unicode letters, spaces, apostrophes, hyphens and dots.
-- No URLs, emails, @handles or phone numbers. The leaderboard is not an advertising space.
-- Profanity and slur filters for **es** and **en**, plus a curated blocklist, including impersonation of well-known people.
-- Admins can hide names. Reports go to a review queue.
-- A rejected name gets a neutral message ("Please choose a different name") and never the matched term.
+- 2–32 characters; Unicode letters, spaces, apostrophes, hyphens and dots.
+- No URLs, emails, @handles or phone numbers. Rankings are not an advertising space.
+- Profanity and slur filters for es/en, plus a blocklist that includes impersonation of well-known people.
+- Admins can hide names; reports go to a review queue. A rejected name gets a neutral message ("Please choose a different name") that never shows the matched term.
 
 ## 7. Sharing and privacy
 
-- Share cards and share pages **carry the competing context and respect the current public status**. With the profile public: "Ricardo Vera scored 18,492 points competing as a Senior Fullstack Developer · Node.js · PHP · React · #1 today in Fullstack · Senior+". Otherwise: "A candidate scored 18,492 points in Fullstack · Senior+… Can you beat it?".
-- If a player hides their profile later, existing share pages update to the anonymous version (cached images are invalidated).
-- Share buttons use plain share URLs (LinkedIn, X, WhatsApp, copy link). **No third-party share SDKs or tracking pixels.**
+- Share cards carry the competing context and respect current visibility. Public: "Ricardo Vera scored 18,492 points competing as a Senior Fullstack Developer · Node.js · PHP · React · #1 today in Fullstack · Senior+ · CV Rush Level 17". Private: "A candidate scored 18,492 points in Fullstack · Senior+… Can you beat it?".
+- Hiding a profile later updates existing share pages (cached images are invalidated).
+- Plain share URLs; no third-party SDKs or tracking pixels. **Never the email.**
 
 ## 8. Analytics and privacy
 
-- **First-party analytics only** in the MVP: no third-party trackers, no ads, no fingerprinting.
-- Events carry non-sensitive metadata (role, seniority, technology IDs, challenge type, durations, success) and a pseudonymous player ID, never names or LinkedIn usernames.
-- Public or shared aggregates use **minimum group sizes**, so small groups are never reported.
+- **First-party analytics only** in the MVP: no third-party trackers, ads or fingerprinting.
+- Events carry non-sensitive metadata (role, seniority, technology IDs, challenge type, durations, success, XP buckets, levels) and a **pseudonymous developer ID**. **Never** the name, email or LinkedIn username.
+- Public or shared aggregates use minimum group sizes.
 - LinkedIn clicks are counted per public profile **in aggregate**, without recording who clicked.
-- The event catalog and pipeline are defined in Part 2.
 
-## 9. Age and legal
+## 9. Future visibility levels (designed now)
 
-- Intended for people **16 and older**. The age of digital consent varies by country; this needs legal validation.
-- The MVP ships a **privacy policy**, **terms of use** and the **"What is public"** page in es/en.
-- **A legal review (GDPR, ePrivacy/cookies) is required before the public launch.** In particular, we must confirm whether using the essential anonymous cookie for first-party analytics needs consent in target countries. These documents are product intent, not legal advice.
+Public developer page (per-section toggles) · Open to Work · discoverable by recruiters · per-application sharing. Each is a **separate, reversible consent** (see [product evolution](product-evolution.md#3-separate-voluntary-visibility-levels)).
+
+## 10. Age and legal
+
+- Intended for people **16 and older** (to be validated legally per country).
+- MVP ships a privacy policy, terms and "What is public" in es/en.
+- **A legal review is required before launch**, now including **email processing** (lawful basis, retention, deletion, security), cookies and first-party analytics. **Stages 3–4** (jobs and recruiters) need a dedicated review: employment law, anti-discrimination, automated decision-making, and AI regulation for recruitment uses. These documents state product intent and are not legal advice.

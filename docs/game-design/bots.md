@@ -34,7 +34,7 @@ Stats are on a 0–1 scale (initial values, tunables).
 - **speed:** base running pace in segments.
 - **reaction:** how quickly the bot answers (affects timeouts and its race time).
 - **technicalSkill / memorySkill:** the chance of answering technical or job-memory slots correctly, adjusted by slot difficulty.
-- **mistakeProbability:** extra noise (wrong lane, obstacle hits).
+- **mistakeProbability:** extra noise (wrong path, obstacle hits).
 - **personality:** lines and animations (localized). Lines are short, funny and never mean.
 
 ## 4. Outcome model (product level)
@@ -61,9 +61,9 @@ Bots are eliminated by their simulated outcomes (a failed ATS, a destroyed CV), 
 - Computed by the server from the player's server-computed race time and the bots' simulated times.
 - Visual positions during the race are kept **consistent with the server state at each checkpoint**. Between checkpoints the client only interpolates.
 
-## 6. Casual vs ranked
+## 6. Practice vs ranked
 
-| | Casual | Ranked |
+| | Practice | Ranked |
 |---|---|---|
 | Field | Randomly generated per run (archetype mix, names) | **One daily field per category** (the same archetypes, stats and seed for everyone in the category) |
 | Strength | Scaled to the player's exact seniority to keep races close | Scaled to the category's band; fixed for the day |

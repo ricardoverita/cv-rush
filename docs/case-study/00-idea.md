@@ -44,3 +44,7 @@ Not code. Analysis, architecture, decisions, risks, flow and a plan. Then buildi
 - Docker as the official path for local Postgres and Redis.
 
 See the [decision log](decision-log.md) for the full list.
+
+## How the idea evolved during Part 1
+
+Two maintainer reviews reshaped the concept on the same day: revision 2 made ranked play **profile-first** ("compete as who you are"), and revision 3 changed the north star from "a game with a daily leaderboard" to **a game that is the entry point to a developer network** (later jobs and recruiters). See [01 · Product definition](01-product-definition.md).

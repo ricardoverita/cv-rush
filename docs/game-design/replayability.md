@@ -7,7 +7,8 @@
 | Lever | Loop | MVP | Later |
 |---|---|---|---|
 | **Variety** | Session | New jobs, questions, bots, ATS streams, obstacle layouts, recruiter lines per run | New maps (startup, bank, big tech), new stages |
-| **Mastery** | Session | Personal bests per track; explanations in the casual review | Personal stats page; skill trends |
+| **Progression** | Meta | **XP, CV Rush Levels, level-ups, history, technology stats, Daily Champion titles** on My profile | Badges, season XP, public developer page |
+| **Mastery** | Session | Personal bests; explanations in practice reviews | Skill trends by difficulty |
 | **Competition** | Meta | Daily Challenge in your category, 3 attempts, "did I hold #1?", Weekly Top 7 and Candidate of the Week per category | Seasons; challenge a friend; category splits as fields grow |
 | **Social** | Meta | Share cards; discovering profiles on leaderboards | "Challenge a friend" links with the same company and category |
 | **Collection** | Meta | — | Achievements, badges, skins, streaks (non-competitive) |
@@ -15,7 +16,7 @@
 
 ## 2. Sources of variety per run
 
-| Element | Casual | Ranked |
+| Element | Practice | Ranked |
 |---|---|---|
 | Job posting | Generated per run for the profile | Generated per run for the profile, at today's company |
 | Questions | Packs + templates, avoiding recently seen ones | Shared daily families per category + calibrated stack families |
@@ -32,11 +33,13 @@
 - The profile, mode and preferences are kept between runs.
 - The failure screen always shows **how close you got** ("You were 6% away from passing the ATS").
 - Ranked results show the **path to improve** ("Faster correct answers would have earned up to +1,200").
-- Casual offers a **review** with explanations, so each run teaches something.
+- Practice offers a **review** with explanations, so each run teaches something.
+- Every result shows **XP earned and progress to the next level**; level-ups are celebrated.
 
-## 4. Repeat avoidance (casual)
+## 4. Repeat avoidance
 
-- Don't repeat a question seen in the player's last **5** casual runs while the pool allows it.
+- Prefer questions the developer hasn't seen; don't repeat a question seen in their last **5** practice runs while the pool allows it.
+- When a developer has seen most of a context's pool, a refill is generated asynchronously (see [content strategy](../questions/content-strategy.md#3-ai-generated-questions-the-mvp-pipeline)).
 - Prefer topics not seen recently within the same technology.
 - Track the repeat rate as a content-quality metric (see [success metrics](../product/success-metrics.md)).
 
@@ -53,4 +56,4 @@
 - The provisional #1 is told when the day closes and invited to come back and check.
 - The landing page shows yesterday's result to returning players.
 - Each day has a new company to apply to ("Today Kestrel Pay is hiring"), and each category's Weekly Top 7 has a narrative: "4 days left this week".
-- No email or push notifications in the MVP (we don't collect contact data).
+- No push notifications in the MVP, and no emails unless the developer opted in to email communication (off by default).
