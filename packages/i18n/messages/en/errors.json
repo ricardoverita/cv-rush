@@ -17,5 +17,17 @@
   "PROFILE_STACK_SIZE": "Choose between {min} and {max} technologies.",
   "PROFILE_TECHNOLOGY_UNKNOWN": "One of the technologies is not in the catalog.",
   "PROFILE_TECHNOLOGY_INCOMPATIBLE": "One of the technologies doesn't fit this role.",
-  "PROFILE_CORE_CATEGORY_MISSING": "Add at least one {category} technology."
+  "PROFILE_CORE_CATEGORY_MISSING": "Add at least one {category} technology.",
+  "RANKED_PROFILE_LOCKED": "Your ranked profile is locked until the end of the day (UTC). You can change it tomorrow.",
+  "INVALID_TRANSITION": "That step isn't available at this point of the run.",
+  "SESSION_EXPIRED": "This run has expired. Start a new one.",
+  "RANKED_NOT_AVAILABLE": "Ranked isn't available for your track yet. Practice is open.",
+  "RANKED_ATTEMPTS_EXHAUSTED": "You've used today's ranked attempts. Practice is still open.",
+  "RANKED_CONTENT_UNAVAILABLE": "We can't prepare a fair ranked run for your profile right now. Your attempt wasn't used.",
+  "CONTENT_UNAVAILABLE": "We can't prepare a run for your profile right now.",
+  "TOO_MANY_RANKED_SESSIONS": "Too many ranked runs started without applying today.",
+  "CHECKPOINT_TOO_EARLY": "You haven't reached the next checkpoint yet.",
+  "CHALLENGE_NOT_OPEN": "This challenge is no longer open.",
+  "QUESTION_NOT_CURRENT": "That question isn't the current one.",
+  "ALREADY_ANSWERED": "This question was already answered."
 }

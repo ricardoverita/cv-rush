@@ -17,5 +17,17 @@
   "PROFILE_STACK_SIZE": "Elige entre {min} y {max} tecnologías.",
   "PROFILE_TECHNOLOGY_UNKNOWN": "Una de las tecnologías no está en el catálogo.",
   "PROFILE_TECHNOLOGY_INCOMPATIBLE": "Una de las tecnologías no encaja con este rol.",
-  "PROFILE_CORE_CATEGORY_MISSING": "Añade al menos una tecnología de {category}."
+  "PROFILE_CORE_CATEGORY_MISSING": "Añade al menos una tecnología de {category}.",
+  "RANKED_PROFILE_LOCKED": "Tu perfil de ranked está bloqueado hasta el final del día (UTC). Podrás cambiarlo mañana.",
+  "INVALID_TRANSITION": "Ese paso no está disponible en este punto de la partida.",
+  "SESSION_EXPIRED": "Esta partida ha caducado. Empieza una nueva.",
+  "RANKED_NOT_AVAILABLE": "Ranked todavía no está disponible para tu track. Practice está abierto.",
+  "RANKED_ATTEMPTS_EXHAUSTED": "Ya usaste los intentos ranked de hoy. Practice sigue abierto.",
+  "RANKED_CONTENT_UNAVAILABLE": "Ahora no podemos preparar una partida ranked justa para tu perfil. Tu intento no se ha usado.",
+  "CONTENT_UNAVAILABLE": "Ahora no podemos preparar una partida para tu perfil.",
+  "TOO_MANY_RANKED_SESSIONS": "Hoy has empezado demasiadas partidas ranked sin aplicar.",
+  "CHECKPOINT_TOO_EARLY": "Todavía no has llegado al siguiente checkpoint.",
+  "CHALLENGE_NOT_OPEN": "Este desafío ya no está abierto.",
+  "QUESTION_NOT_CURRENT": "Esa pregunta no es la actual.",
+  "ALREADY_ANSWERED": "Esta pregunta ya fue respondida."
 }
