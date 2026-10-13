@@ -35,6 +35,8 @@ computeScore(input: ScoringInput, rules: ScoringRules): ScoreBreakdown
 
 `total = round(Σ components)`. Failed runs get a partial score (labeled "not ranked"). The breakdown (per component, with its inputs) is stored in `game_results.breakdown` and shown on the results screen.
 
+**scoring-v0 (implemented in S2):** the same components without the race: "completion" (3,000, delivered runs only) replaces "final position" until bots exist. Unreached slots count in the denominator. Weights, speed buckets and graded credits live in `packages/content/rulesets/ruleset-v0.yaml` ([D-080](../case-study/decision-log.md#d-080--scoring-v0)).
+
 **Tie-breakers (ranked):** score desc → accuracy desc → race time asc → `created_at` asc.
 
 **Versioning:** results store `scoring_version`. A formula change creates `scoring-v2`; past results are never recomputed. Ranking periods never mix versions: a scoring change starts with a new season or a new period boundary.

@@ -39,6 +39,8 @@
 
 ### Game sessions
 
+> Implemented in S2: `POST /game-sessions`, `GET /game-sessions/{id}` (the full state, also for resuming), `GET /game-sessions/ranked-status`, `POST /game-sessions/{id}/apply`, `POST /game-sessions/{id}/challenges/{stage}/start`, `POST /game-sessions/{id}/challenges/{challengeId}/answer`, `POST /game-sessions/{id}/challenges/{challengeId}/ats` and `GET /game-sessions/{id}/result`. Segment scripts and client events arrive with the race (S3); XP, level and rank with S5 and S7.
+
 | Method and path | Purpose |
 |---|---|
 | `POST /game-sessions` | `{ runType, locale }` → snapshot, Job Challenge (posting), public blueprint shape, attempt info, `serverTime` |

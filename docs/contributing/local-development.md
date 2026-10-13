@@ -15,14 +15,16 @@ corepack enable
 pnpm install                  # builds the shared packages and generates the Prisma client (postinstall)
 docker compose up -d --wait   # PostgreSQL 17 and Redis 8, waits until they are healthy
 pnpm db:migrate               # applies migrations
-pnpm db:seed                  # optional: idempotent seed (Season 0)
+pnpm db:seed                  # Season 0 and the question pools (idempotent; needed to play)
 pnpm dev                      # web + API + worker in watch mode
 ```
 
 Open:
 
 - http://localhost:3000 → redirects to `/en` or `/es` depending on your browser language.
-- http://localhost:3000/en/play → onboarding: create a provisional developer profile (name, seniority, role, stack). The device is recognised on return through an httpOnly cookie.
+- http://localhost:3000/en/play → onboarding: create a provisional developer profile (name, seniority, role, stack). The device is recognised on return through an httpOnly cookie. Then choose **Play Ranked** (3 attempts per UTC day, used when you apply) or **Practice**, read the offer, apply and play the four challenges in a plain web version.
+
+The seed fills the question pools through the generation pipeline with the offline `fake` provider (no API key): fixtures for Node.js, PHP, React, PostgreSQL, Redis, Fullstack fundamentals, Senior+ scenarios and general engineering. Profiles outside those pools fall back to general questions; a ranked run that can't be served fairly is refused before anything is used.
 - http://localhost:4000/api/health and http://localhost:4000/api/ready (also reachable through the web origin at http://localhost:3000/api/…).
 
 Use `http://localhost:3000`, not `127.0.0.1`: state-changing API requests must come from `PUBLIC_BASE_URL` (CSRF check), so creating a profile from another origin is rejected. To start over as a new visitor, delete the `dc` cookie for `localhost` (or use a private window).
@@ -48,6 +50,8 @@ Use `http://localhost:3000`, not `127.0.0.1`: state-changing API requests must c
 | `pnpm lint` / `pnpm format` / `pnpm format:check` | ESLint (with boundary rules) and Prettier |
 | `pnpm test` | Unit tests (Vitest) |
 | `pnpm test:integration` | API integration tests (needs Docker services, migrations and seed) |
+| `pnpm test:e2e` | The main journey in Chrome with Playwright (needs the above and `pnpm build`) |
+| `pnpm audit:check` | Dependency audit against the [policy](../security/dependency-policy.md) |
 | `pnpm db:migrate` | Applies migrations (`prisma migrate deploy`) |
 | `pnpm db:migrate:dev` | Creates a migration from schema changes (`prisma migrate dev`) |
 | `pnpm db:seed` | Idempotent seed |

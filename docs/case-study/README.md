@@ -24,6 +24,7 @@ Rule: **write it when it happens.** Retroactive notes lose the interesting parts
 | [02-architecture.md](02-architecture.md) | Developer-centric domain, facts vs projections, consistency vs queues, attempt commitment, licensing | ✅ Started |
 | [03-foundations.md](03-foundations.md) | Monorepo foundations: tooling decisions and the problems we hit | ✅ Started |
 | [04-slice-s1-identity.md](04-slice-s1-identity.md) | Slice S1: provisional identity, device credential, onboarding | ✅ Started |
+| [05-slice-s2-job-challenge.md](05-slice-s2-job-challenge.md) | Slice S2: the Job Challenge without the game engine | ✅ Started |
 | 03b-game-engine.md | Phaser + Next.js without coupling | S3 |
 | 04-question-engine.md | Strategies, pools, just-in-time questions | Part 2 / S2 |
 | 05-server-authoritative.md | The browser as an untrusted terminal | Part 2 / S2 |

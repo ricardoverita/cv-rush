@@ -10,17 +10,17 @@
 
 ## Estado actual
 
-**Slice S1: ya puedes crear tu perfil de developer. Todavía no hay un juego jugable.**
+**Slice S2: crea tu perfil de developer y juega un Job Challenge completo (Ranked o Practice) en una versión web sencilla. El juego 2D llega a continuación.**
 
 | Hecho | Todavía no |
 |---|---|
-| Diseño de producto y de juego ([Parte 1](docs/README.md)) y arquitectura técnica con 24 ADRs ([Parte 2](docs/architecture/README.md)) | El juego en sí (runner en Phaser, retos, preguntas en partida) |
-| Un monorepo que compila, pasa los tests y se levanta en local | Historial, XP, niveles, rankings, compartir |
-| Identidad de developer y onboarding (S1): un perfil de developer provisional (nombre, seniority, rol y stack del catálogo) que se reconoce en el mismo dispositivo, en inglés y español | Generación de preguntas con IA |
+| Diseño de producto y de juego ([Parte 1](docs/README.md)) y arquitectura técnica con 24 ADRs ([Parte 2](docs/architecture/README.md)) | El juego 2D (runner en Phaser, bots, carrera) |
+| Un monorepo que compila, pasa los tests y se levanta en local | XP, niveles, historial, rankings, compartir |
+| Identidad de developer y onboarding (S1): un perfil de developer provisional (nombre, seniority, rol y stack del catálogo) que se reconoce en el mismo dispositivo, en inglés y español | Generación real de preguntas con IA (hoy un proveedor falso llena los pools) |
 | Una API con health y readiness, y un worker con un job de heartbeat | Cuentas, empleos y funcionalidades para recruiters (etapas posteriores) |
-| Validación de contenido con un pack de preguntas de ejemplo; CI | |
+| Las reglas del juego en el servidor (S2): Job Challenges generados para tu perfil, intentos ranked, máquina de estados, preguntas just-in-time, el ATS, scoring v0 y resultados inmutables; CI con un recorrido end-to-end | |
 
-Siguiente paso: S2, un Job Challenge completo jugado sin motor gráfico, y después S3, la primera carrera jugable. Ver el [plan de implementación](docs/architecture/22-implementation-plan.md) (en inglés).
+Siguiente paso: S3, la primera carrera jugable en Phaser sobre las mismas reglas del servidor. Ver el [plan de implementación](docs/architecture/22-implementation-plan.md) (en inglés).
 
 ## La arquitectura en un minuto
 
@@ -56,6 +56,7 @@ corepack enable
 pnpm install
 docker compose up -d --wait
 pnpm db:migrate
+pnpm db:seed
 pnpm dev
 ```
 
@@ -69,6 +70,7 @@ Para desarrollo local no hace falta un archivo `.env`; [`.env.example`](.env.exa
 ```bash
 pnpm verify               # formato, lint, typecheck, tests unitarios, validación, build
 pnpm test:integration     # tests de la API contra PostgreSQL y Redis reales
+pnpm test:e2e             # el recorrido principal en Chrome (tras pnpm build)
 pnpm questions:validate   # valida los packs de preguntas
 pnpm translations:validate
 ```

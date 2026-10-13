@@ -10,17 +10,17 @@
 
 ## Current status
 
-**Slice S1: you can create your developer profile. There is no playable game yet.**
+**Slice S2: create your developer profile and play a complete Job Challenge (Ranked or Practice) in a plain web version. The 2D game comes next.**
 
 | Done | Not yet |
 |---|---|
-| Product and game design ([Part 1](docs/README.md)) and technical architecture with 24 ADRs ([Part 2](docs/architecture/README.md)) | The game itself (Phaser runner, challenges, questions in play) |
-| A monorepo that builds, tests and runs locally | History, XP, levels, rankings, sharing |
-| Developer identity and onboarding (S1): a provisional developer profile (name, seniority, role, stack from the catalog) recognised on the same device, in English and Spanish | AI question generation |
+| Product and game design ([Part 1](docs/README.md)) and technical architecture with 24 ADRs ([Part 2](docs/architecture/README.md)) | The 2D game (Phaser runner, bots, race) |
+| A monorepo that builds, tests and runs locally | XP, levels, history, rankings, sharing |
+| Developer identity and onboarding (S1): a provisional developer profile (name, seniority, role, stack from the catalog) recognised on the same device, in English and Spanish | Real AI question generation (a fake provider fills the pools today) |
 | An API with health and readiness checks, a worker with a heartbeat job | Accounts, jobs, recruiter features (later stages) |
-| Content validation with a sample question pack; CI | |
+| The game's rules on the server (S2): Job Challenges generated for your profile, ranked attempts, a state machine, just-in-time questions, the ATS, scoring v0 and immutable results; CI with an end-to-end journey | |
 
-Next: S2, a complete Job Challenge played without the game engine, then S3, the first playable race. See the [implementation plan](docs/architecture/22-implementation-plan.md).
+Next: S3, the first playable race in Phaser on top of the same server rules. See the [implementation plan](docs/architecture/22-implementation-plan.md).
 
 ## Architecture in one minute
 
@@ -56,6 +56,7 @@ corepack enable
 pnpm install
 docker compose up -d --wait
 pnpm db:migrate
+pnpm db:seed
 pnpm dev
 ```
 
@@ -69,6 +70,7 @@ No `.env` file is needed for local development; see [`.env.example`](.env.exampl
 ```bash
 pnpm verify               # format check, lint, typecheck, unit tests, validation, build
 pnpm test:integration     # API tests against real PostgreSQL and Redis
+pnpm test:e2e             # the main journey in Chrome (after pnpm build)
 pnpm questions:validate   # validate question packs
 pnpm translations:validate
 ```

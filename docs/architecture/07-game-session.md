@@ -35,6 +35,8 @@ stateDiagram-v2
 
 Storage: `status` (`created`, `in_progress`, `delivered`, `failed`, `abandoned`, `expired_unstarted`) plus `stage` (`job_review`, `segment_1`, `recruiter`, `segment_2`, `ats`, `segment_3`, `hiring_manager`, `segment_4`, `final`). Every transition goes through **one** domain method (`session.transition(event, now)`) that rejects anything not in the table (`INVALID_TRANSITION`).
 
+> **Implemented in S2:** the whole lifecycle except racing: segments are states with a minimum time of 0 until the race exists (S3), there are no segment scripts or client events yet, and the ATS is a keyword selection scored by the same rule (no input-log re-simulation until S4). Routes: `POST /challenges/{stage}/start` uses the stage names (`recruiter`, `ats`, `hiring_manager`, `final`) and the ATS completes with `POST /challenges/{challengeId}/ats { selectedTokenIds }`. See [D-077](../case-study/decision-log.md#d-077--session-states-as-designed-segments-kept-with-no-minimum-time-yet).
+
 ## 2. Creation
 
 `POST /api/v1/game-sessions { runType, locale }`

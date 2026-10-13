@@ -345,3 +345,35 @@ All ADRs (001–024) are **Accepted**, with these approval notes:
 - **Decision:** a vulnerability's scope is where the code runs. **Runtime** findings are fixed (update or compatible, verified override) or justified before a release. **Tooling** findings are assessed for real exploitability and, when not exploitable, get a temporary exception with the advisory, the reason, the dependency that introduces it, a removal condition and a review date ([policy](../security/dependency-policy.md), [`tools/audit-exceptions.json`](../../tools/audit-exceptions.json)). `pnpm audit:check` fails CI on unlisted advisories, expired exceptions and new dependency paths. Dependabot alerts enabled; no automatic merges.
 - **Discarded:** lowering the audit threshold or ignoring by severity (hides future runtime findings); overriding Prisma's internal `deepmerge-ts` to a new major (risks breaking the CLI only to silence a non-exploitable advisory).
 
+### D-077 · Session states as designed, segments kept with no minimum time yet
+- **Status:** Accepted
+- **Decision:** the session follows the approved model (docs/architecture/07): `status` (`created`, `in_progress`, `delivered`, `failed`, `abandoned`, `expired_unstarted`) plus `stage` (`job_review`, `segment_1`, `recruiter`, `segment_2`, `ats`, `segment_3`, `hiring_manager`, `segment_4`, `final`, `finished`). Mapping to the owner's names: CREATED = created/job_review; APPLIED = segment_1; RECRUITER, ATS, HIRING_MANAGER, FINAL_INTERVIEW = the challenge stages; FINISHED = delivered; FAILED, ABANDONED, EXPIRED = failed, abandoned, expired_unstarted. Racing segments are already states, with a minimum time of 0 in ruleset-v0 until the race exists (S3), so S3 changes configuration, not the state machine.
+
+### D-078 · Generated Job Challenges for ranked and practice in S2
+- **Status:** Accepted
+- **Decision:** both modes play `generated` Job Challenges in S2. The model already has the `source` (`generated`, `daily`, `job_posting`) and a separate `job_postings` table, so the Daily Company and its category blueprints (S7, with rankings) and real postings (Play to Apply) plug in without touching sessions. Until then, ranked content equivalence within a category relies on the shared ruleset levels, not on a shared daily selection.
+
+### D-079 · Question content for S2
+- **Status:** Accepted
+- **Decision:** pools are filled through the real generation pipeline with the offline fake provider (fixtures in the shape a real provider must return, including one item the rules must reject). Sample packs are practice-only. Selection falls back track → band → general → general one level lower; a run is dry-run before it starts and refused (`RANKED_CONTENT_UNAVAILABLE` / `CONTENT_UNAVAILABLE`) if a slot can't be served, so an attempt is never lost to missing content. Real providers arrive in S6 behind the same contract.
+
+### D-080 · scoring-v0
+- **Status:** Accepted
+- **Decision:** scoring-v1's formula without the race: "completion" (3,000, delivered runs) stands in for the final position until bots exist. Unreached slots count in the denominator, so a run that fails early keeps a partial score proportional to what it answered. All weights live in ruleset-v0; results record the scoring version and are never recomputed.
+
+### D-081 · Concurrency and idempotency without Redis state
+- **Status:** Accepted
+- **Decision:** every request locks the developer row, then the session row (always in that order, so creating and applying can't deadlock). Overdue deadlines are resolved lazily on the next request and committed in their own transaction, so they stand even if the requested action is refused. Retries replay stored outcomes (apply, start, answer, ATS); changing an answer is refused. Redis is only used through BullMQ for the worker's session sweeper: sessions, attempts and results live in PostgreSQL for audit and reconstruction.
+
+### D-082 · History protected by the database
+- **Status:** Accepted
+- **Decision:** triggers reject updates to `game_results` and `question_versions` and deletions unless a transaction explicitly sets `cvrush.allow_history_delete` (reserved for a future audited data-deletion command; also used by test cleanup). Invalid results will be handled with verification records or projections, never by rewriting a result.
+
+### D-083 · Ranked profile lock implemented with ranked attempts
+- **Status:** Accepted (approved product rule, docs/product/competitive-identity.md §6)
+- **Decision:** applying to the first ranked run of a UTC day locks seniority, role and stack until the end of that day (`RANKED_PROFILE_LOCKED`); the display name stays editable. Shipped in S2 because it belongs to ranked attempts: without it, a player could switch categories between attempts.
+
+### D-084 · End-to-end tests with the installed Chrome
+- **Status:** Accepted
+- **Decision:** Playwright drives the system's Google Chrome (`channel: 'chrome'`), locally and on GitHub's runners (Chrome is preinstalled), so neither contributors nor CI download browsers. One smoke test protects the main journey; deeper rules stay in API integration tests.
+
