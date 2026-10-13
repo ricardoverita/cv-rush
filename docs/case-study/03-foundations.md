@@ -24,11 +24,13 @@ A pnpm monorepo (Node 24, pnpm 12 via Corepack) with a Next.js skeleton (i18n en
 | **NestJS decorators in Vitest** | esbuild doesn't emit decorator metadata, which Nest's DI needs | SWC (`unplugin-swc`) for API tests only |
 | **Lint rule for a dependency-free package** | A glob pattern also blocked relative imports | A regex pattern that only blocks bare specifiers; verified with deliberate violations |
 | **SSH to GitHub blocked on the network** | `git push` over ports 22 and 443 timed out | Repository remote switched to HTTPS with the GitHub CLI as the credential helper (repo-local config) |
+| **API restart loop found only in a clean clone** | `node --watch-path=dist` restarted the API and worker on changes outside `dist` (the web app's `.next` output) when the repository lived under another path; the project looked healthy in the original folder | Use `node --watch` (module graph only). Lesson: verify the documented flow in a fresh clone, not only in the working copy |
+| **`pnpm ci` is a pnpm 12 built-in** | Our `ci` script was shadowed by pnpm's own clean-install command | Renamed the script to `pnpm verify` |
 | **No `.env` friction** | The ideal flow had no `cp .env.example .env` step | Local defaults that match `compose.yaml` (development only; production requires explicit values) |
 
 ## Verification (actually run)
 
-`pnpm install` (with postinstall builds), `pnpm typecheck`, `pnpm lint`, `pnpm format:check`, `pnpm test` (42 unit tests), `pnpm validate`, `pnpm build` (including `next build`), `docker compose up -d --wait`, `pnpm db:migrate`, `pnpm db:check`, `pnpm db:seed` (twice), `pnpm test:integration` (real PostgreSQL and Redis), and `pnpm dev` probed with HTTP requests: health and readiness, request IDs, locale redirects (es-PE → /es, it-IT → /en, cookie overrides Accept-Language), localized pages with absolute canonical and hreflang links, the `/api` rewrite, and the worker's heartbeat job.
+`pnpm install` (with postinstall builds), `pnpm typecheck`, `pnpm lint`, `pnpm format:check`, `pnpm test` (42 unit tests), `pnpm validate`, `pnpm build` (including `next build`), `docker compose up -d --wait`, `pnpm db:migrate`, `pnpm db:check`, `pnpm db:seed` (twice), `pnpm test:integration` (real PostgreSQL and Redis), and `pnpm dev` probed with HTTP requests, then the whole documented flow repeated in a **fresh clone with an empty database** (clone → install → compose up → migrate → dev → seed → db:check → integration tests): health and readiness, request IDs, locale redirects (es-PE → /es, it-IT → /en, cookie overrides Accept-Language), localized pages with absolute canonical and hreflang links, the `/api` rewrite, and the worker's heartbeat job.
 
 ## To measure later
 
