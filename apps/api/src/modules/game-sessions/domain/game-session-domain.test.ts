@@ -140,6 +140,22 @@ describe('ATS', () => {
     createRng('ats'),
   );
 
+  it('never shows nice-to-have technologies, not even as traps', () => {
+    for (let i = 0; i < 30; i++) {
+      const withExcluded = generateAtsTokens(
+        ['nodejs'],
+        catalog,
+        ruleset.ats,
+        createRng(`nice-${i}`),
+        ['angular', 'react', 'postgresql'],
+      );
+      expect(withExcluded.map((t) => t.label)).not.toContain('Angular');
+      const relevant = withExcluded.filter((t) => t.relevant).map((t) => t.label);
+      expect(relevant).toHaveLength(1);
+      expect(['Node.js', 'Node']).toContain(relevant[0]);
+    }
+  });
+
   it('mixes the posting keywords with irrelevant technologies and buzzwords', () => {
     expect(tokens.filter((t) => t.relevant)).toHaveLength(3);
     expect(tokens.filter((t) => !t.relevant)).toHaveLength(

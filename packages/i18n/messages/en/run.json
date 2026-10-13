@@ -39,14 +39,15 @@
     "review": "Read the offer carefully: the recruiter will ask about it.",
     "reviewEnds": "Apply within {seconds} s",
     "responsibilities": "Responsibilities",
-    "stack": "Stack",
+    "stack": "Required stack",
     "experience": "Experience",
     "perks": "Perks",
     "salary": "{min} – {max} per year",
     "apply": "Apply",
     "applyRanked": "Applying uses ranked attempt {number} of {max} today. Once you apply, leaving still counts.",
     "applyPractice": "Practice run: it doesn't use ranked attempts.",
-    "expired": "This offer expired before you applied. Your attempt wasn't used."
+    "expired": "This offer expired before you applied. Your attempt wasn't used.",
+    "niceToHave": "Nice to have"
   },
   "segment": {
     "next": "Next: {stage}",

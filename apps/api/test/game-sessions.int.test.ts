@@ -197,9 +197,11 @@ describe('a complete ranked run (the S2 journey)', () => {
     expect(created).toMatchObject({ status: 'created', stage: 'job_review', question: null });
     expect(created.attempt).toEqual({ number: 1, max: 3, committed: false });
     expect(created.job).toMatchObject({ seniority: 'senior', roleId: 'fullstack_developer' });
-    const offered = created.job.technologies.map((t) => t.id);
-    expect(offered.slice(0, 5)).toEqual(RICARDO.technologyIds);
-    expect(offered).not.toContain('swift');
+    // Required = exactly the developer's stack; anything else is only "nice to have".
+    expect(created.job.requiredTechnologies.map((t) => t.id)).toEqual(RICARDO.technologyIds);
+    const niceToHave = created.job.niceToHaveTechnologies.map((t) => t.id);
+    for (const id of niceToHave) expect(RICARDO.technologyIds).not.toContain(id);
+    expect([...niceToHave, ...RICARDO.technologyIds]).not.toContain('swift');
     expect(await rankedStatus(ricardo)).toMatchObject({
       remaining: 3,
       activeSessionId: created.id,
@@ -221,6 +223,27 @@ describe('a complete ranked run (the S2 journey)', () => {
 
     const finished = await playToTheEnd(ricardo, applied);
     expect(finished).toMatchObject({ status: 'delivered', stage: 'finished' });
+    // Technical questions and ATS keywords only come from the developer's own stack.
+    const versions = await prisma.questionVersion.findMany({
+      where: {
+        id: {
+          in: (await prisma.questionAttempt.findMany({ where: { sessionId: created.id } })).flatMap(
+            (a) => (a.questionVersionId ? [a.questionVersionId] : []),
+          ),
+        },
+      },
+    });
+    for (const v of versions) {
+      for (const t of v.technologyIds) expect(RICARDO.technologyIds).toContain(t);
+    }
+    const ats = await prisma.challenge.findFirstOrThrow({
+      where: { sessionId: created.id, stage: 'ats' },
+    });
+    const relevantTokens = (ats.payload as { tokens: { label: string; relevant: boolean }[] })
+      .tokens;
+    expect(relevantTokens.filter((t) => t.relevant)).toHaveLength(RICARDO.technologyIds.length);
+    const niceNames = created.job.niceToHaveTechnologies.map((t) => t.name);
+    for (const token of relevantTokens) expect(niceNames).not.toContain(token.label);
     const result = GameResultViewSchema.parse(finished.result);
     expect(result).toMatchObject({
       status: 'delivered',

@@ -18,6 +18,7 @@ import {
   type JobFacts,
   type JobTexts,
   type PostingProfile,
+  postingTechnologies,
 } from '../domain/job-posting.js';
 import {
   buildJobMemoryQuestion,
@@ -138,6 +139,7 @@ export class JobChallengeService {
     const { facts } = posting;
     const texts = posting.texts[locale];
     const names = new Map(this.catalog.content().technologies.map((t) => [t.id, t.name]));
+    const { required, niceToHave } = postingTechnologies(facts);
     return {
       company: { name: facts.company.name, sector: texts.sector },
       seniority: facts.seniority,
@@ -147,7 +149,8 @@ export class JobChallengeService {
       salary: facts.salary,
       summary: texts.summary,
       responsibilities: texts.responsibilities,
-      technologies: facts.technologyIds.map((id) => ({ id, name: names.get(id) ?? id })),
+      requiredTechnologies: required.map((id) => ({ id, name: names.get(id) ?? id })),
+      niceToHaveTechnologies: niceToHave.map((id) => ({ id, name: names.get(id) ?? id })),
       experience: texts.experience,
       perks: texts.perks,
     };
@@ -170,7 +173,10 @@ export class JobChallengeService {
       rng: createRng(deriveSeed(input.seedHex, `q:${input.slot.slot}`)),
     };
     if (input.slot.kind === 'salary_graded') return buildSalaryQuestion(ctx);
-    const templates = pickJobMemoryTemplates(createRng(deriveSeed(input.seedHex, 'job-memory')));
+    const templates = pickJobMemoryTemplates(
+      createRng(deriveSeed(input.seedHex, 'job-memory')),
+      input.posting,
+    );
     const index = input.slot.slot === 'R1' ? 0 : 1;
     return buildJobMemoryQuestion(templates[index] as (typeof templates)[number], ctx);
   }

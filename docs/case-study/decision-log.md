@@ -377,6 +377,12 @@ All ADRs (001–024) are **Accepted**, with these approval notes:
 - **Status:** Accepted
 - **Decision:** Playwright drives the system's Google Chrome (`channel: 'chrome'`), locally and on GitHub's runners (Chrome is preinstalled), so neither contributors nor CI download browsers. One smoke test protects the main journey; deeper rules stay in API integration tests.
 
+### D-086 · Required stack only from the player's selection
+- **Status:** Accepted (owner adjustment at the S2 review)
+- **Decision:** a posting's **required** technologies are always taken from the developer's own selection (up to 8, never padded). Related technologies the developer didn't select may appear occasionally (0–2) as **nice to have**, explicitly labeled. Nice-to-have technologies never generate technical questions, never appear in the ATS (neither as keywords nor as traps), never count as missed requirements, never feed skill stats and never change the competitive identity.
+- **Replaces:** the Part 1 rule that topped up short stacks to 6–8 technologies with role-typical ones inside the stack: S2 showed Ricardo a posting requiring Laravel, which he never selected.
+- **Why:** postings look real without betraying the profile the developer chose.
+
 ## 2026-10-13 · Before S3
 
 ### D-085 · A visual design gate before the game engine

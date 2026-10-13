@@ -25,6 +25,7 @@ import {
   type Blueprint,
   buildBlueprint,
   JobChallengeService,
+  postingTechnologies,
   type StoredPosting,
 } from '../../job-challenges/index.js';
 import { CompetitiveSnapshots } from '../../profiles/index.js';
@@ -153,7 +154,7 @@ export class GameSessionsService {
         runType: request.runType,
         locale: request.locale,
         snapshot,
-        postingTechnologyIds: posting.facts.technologyIds,
+        postingTechnologyIds: posting.facts.requiredTechnologyIds,
         seedHex,
         excludeQuestionIds: [],
         now,
@@ -267,14 +268,16 @@ export class GameSessionsService {
       if (stage === 'ats') {
         const posting = agg.jobChallenge.posting as unknown as StoredPosting;
         const role = this.catalog.content().roles.find((r) => r.id === posting.facts.roleId);
+        const { required, niceToHave } = postingTechnologies(posting.facts);
         const tokens = generateAtsTokens(
-          posting.facts.technologyIds,
+          required,
           {
             technologies: this.catalog.content().technologies,
             roleCategories: [...(role?.coreCategories ?? []), ...(role?.allowedCategories ?? [])],
           },
           ruleset.ats,
           createRng(deriveSeed(this.seedHex(agg), 'ats')),
+          niceToHave,
         );
         await tx.challenge.create({
           data: {
@@ -584,7 +587,7 @@ export class GameSessionsService {
         runType: agg.runType,
         locale: agg.locale,
         snapshot,
-        postingTechnologyIds: posting.facts.technologyIds,
+        postingTechnologyIds: postingTechnologies(posting.facts).required,
         seedHex: this.seedHex(agg),
         excludeQuestionIds: agg.attempts.flatMap((a) => (a.questionId ? [a.questionId] : [])),
         now,

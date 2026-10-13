@@ -23,7 +23,13 @@ export interface JobFacts {
   workMode: 'onsite' | 'hybrid' | 'remote';
   salary: { currency: string; min: number; max: number };
   experienceYears: number;
-  technologyIds: string[];
+  /** Always a subset of the developer's own stack: the posting never requires anything else. */
+  requiredTechnologyIds: string[];
+  /**
+   * Related technologies the developer didn't select, shown as "nice to have" for realism. They
+   * never produce technical questions, never count in the ATS and never change the snapshot.
+   */
+  niceToHaveTechnologyIds: string[];
   perkIds: string[];
 }
 
@@ -43,42 +49,56 @@ export interface GeneratedPosting {
 }
 
 const SENIOR_PLUS: readonly Seniority[] = ['senior', 'lead', 'staff', 'principal'];
-const STACK_MIN = 6;
-const STACK_MAX = 8;
+const REQUIRED_MAX = 8;
+const NICE_TO_HAVE_MAX = 2;
 const MAX_RESPONSIBILITIES_FROM_STACK = 4;
 
 /**
- * The posting's stack: mostly the developer's own technologies, always covering the role's core
- * categories, topped up with technologies recommended for the role (never from other roles).
+ * The posting's technologies (docs/game-design/job-generation.md §3, decision D-086).
+ * Required: the developer's own stack (up to 8, covering the role's core categories). Nice to
+ * have: occasionally 1–2 technologies recommended for the role that the developer didn't select.
  */
-export function postingStack(profile: PostingProfile, catalog: Catalog, rng: SeededRng): string[] {
+export function postingStack(
+  profile: PostingProfile,
+  catalog: Catalog,
+  rng: SeededRng,
+): { required: string[]; niceToHave: string[] } {
   const role = catalog.roles.find((r) => r.id === profile.roleId);
   if (!role) throw new Error(`Unknown role ${profile.roleId}`);
   const categoryOf = new Map(catalog.technologies.map((t) => [t.id, t.category]));
   const own = [...profile.technologyIds];
-  const target = Math.min(STACK_MAX, Math.max(STACK_MIN, own.length));
 
-  const chosen: string[] = [];
-  if (own.length <= STACK_MAX) {
-    chosen.push(...own);
+  const required: string[] = [];
+  if (own.length <= REQUIRED_MAX) {
+    required.push(...own);
   } else {
     // One technology per core category first, then the rest of the developer's stack.
     for (const category of role.coreCategories) {
-      const options = own.filter((t) => categoryOf.get(t) === category && !chosen.includes(t));
-      if (options.length > 0) chosen.push(rng.pick(options));
+      const options = own.filter((t) => categoryOf.get(t) === category && !required.includes(t));
+      if (options.length > 0) required.push(rng.pick(options));
     }
-    for (const t of rng.shuffle(own.filter((t) => !chosen.includes(t)))) {
-      if (chosen.length >= target) break;
-      chosen.push(t);
+    for (const t of rng.shuffle(own.filter((t) => !required.includes(t)))) {
+      if (required.length >= REQUIRED_MAX) break;
+      required.push(t);
     }
-    chosen.sort((a, b) => own.indexOf(a) - own.indexOf(b));
+    required.sort((a, b) => own.indexOf(a) - own.indexOf(b));
   }
+
   const allowed = new Set([...role.coreCategories, ...role.allowedCategories]);
-  const extras = rng.shuffle(
-    role.recommended.filter((t) => !chosen.includes(t) && allowed.has(categoryOf.get(t) ?? '')),
+  const related = rng.shuffle(
+    role.recommended.filter((t) => !own.includes(t) && allowed.has(categoryOf.get(t) ?? '')),
   );
-  while (chosen.length < target && extras.length > 0) chosen.push(extras.shift() as string);
-  return chosen;
+  const niceToHave = related.slice(0, rng.int(0, NICE_TO_HAVE_MAX));
+  return { required, niceToHave };
+}
+
+/** Postings stored before D-086 had a single `technologyIds` list: read it as required. */
+export function postingTechnologies(facts: JobFacts): { required: string[]; niceToHave: string[] } {
+  const legacy = (facts as JobFacts & { technologyIds?: string[] }).technologyIds;
+  return {
+    required: facts.requiredTechnologyIds ?? legacy ?? [],
+    niceToHave: facts.niceToHaveTechnologyIds ?? [],
+  };
 }
 
 function fill(template: string, values: Record<string, string>): string {
@@ -105,12 +125,12 @@ export function generatePosting(
   const band = salaryBands.bands[location.tier]?.[profile.seniority];
   if (!tier || !band) throw new Error(`No salary band for ${location.tier}/${profile.seniority}`);
 
-  const technologyIds = postingStack(profile, catalog, rng);
+  const stack = postingStack(profile, catalog, rng);
   const techById = new Map(catalog.technologies.map((t) => [t.id, t]));
 
-  // Responsibilities: one per technology category in the posting, then general ones.
+  // Responsibilities: one per category of the required stack, then general ones.
   const byCategory = new Map<string, string>();
-  for (const id of technologyIds) {
+  for (const id of stack.required) {
     const category = techById.get(id)?.category;
     if (category && !byCategory.has(category)) byCategory.set(category, id);
   }
@@ -138,7 +158,8 @@ export function generatePosting(
     workMode,
     salary: { currency: tier.currency, min: band.min, max: band.max },
     experienceYears: experience.years,
-    technologyIds,
+    requiredTechnologyIds: stack.required,
+    niceToHaveTechnologyIds: stack.niceToHave,
     perkIds: perks.map((p) => p.id),
   };
 

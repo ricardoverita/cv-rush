@@ -45,7 +45,8 @@ test('onboarding, a complete ranked run and its result', async ({ page, baseURL 
   for (const name of ['Node.js', 'PHP', 'React', 'PostgreSQL', 'Redis']) {
     await expect(stack.getByText(name, { exact: true })).toBeVisible();
   }
-  for (const name of ['Swift', 'Kotlin']) await expect(stack.getByText(name)).toHaveCount(0);
+  await expect(stack.locator('li')).toHaveCount(5);
+  for (const name of ['Swift', 'Kotlin']) await expect(page.getByText(name)).toHaveCount(0);
   const offered = await stack.locator('li').allInnerTexts();
   await shot(page, '02-offer');
 

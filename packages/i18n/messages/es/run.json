@@ -39,14 +39,15 @@
     "review": "Lee bien la oferta: el recruiter te preguntará por ella.",
     "reviewEnds": "Aplica en {seconds} s",
     "responsibilities": "Responsabilidades",
-    "stack": "Stack",
+    "stack": "Stack requerido",
     "experience": "Experiencia",
     "perks": "Beneficios",
     "salary": "{min} – {max} al año",
     "apply": "Aplicar",
     "applyRanked": "Aplicar usa el intento ranked {number} de {max} de hoy. Después de aplicar, salir también cuenta.",
     "applyPractice": "Partida de práctica: no usa intentos ranked.",
-    "expired": "Esta oferta caducó antes de que aplicaras. Tu intento no se usó."
+    "expired": "Esta oferta caducó antes de que aplicaras. Tu intento no se usó.",
+    "niceToHave": "Valorable"
   },
   "segment": {
     "next": "Siguiente: {stage}",

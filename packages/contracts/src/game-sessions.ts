@@ -97,7 +97,10 @@ export const JobPostingViewSchema = z.object({
   salary: z.object({ currency: z.string(), min: z.number(), max: z.number() }),
   summary: z.string(),
   responsibilities: z.array(z.string()),
-  technologies: z.array(z.object({ id: CatalogIdSchema, name: z.string() })),
+  /** The developer's own technologies: everything the posting requires. */
+  requiredTechnologies: z.array(z.object({ id: CatalogIdSchema, name: z.string() })),
+  /** Related technologies the developer didn't select: realism only, never required or scored. */
+  niceToHaveTechnologies: z.array(z.object({ id: CatalogIdSchema, name: z.string() })),
   experience: z.string(),
   perks: z.array(z.string()),
 });

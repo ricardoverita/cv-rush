@@ -2,7 +2,7 @@ import type { Locale } from '@cv-rush/contracts';
 import { SENIORITIES } from '@cv-rush/contracts';
 import type { Catalog, JobsContent } from '@cv-rush/content';
 import type { SeededRng } from '@cv-rush/simulation';
-import type { GeneratedPosting } from './job-posting.js';
+import { type GeneratedPosting, postingTechnologies } from './job-posting.js';
 
 // Questions built from the posting's facts (docs/architecture/09 §7): job memory for R1–R2 and
 // the graded salary question for R3. The answer key is the posting, which the player has read.
@@ -38,9 +38,19 @@ export interface TemplateContext {
   rng: SeededRng;
 }
 
-/** Two different job-memory templates for R1 and R2, chosen by the session seed. */
-export function pickJobMemoryTemplates(rng: SeededRng): [JobMemoryTemplate, JobMemoryTemplate] {
-  const [first, second] = rng.shuffle(JOB_MEMORY_TEMPLATES);
+/**
+ * Two different job-memory templates for R1 and R2, chosen by the session seed. "Which was NOT
+ * in the posting?" needs three required technologies as distractors.
+ */
+export function pickJobMemoryTemplates(
+  rng: SeededRng,
+  posting: GeneratedPosting,
+): [JobMemoryTemplate, JobMemoryTemplate] {
+  const { required } = postingTechnologies(posting.facts);
+  const eligible = JOB_MEMORY_TEMPLATES.filter(
+    (t) => t !== 'missing_technology' || required.length >= 3,
+  );
+  const [first, second] = rng.shuffle(eligible);
   return [first as JobMemoryTemplate, second as JobMemoryTemplate];
 }
 
@@ -103,7 +113,9 @@ export function buildJobMemoryQuestion(
     ...(role?.coreCategories ?? []),
     ...(role?.allowedCategories ?? []),
   ]);
-  const inPosting = new Set(facts.technologyIds);
+  const { required, niceToHave } = postingTechnologies(facts);
+  // Nice-to-have technologies are in the posting too: never a wrong answer to "which was in it".
+  const inPosting = new Set([...required, ...niceToHave]);
   const roleTechnologies = catalog.technologies
     .filter((t) => roleCategories.has(t.category) && !inPosting.has(t.id))
     .map((t) => t.id);
@@ -132,11 +144,11 @@ export function buildJobMemoryQuestion(
         ctx,
         templateId,
         name.get(missing) ?? missing,
-        facts.technologyIds.map((t) => name.get(t) ?? t),
+        required.map((t) => name.get(t) ?? t),
       );
     }
     case 'included_technology': {
-      const included = rng.pick(facts.technologyIds);
+      const included = rng.pick(required);
       const others = [...rng.shuffle(ownNotInPosting), ...rng.shuffle(roleTechnologies)];
       // memoryQuestion shuffles distractors; keep the most plausible ones first.
       const wrong = distinct(

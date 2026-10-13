@@ -36,18 +36,24 @@ const fullstackCategories = new Set([
 ]);
 
 describe('job posting generation', () => {
-  it("builds Ricardo's posting from his own stack, topped up with fullstack technologies only", () => {
-    for (let i = 0; i < 50; i++) {
-      const stack = postingStack(ricardo, catalog, createRng(`seed-${i}`));
-      expect(stack.slice(0, 5)).toEqual(ricardo.technologyIds);
-      expect(stack).toHaveLength(6);
-      for (const t of stack) expect(fullstackCategories.has(categoryOf.get(t)!)).toBe(true);
-      expect(stack).not.toContain('swift');
-      expect(stack).not.toContain('kotlin');
+  it("requires exactly Ricardo's own stack; extras only ever appear as nice to have", () => {
+    const seen = new Set<number>();
+    for (let i = 0; i < 100; i++) {
+      const { required, niceToHave } = postingStack(ricardo, catalog, createRng(`seed-${i}`));
+      expect(required).toEqual(ricardo.technologyIds);
+      expect(niceToHave.length).toBeLessThanOrEqual(2);
+      seen.add(niceToHave.length);
+      for (const t of niceToHave) {
+        expect(ricardo.technologyIds).not.toContain(t);
+        expect(fullstackCategories.has(categoryOf.get(t)!)).toBe(true);
+        expect(['swift', 'kotlin']).not.toContain(t);
+      }
     }
+    // "Occasionally": some postings have none, some one, some two.
+    expect([...seen].sort()).toEqual([0, 1, 2]);
   });
 
-  it('keeps 6–8 technologies and covers the core categories for long stacks', () => {
+  it('keeps at most 8 required technologies, covering the core categories, for long stacks', () => {
     const many: PostingProfile = {
       ...ricardo,
       technologyIds: [
@@ -66,11 +72,28 @@ describe('job posting generation', () => {
       ],
     };
     for (let i = 0; i < 50; i++) {
-      const stack = postingStack(many, catalog, createRng(`many-${i}`));
-      expect(stack.length).toBe(8);
-      expect(stack).toContain('react');
-      expect(stack).toContain('nodejs');
-      for (const t of stack) expect(many.technologyIds).toContain(t);
+      const { required, niceToHave } = postingStack(many, catalog, createRng(`many-${i}`));
+      expect(required.length).toBe(8);
+      expect(required).toContain('react');
+      expect(required).toContain('nodejs');
+      for (const t of required) expect(many.technologyIds).toContain(t);
+      for (const t of niceToHave) expect(many.technologyIds).not.toContain(t);
+    }
+  });
+
+  it('never pads a short stack with required technologies', () => {
+    const single: PostingProfile = {
+      ...ricardo,
+      roleId: 'frontend_developer',
+      trackId: 'frontend',
+      technologyIds: ['react'],
+    };
+    for (let i = 0; i < 20; i++) {
+      const posting = generatePosting(single, catalog, content, createRng(`single-${i}`));
+      expect(posting.facts.requiredTechnologyIds).toEqual(['react']);
+      // "Which technology was NOT in the posting?" needs three required ones as distractors.
+      const [r1, r2] = pickJobMemoryTemplates(createRng(`t-${i}`), posting);
+      expect([r1, r2]).not.toContain('missing_technology');
     }
   });
 
@@ -119,7 +142,7 @@ describe('job-derived questions', () => {
     const correct = q.options.find(
       (o) => 'correct' in q.answerKey && o.id === q.answerKey.correct,
     )!;
-    const names = posting.facts.technologyIds.map(
+    const names = posting.facts.requiredTechnologyIds.map(
       (id) => catalog.technologies.find((t) => t.id === id)!.name,
     );
     expect(names).not.toContain(correct.text);
@@ -145,7 +168,7 @@ describe('job-derived questions', () => {
 
   it('uses two different templates for R1 and R2', () => {
     for (let i = 0; i < 20; i++) {
-      const [r1, r2] = pickJobMemoryTemplates(createRng(`t-${i}`));
+      const [r1, r2] = pickJobMemoryTemplates(createRng(`t-${i}`), posting);
       expect(r1).not.toBe(r2);
     }
   });

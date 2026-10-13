@@ -18,15 +18,17 @@ export interface AtsCatalog {
 }
 
 /**
- * Relevant tokens are the posting's technologies (sometimes shown by an alias, e.g. "Postgres").
- * Irrelevant tokens: one technology of the role that the posting didn't ask for, others from
- * unrelated categories, and buzzword traps.
+ * Relevant tokens are the posting's required technologies (sometimes shown by an alias, e.g.
+ * "Postgres"). Irrelevant tokens: one technology of the role that the posting didn't mention,
+ * others from unrelated categories, and buzzword traps. Nice-to-have technologies are never
+ * tokens: they are in the posting, so they can't be traps, and they aren't requirements.
  */
 export function generateAtsTokens(
   postingTechnologyIds: readonly string[],
   catalog: AtsCatalog,
   ats: Ruleset['ats'],
   rng: SeededRng,
+  neverShownIds: readonly string[] = [],
 ): AtsToken[] {
   const byId = new Map(catalog.technologies.map((t) => [t.id, t]));
   const label = (id: string) => {
@@ -35,7 +37,7 @@ export function generateAtsTokens(
     const aliases = (tech.aliases ?? []).filter((a) => /^[a-z]/i.test(a) && a.length > 2);
     return aliases.length > 0 && rng.next() < 0.3 ? capitalize(rng.pick(aliases)) : tech.name;
   };
-  const inPosting = new Set(postingTechnologyIds);
+  const inPosting = new Set([...postingTechnologyIds, ...neverShownIds]);
   const roleCategories = new Set(catalog.roleCategories);
   const sameRole = rng.shuffle(
     catalog.technologies.filter((t) => roleCategories.has(t.category) && !inPosting.has(t.id)),

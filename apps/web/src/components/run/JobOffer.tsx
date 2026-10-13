@@ -67,13 +67,28 @@ export function JobOffer({
       <section>
         <h2 className="mb-2 font-semibold">{t('stack')}</h2>
         <ul className="flex flex-wrap gap-2" data-testid="job-stack">
-          {job.technologies.map((tech) => (
+          {job.requiredTechnologies.map((tech) => (
             <li key={tech.id} className="rounded-full border border-border px-3 py-1 text-sm">
               {tech.name}
             </li>
           ))}
         </ul>
       </section>
+      {job.niceToHaveTechnologies.length > 0 && (
+        <section>
+          <h2 className="mb-2 font-semibold">{t('niceToHave')}</h2>
+          <ul className="flex flex-wrap gap-2" data-testid="job-nice-to-have">
+            {job.niceToHaveTechnologies.map((tech) => (
+              <li
+                key={tech.id}
+                className="rounded-full border border-dashed border-border px-3 py-1 text-sm text-muted"
+              >
+                {tech.name}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       <dl className="grid gap-3 sm:grid-cols-2">
         <div>
           <dt className="font-semibold">{t('experience')}</dt>

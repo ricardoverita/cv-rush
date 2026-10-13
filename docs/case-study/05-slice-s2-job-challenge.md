@@ -37,6 +37,7 @@ Mobile screenshots come from the E2E run (Pixel 7 viewport, production builds); 
 | **A blind E2E ends 0/7** | Worried the correct option was never "A" | 8,000 seeded shuffles: the correct option lands on each position about 2,000 times. Blind answers just lose |
 | **An empty JSON body is a 400** | The E2E sent `content-type: application/json` without a body; Fastify rejected it before the state machine | The test sends what the real client sends (no content type without a body) |
 | **Prisma join loading is still a preview feature** | `relationLoadStrategy: 'join'` would load a session in one query, but needs a preview flag | Not enabled; Prisma's per-relation queries are fine at this size |
+| **A posting required a technology the player never chose** | At the S2 review, Ricardo's offer listed Laravel in its stack, added to reach six technologies | Required stack only from the player's selection; related extras appear as "Nice to have" and never count for questions, ATS, stats or identity ([D-086](decision-log.md#d-086--required-stack-only-from-the-players-selection)) |
 | **A dependency advisory with no fix** | `braces` (via the Next.js lint plugin) has no patched version | A documented tooling exception with a review date ([dependency policy](../security/dependency-policy.md)) |
 
 ## Verification (actually run)

@@ -21,7 +21,8 @@ So it must be **coherent with the profile, readable in 30–45 seconds, and rich
 | Salary range + currency | €45,000 – €60,000 | Memory, salary question |
 | Summary | 1–2 sentences about the team or product, themed by the company's domain | Flavor |
 | Responsibilities | 4–6 bullets from role and stack fragments | Memory, Final Interview scenarios |
-| Stack | 6–8 technologies, mostly from the player's stack | Memory ("which was NOT in the posting?"), ATS relevance, stack questions |
+| Required stack | The player's own technologies (up to 8) | Memory ("which was NOT in the posting?"), ATS relevance, stack questions |
+| Nice to have | 0–2 related technologies the player didn't select | Realism only (never scored) |
 | Experience | "5+ years building software" + 1–2 specific requirements | Memory |
 | Nice to have | 1–2 items | Memory, ATS (secondary) |
 | Perks | 2–3 items, at most one satirical ("Ping-pong table (unused since 2019)") | Humor, memory |
@@ -36,11 +37,10 @@ So it must be **coherent with the profile, readable in 30–45 seconds, and rich
 **Rules:**
 
 - **Title** = exact seniority + role ("Staff Fullstack Developer", "Trainee QA Engineer").
-- **Stack:** 6–8 technologies.
-  - Mostly a **subset of the player's stack**, always including at least one technology from each of the role's **core categories** (Fullstack: frontend + backend).
-  - If the player selected few technologies, add 1–2 **role-typical** ones. They appear in the posting (realism, memory distractors), but **technical questions never target technologies outside the player's stack**.
-  - Technologies the player selected that the posting does *not* include become excellent "which was NOT in the posting?" distractors.
-  - Never technologies unrelated to the role (no Swift in a Fullstack web posting).
+- **Required stack** (revised after S2, [D-086](../case-study/decision-log.md#d-086--required-stack-only-from-the-players-selection)): **only technologies the player selected**, never anything else. Up to 8; when the player selected more, the posting keeps at least one technology from each of the role's **core categories** (Fullstack: frontend + backend). A player with a short stack gets a short required list: it is never padded.
+- **Nice to have:** occasionally 1–2 related technologies the player didn't select (recommended for the role, within its categories), shown explicitly as *Nice to have* for realism. They never generate technical questions, never count in the ATS (neither as keywords nor as traps), are never a missed requirement, never feed skill stats and never change the competitive identity.
+- Technologies the player selected that a long stack leaves out of the posting become excellent "which was NOT in the posting?" answers.
+- Never technologies unrelated to the role (no Swift in a Fullstack web posting).
 - **Experience** by exact seniority: Trainee "no experience required, eager to learn" · Junior 0–2 years · Mid 2–4 years · Senior 5+ · Lead 7+ with team leadership · Staff 8+ · Principal 10+.
 - **Responsibilities** from role and stack fragments (e.g. Kafka → "Work with event-driven architecture"; React → "Build React interfaces"). In ranked they are themed by the Daily Company's domain.
 - **Salary range** from illustrative bands by exact seniority and location tier (authored content, not market data), formatted in the location's currency and the player's locale.
@@ -107,7 +107,7 @@ Responsibilities
 • Build React interfaces for merchants
 • Optimize queries and caching
 
-Stack: Node.js · NestJS · PHP · React · PostgreSQL · Redis · Kafka · Docker
+Required: Node.js · NestJS · PHP · React · PostgreSQL · Redis · Kafka · Docker
 Experience: 5+ years building software · distributed systems · relational databases
 Perks: Flexible hours · Learning budget · Ping-pong table (unused since 2019)
 ```
