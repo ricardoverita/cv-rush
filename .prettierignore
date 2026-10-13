@@ -9,3 +9,4 @@ docs
 LICENSE
 NOTICE
 **/next-env.d.ts
+design-lab/**/*.html

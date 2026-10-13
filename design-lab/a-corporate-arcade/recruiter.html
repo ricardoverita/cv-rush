@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A · Corporate Arcade · Recruiter</title>
+    <link rel="stylesheet" href="../shared/frame.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="stage">
+      <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" role="img"
+        aria-label="The recruiter calls out from a pop-up booth; four meeting-room doors answer where the role is based">
+        <rect width="1600" height="900" fill="var(--sky)" />
+
+        <g class="parallax-clouds">
+          <use href="#a-cloud" x="160" y="60" width="170" height="68" />
+          <use href="#a-cloud" x="700" y="90" width="150" height="60" />
+          <use href="#a-cloud" x="1180" y="50" width="190" height="76" />
+          <use href="#a-cloud" x="1820" y="80" width="180" height="72" />
+        </g>
+
+        <!-- far city -->
+        <g class="parallax-far">
+          <g stroke="var(--ink)" stroke-width="4">
+            <rect x="0" y="460" width="110" height="340" rx="8" fill="#ffd0b0" />
+            <rect x="110" y="520" width="130" height="280" rx="8" fill="#c7b9ff" />
+            <rect x="880" y="470" width="110" height="330" rx="8" fill="#9fe3d6" />
+            <rect x="990" y="430" width="100" height="370" rx="8" fill="#c7b9ff" />
+          </g>
+          <g fill="#fff6d8" opacity=".9">
+            <rect x="20" y="490" width="18" height="22" /><rect x="60" y="535" width="18" height="22" /><rect x="20" y="580" width="18" height="22" />
+            <rect x="130" y="550" width="18" height="22" /><rect x="170" y="595" width="18" height="22" />
+            <rect x="900" y="500" width="18" height="22" /><rect x="940" y="545" width="18" height="22" />
+            <rect x="1010" y="460" width="18" height="22" /><rect x="1050" y="505" width="18" height="22" />
+          </g>
+        </g>
+
+        <!-- Kestrel Pay HQ -->
+        <use href="#a-hq" x="770" y="260" width="170" height="433" />
+
+        <!-- "Salary: competitive" sign -->
+        <g transform="translate(16 480)">
+          <rect x="88" y="90" width="14" height="240" fill="#8e86a8" stroke="var(--ink)" stroke-width="4" />
+          <rect x="-6" width="200" height="96" rx="14" fill="#fff" stroke="var(--ink)" stroke-width="5" />
+          <text x="94" y="38" text-anchor="middle" font-family="Nunito" font-weight="900" font-size="18" fill="var(--ink)">SALARY</text>
+          <text x="94" y="74" text-anchor="middle" font-family="Lilita One" font-size="26" fill="var(--tomato)">Competitive</text>
+        </g>
+
+        <!-- ground -->
+        <rect x="0" y="800" width="1600" height="100" fill="var(--carpet)" />
+        <rect x="0" y="800" width="1600" height="100" fill="url(#a-dots)" />
+        <path d="M0 800 H1600" stroke="var(--ink)" stroke-width="6" />
+        <g class="speedlines" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8">
+          <path d="M240 690 h-70" /><path d="M230 720 h-50" /><path d="M250 750 h-80" />
+        </g>
+
+        <!-- the recruiter's pop-up booth -->
+        <g class="recruiter-talk"><use href="#a-recruiter" x="504" y="540" width="220" height="240" /></g>
+        <use href="#a-booth" x="440" y="500" width="320" height="300" />
+        <!-- ringing phone -->
+        <g transform="translate(724 500)">
+          <g class="token">
+            <circle r="30" fill="var(--sunflower)" stroke="var(--ink)" stroke-width="5" />
+            <text y="11" text-anchor="middle" font-size="30">📞</text>
+            <path d="M38 -16 q10 16 0 32 M50 -24 q16 24 0 48" fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" />
+          </g>
+        </g>
+        <!-- the recruiter's line -->
+        <g transform="translate(130 372)">
+          <path d="M370 86 L420 150 L410 86 Z" fill="#fff" stroke="var(--ink)" stroke-width="5" stroke-linejoin="round" />
+          <rect width="540" height="88" rx="24" fill="#fff" stroke="var(--ink)" stroke-width="5" />
+          <path d="M372 83 H408" stroke="#fff" stroke-width="6" />
+          <text x="270" y="55" text-anchor="middle" font-family="Lilita One" font-size="27" fill="var(--ink)" data-s="recruiter.line">Hi Ricardo! Got 15 minutes? Quick one…</text>
+        </g>
+
+        <!-- jump platforms (desks) -->
+        <g stroke="var(--ink)" stroke-width="5">
+          <rect x="930" y="670" width="140" height="24" rx="6" fill="var(--peach)" />
+          <path d="M945 694 v40 M1055 694 v40" />
+          <rect x="980" y="530" width="120" height="24" rx="6" fill="var(--peach)" />
+          <rect x="1010" y="390" width="110" height="24" rx="6" fill="var(--peach)" />
+        </g>
+
+        <!-- meeting rooms: four floors, four doors -->
+        <g stroke="var(--ink)" stroke-width="5">
+          <rect x="1150" y="250" width="420" height="550" rx="10" fill="#c9f0ea" />
+          <rect x="1150" y="250" width="420" height="550" rx="10" fill="url(#a-dots)" />
+          <rect x="1120" y="380" width="460" height="22" rx="6" fill="#9fd9cf" />
+          <rect x="1120" y="520" width="460" height="22" rx="6" fill="#9fd9cf" />
+          <rect x="1120" y="660" width="460" height="22" rx="6" fill="#9fd9cf" />
+        </g>
+        <g class="door selected" transform="translate(1420 244)">
+          <rect class="glow" x="4" y="10" width="136" height="134" rx="16" fill="none" stroke="var(--tomato)" stroke-width="10" />
+          <use href="#a-door" width="140" height="140" />
+        </g>
+        <g class="door" transform="translate(1420 384)"><use href="#a-door" width="140" height="140" /></g>
+        <g class="door" transform="translate(1420 524)"><use href="#a-door" width="140" height="140" /></g>
+        <g class="door" transform="translate(1420 664)"><use href="#a-door" width="140" height="140" /></g>
+        <g font-family="Lilita One" font-size="26" fill="var(--ink)">
+          <g transform="translate(1176 300)">
+            <rect width="230" height="56" rx="14" fill="var(--tomato)" stroke="var(--ink)" stroke-width="5" />
+            <circle cx="28" cy="28" r="20" fill="#fff" stroke="var(--ink)" stroke-width="4" /><text x="28" y="37" text-anchor="middle">A</text>
+            <text x="58" y="37" fill="#fff" data-s="recruiter.options.A">Barcelona</text>
+          </g>
+          <g transform="translate(1176 440)">
+            <rect width="230" height="56" rx="14" fill="#fff" stroke="var(--ink)" stroke-width="5" />
+            <circle cx="28" cy="28" r="20" fill="var(--sunflower)" stroke="var(--ink)" stroke-width="4" /><text x="28" y="37" text-anchor="middle">B</text>
+            <text x="58" y="37" data-s="recruiter.options.B">Lima</text>
+          </g>
+          <g transform="translate(1176 580)">
+            <rect width="230" height="56" rx="14" fill="#fff" stroke="var(--ink)" stroke-width="5" />
+            <circle cx="28" cy="28" r="20" fill="var(--sunflower)" stroke="var(--ink)" stroke-width="4" /><text x="28" y="37" text-anchor="middle">C</text>
+            <text x="58" y="37" data-s="recruiter.options.C">Berlin</text>
+          </g>
+          <g transform="translate(1176 720)">
+            <rect width="230" height="56" rx="14" fill="#fff" stroke="var(--ink)" stroke-width="5" />
+            <circle cx="28" cy="28" r="20" fill="var(--sunflower)" stroke="var(--ink)" stroke-width="4" /><text x="28" y="37" text-anchor="middle">D</text>
+            <text x="58" y="37" data-s="recruiter.options.D">Austin</text>
+          </g>
+        </g>
+        <!-- path hint: up the desks to door A -->
+        <path d="M420 640 Q700 470 980 650 Q990 560 1030 520 Q1050 430 1070 380 Q1110 320 1170 326" fill="none" stroke="var(--tomato)" stroke-width="6" stroke-dasharray="4 14" stroke-linecap="round" opacity=".8" />
+
+        <!-- runners -->
+        <g class="advance"><use class="runner sofia" href="#a-dev" x="1000" y="380" width="120" height="152" style="--phase:-.1s" /></g>
+        <g class="advance"><use class="runner mateo" href="#a-dev" x="800" y="652" width="120" height="152" style="--phase:-.2s" /></g>
+        <use class="runner ricardo" href="#a-dev" x="330" y="652" width="120" height="152" />
+        <g class="fall-behind"><use class="runner alex" href="#a-dev" x="110" y="652" width="120" height="152" style="--phase:-.25s" /></g>
+        <rect class="scrap" x="442" y="690" width="12" height="14" rx="2" fill="#fff" stroke="var(--ink)" stroke-width="2.5" />
+
+        <g font-family="Lilita One" font-size="20" text-anchor="middle">
+          <g class="advance"><g transform="translate(1048 370)"><rect x="-44" y="-22" width="88" height="30" rx="10" fill="#fff" stroke="var(--ink)" stroke-width="4" /><text y="1">SOFIA</text></g></g>
+          <g class="advance"><g transform="translate(848 642)"><rect x="-46" y="-22" width="92" height="30" rx="10" fill="#fff" stroke="var(--ink)" stroke-width="4" /><text y="1">MATEO</text></g></g>
+          <g transform="translate(378 642)"><rect x="-60" y="-24" width="120" height="34" rx="11" fill="var(--tomato)" stroke="var(--ink)" stroke-width="4" /><text y="2" fill="#fff" data-s="player.name">RICARDO</text></g>
+          <g class="fall-behind"><g transform="translate(158 642)"><rect x="-38" y="-22" width="76" height="30" rx="10" fill="#fff" stroke="var(--ink)" stroke-width="4" /><text y="1">ALEX</text></g></g>
+        </g>
+      </svg>
+
+      <div class="hud">
+        <div class="player-card sticker">
+          <div class="name" data-s="player.name">RICARDO</div>
+          <div class="title" data-s="player.title">Senior Fullstack Developer</div>
+          <div class="cv-meter">
+            <span class="icon" aria-hidden="true"></span>
+            <span class="bar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i></span>
+            <span>CV <span data-s="cvHealth">80</span>%</span>
+          </div>
+          <div class="stages" aria-label="Recruiter now; ATS, Hiring Manager and Final next">
+            <span class="now">📞</span><span>🤖</span><span>💼</span><span>🏢</span>
+          </div>
+        </div>
+
+        <div class="question sticker">
+          <span class="tab"><span data-s="recruiter.icon"></span> RECRUITER · <span data-s="recruiter.counter"></span></span>
+          <div class="prompt" data-s="recruiter.prompt">Where is the role based?</div>
+          <div class="timer"><span data-s="recruiter.seconds">7</span></div>
+        </div>
+
+        <div class="race-status">
+          <div class="score sticker"><small>SCORE</small><span data-s="score">12,480</span></div>
+          <div class="position sticker"><div><b data-s="position">3rd</b><small>of 4</small></div></div>
+        </div>
+
+        <div class="hint sticker">
+          <span class="desktop">Run through a door · <kbd>↑</kbd> <kbd>↓</kbd> or <kbd>1</kbd>–<kbd>4</kbd></span>
+          <span class="phone">Tap a door sign to take it</span>
+        </div>
+
+        <div class="touch"><div class="jump">JUMP</div></div>
+      </div>
+
+      <div class="rotate">
+        <div class="phone" aria-hidden="true"></div>
+        <div>Rotate your device to play</div>
+      </div>
+    </div>
+    <script src="../shared/scenario.js"></script>
+    <script src="sprites.js"></script>
+  </body>
+</html>

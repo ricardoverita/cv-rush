@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>C · Paper Trail · ATS 9000</title>
+    <link rel="stylesheet" href="../shared/frame.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="stage">
+      <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" role="img"
+        aria-label="The ATS 9000 copier scans the lane with a light bar; Ricardo collects his stack labels and avoids red buzzword tape">
+        <rect width="1600" height="900" fill="var(--kraft)" />
+        <rect width="1600" height="900" fill="url(#c-grid)" />
+
+        <g class="parallax-clouds">
+          <use href="#c-cloud" x="80" y="90" width="170" height="68" />
+          <use href="#c-cloud" x="560" y="200" width="150" height="60" />
+          <use href="#c-cloud" x="1280" y="70" width="180" height="72" />
+          <use href="#c-cloud" x="1800" y="90" width="180" height="72" />
+        </g>
+
+        <g class="parallax-far" filter="url(#c-shadow)">
+          <rect x="0" y="480" width="130" height="320" fill="#DCEBDD" />
+          <rect x="130" y="430" width="90" height="370" fill="#CFE0EE" />
+          <rect x="780" y="460" width="120" height="340" fill="#F3E7C9" />
+        </g>
+        <g class="parallax-far" fill="none" stroke="var(--ink)" stroke-width="2" opacity=".45">
+          <rect x="22" y="510" width="18" height="24" /><rect x="62" y="555" width="18" height="24" /><rect x="22" y="600" width="18" height="24" />
+          <rect x="150" y="460" width="16" height="22" /><rect x="186" y="505" width="16" height="22" />
+          <rect x="800" y="490" width="18" height="24" /><rect x="850" y="535" width="18" height="24" />
+        </g>
+
+        <use href="#c-hq" x="560" y="300" width="160" height="407" />
+
+        <g id="ground"></g>
+
+        <!-- ATS 9000 copier -->
+        <use href="#c-ats" x="1060" y="240" width="460" height="560" />
+        <g transform="translate(1022 330) rotate(-3)" filter="url(#c-shadow)">
+          <rect width="96" height="24" fill="var(--card)" />
+          <text x="48" y="17" text-anchor="middle" font-family="IBM Plex Mono" font-weight="700" font-size="12" fill="var(--ink)">INBOX: 237</text>
+        </g>
+
+        <!-- rejected CVs drop out of the copier into the shredder bin -->
+        <g transform="translate(1380 640)">
+          <g class="reject-cv" style="--phase:0s"><use href="#c-clipboard" width="34" height="44" style="--cv-dmg: none" /><text x="4" y="30" font-family="IBM Plex Mono" font-weight="700" font-size="8" fill="var(--stamp)" transform="rotate(-18 17 26)">REJECTED</text></g>
+          <g class="reject-cv" style="--phase:-1.2s"><use href="#c-clipboard" width="34" height="44" style="--cv-dmg: none" /><text x="4" y="30" font-family="IBM Plex Mono" font-weight="700" font-size="8" fill="var(--stamp)" transform="rotate(-18 17 26)">REJECTED</text></g>
+        </g>
+        <g filter="url(#c-shadow)">
+          <path d="M1360 724 H1548 L1536 800 H1372 Z" fill="#9AA3AE" />
+          <rect x="1352" y="712" width="204" height="18" rx="3" fill="#7F8894" />
+          <rect x="1380" y="748" width="148" height="30" fill="var(--card)" />
+          <text x="1454" y="769" text-anchor="middle" font-family="IBM Plex Mono" font-weight="700" font-size="14" fill="var(--stamp)" data-s="ats.rejectedPile">Auto-rejected</text>
+        </g>
+        <g fill="var(--card)">
+          <rect class="strip" x="1400" y="800" width="6" height="22" style="--phase:0s" />
+          <rect class="strip" x="1440" y="800" width="6" height="18" style="--phase:-.4s" />
+          <rect class="strip" x="1490" y="800" width="6" height="24" style="--phase:-.8s" />
+        </g>
+
+        <!-- the scan light on the lane -->
+        <g class="scanlight">
+          <path d="M1060 470 L960 800 L1060 800 L1110 470 Z" fill="var(--hl)" opacity=".28" />
+          <rect x="960" y="794" width="100" height="10" fill="var(--hl)" opacity=".8" />
+        </g>
+
+        <g id="tokens"></g>
+
+        <!-- Ricardo just grabbed a keyword -->
+        <g transform="translate(470 584)"><g class="pop" filter="url(#c-shadow)">
+          <rect x="-52" y="-20" width="104" height="34" fill="var(--mint)" />
+          <text y="4" text-anchor="middle" font-family="IBM Plex Mono" font-weight="700" font-size="17" fill="var(--ink)">+ Redis</text>
+        </g></g>
+
+        <!-- runners -->
+        <g class="advance"><use class="runner sofia" href="#c-dev" x="1220" y="622" width="118" height="190" style="--phase:-.15s" /></g>
+        <use class="runner mateo" href="#c-dev" x="940" y="622" width="118" height="190" style="--phase:-.3s" />
+        <use class="runner ricardo" href="#c-dev" x="400" y="622" width="118" height="190" />
+        <g class="fall-behind"><use class="runner alex" href="#c-dev" x="170" y="622" width="118" height="190" style="--phase:-.4s" /></g>
+        <path class="scrap" d="M506 704 l10 3 l-4 9 z" fill="var(--card)" stroke="var(--ink)" stroke-width="1" />
+
+        <g font-family="IBM Plex Mono" font-weight="700" font-size="16" text-anchor="middle">
+          <g class="advance"><g transform="translate(1278 612) rotate(-2)"><rect x="-70" y="-18" width="140" height="26" fill="var(--card)" filter="url(#c-shadow)" /><text y="1" fill="var(--ink)">SOFIA <tspan fill="#3f8f66">PASSED</tspan></text></g></g>
+          <g transform="translate(995 612) rotate(2)"><rect x="-42" y="-18" width="84" height="26" fill="var(--card)" filter="url(#c-shadow)" /><text y="1" fill="var(--ink)">MATEO</text></g>
+          <g transform="translate(455 610) rotate(-2)"><rect x="-56" y="-20" width="112" height="30" fill="var(--hl)" filter="url(#c-shadow)" /><text y="1" fill="var(--ink)" data-s="player.name">RICARDO</text></g>
+          <g class="fall-behind"><g transform="translate(225 612) rotate(1)"><rect x="-34" y="-18" width="68" height="26" fill="var(--card)" filter="url(#c-shadow)" /><text y="1" fill="var(--ink)">ALEX</text></g></g>
+        </g>
+      </svg>
+
+      <div class="hud">
+        <div class="player-card card">
+          <div class="name" data-s="player.name">RICARDO</div>
+          <div class="title" data-s="player.title">Senior Fullstack Developer</div>
+          <div class="cv-meter">
+            <span class="icon" aria-hidden="true"></span>
+            <span class="bar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i></span>
+            <span>CV <span data-s="cvHealth">80</span>%</span>
+          </div>
+          <div class="stages" aria-label="Recruiter passed, ATS now, Hiring Manager and Final next">
+            <span class="done">REC ✓</span><span class="now">ATS 9000</span><span>HIRING MGR</span><span>FINAL</span>
+          </div>
+        </div>
+
+        <div class="question card ats">
+          <span class="tab">ATS 9000 · KEYWORD SCAN</span>
+          <span class="timer">0:<span data-s="ats.seconds">14</span></span>
+          <div class="match">
+            <span class="big">Match <span data-s="ats.match">82</span>%</span>
+            <div class="meter" aria-hidden="true"><span class="fill" style="width: 82%"></span><span class="line" style="left: 70%"></span></div>
+          </div>
+          <div class="chips" id="chips"></div>
+        </div>
+
+        <div class="race-status">
+          <div class="score card">SCORE<b data-s="score">12,480</b></div>
+          <div class="position"><div><b data-s="position">3rd</b><small>of 4</small></div></div>
+        </div>
+
+        <div class="hint card">
+          <span class="desktop">Grab your stack, skip the buzzwords · <kbd>Space</kbd> jump</span>
+          <span class="phone">Grab your stack</span>
+        </div>
+
+        <div class="touch"><div class="jump">JUMP</div></div>
+      </div>
+
+      <div class="rotate">
+        <div class="phone" aria-hidden="true"></div>
+        <div>Rotate your device to play</div>
+      </div>
+    </div>
+    <script src="../shared/scenario.js"></script>
+    <script src="sprites.js"></script>
+    <script src="scene.js"></script>
+    <script>
+      window.notebookGround('ground');
+      const ats = window.SCENARIO.ats;
+      window.keywordLabels('tokens', ats, {
+        PHP: [640, 610],
+        PostgreSQL: [800, 520],
+        Ninja: [580, 460],
+        '10x': [740, 730],
+        Synergy: [860, 650],
+        Spark: [800, 400],
+      });
+      document.getElementById('chips').innerHTML =
+        ats.collected.map((t) => `<span>${t} ✓</span>`).join('') +
+        ats.upcoming.map((t) => `<span class="todo">${t}</span>`).join('');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>B · Neon Pixel Campus · Recruiter</title>
+    <link rel="stylesheet" href="../shared/frame.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="stage">
+      <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" role="img"
+        aria-label="The recruiter appears as a hologram video call over the lane; four portals answer where the role is based">
+        <rect width="1600" height="900" fill="url(#b-sky)" />
+        <g id="stars"></g>
+        <g class="parallax-far" shape-rendering="crispEdges"><g id="skyline"></g></g>
+
+        <use href="#b-hq" x="880" y="250" width="180" height="497" />
+
+        <!-- ground -->
+        <g shape-rendering="crispEdges">
+          <rect x="0" y="800" width="1600" height="100" fill="#1E1A3D" />
+          <rect x="0" y="830" width="1600" height="4" fill="#3B2F6E" />
+          <g class="parallax-near" id="joints"></g>
+          <rect x="0" y="796" width="1600" height="8" fill="#2DE2E6" filter="url(#b-glow)" />
+        </g>
+
+        <!-- hologram projector + light cone -->
+        <path d="M530 786 L610 786 L840 604 L300 604 Z" fill="#2DE2E6" opacity=".07" />
+        <g shape-rendering="crispEdges">
+          <rect x="520" y="780" width="100" height="20" fill="#3B2F6E" stroke="#8A8FB5" stroke-width="4" />
+          <rect class="b-blink" x="562" y="774" width="16" height="8" fill="#2DE2E6" />
+        </g>
+
+        <!-- the call window -->
+        <g class="holo" shape-rendering="crispEdges">
+          <rect x="300" y="330" width="540" height="274" fill="#0E0B1F" opacity=".82" />
+          <rect x="300" y="330" width="540" height="274" fill="url(#b-scan)" class="holo-scan" />
+          <rect x="300" y="330" width="540" height="274" fill="none" stroke="#2DE2E6" stroke-width="5" />
+          <rect x="300" y="330" width="540" height="34" fill="#2DE2E6" />
+          <rect x="314" y="341" width="12" height="12" fill="#FF3E9A" class="b-blink" />
+          <text x="336" y="354" font-family="Silkscreen" font-size="15" fill="#0E0B1F">LIVE · TALENT TEAM</text>
+          <text x="826" y="354" text-anchor="end" font-family="Silkscreen" font-size="15" fill="#0E0B1F">01:47:12</text>
+          <use href="#b-recruiter" x="318" y="384" width="154" height="154" />
+          <!-- call controls -->
+          <rect x="330" y="552" width="40" height="34" fill="#3B2F6E" /><rect x="380" y="552" width="40" height="34" fill="#3B2F6E" /><rect x="430" y="552" width="40" height="34" fill="#FF3E9A" />
+          <rect x="344" y="562" width="12" height="14" fill="#8A8FB5" /><rect x="392" y="563" width="16" height="12" fill="#8A8FB5" /><rect x="440" y="566" width="20" height="6" fill="#0E0B1F" />
+          <!-- the line -->
+          <foreignObject x="490" y="384" width="336" height="150">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Pixelify Sans'; font-weight: 600; font-size: 27px; line-height: 1.2; color: #F2F4FF; font-variant-ligatures: none" data-s="recruiter.line">Hi Ricardo! Got 15 minutes? Quick one…</div>
+          </foreignObject>
+          <rect x="490" y="540" width="270" height="48" fill="#3B2F6E" />
+          <text x="504" y="562" font-family="Silkscreen" font-size="12" fill="#8A8FB5">PINNED</text>
+          <text x="504" y="580" font-family="Silkscreen" font-size="14" fill="#FFB547">SALARY: COMPETITIVE</text>
+        </g>
+
+        <!-- platforms -->
+        <use href="#b-rack" x="930" y="690" width="126" height="112" />
+        <g shape-rendering="crispEdges">
+          <rect x="980" y="530" width="126" height="20" fill="#3B2F6E" /><rect x="980" y="530" width="126" height="6" fill="#2DE2E6" />
+          <rect class="b-blink" x="1000" y="550" width="14" height="10" fill="#FF3E9A" /><rect class="b-blink" x="1072" y="550" width="14" height="10" fill="#FF3E9A" />
+          <rect x="1010" y="390" width="112" height="20" fill="#3B2F6E" /><rect x="1010" y="390" width="112" height="6" fill="#2DE2E6" />
+          <rect class="b-blink" x="1028" y="410" width="14" height="10" fill="#FF3E9A" /><rect class="b-blink" x="1090" y="410" width="14" height="10" fill="#FF3E9A" />
+        </g>
+
+        <!-- the portal tower -->
+        <g shape-rendering="crispEdges">
+          <rect x="1150" y="250" width="420" height="550" fill="#161233" stroke="#3B2F6E" stroke-width="6" />
+          <rect x="1150" y="250" width="420" height="12" fill="#3B2F6E" />
+          <g fill="#2A2456"><rect x="1120" y="380" width="460" height="18" /><rect x="1120" y="520" width="460" height="18" /><rect x="1120" y="660" width="460" height="18" /></g>
+          <g fill="#2DE2E6"><rect x="1120" y="380" width="460" height="5" /><rect x="1120" y="520" width="460" height="5" /><rect x="1120" y="660" width="460" height="5" /></g>
+        </g>
+        <g class="portal selected" transform="translate(1420 240)">
+          <rect class="pulse" x="0" y="6" width="140" height="138" fill="none" stroke="#FF3E9A" stroke-width="6" filter="url(#b-glow)" />
+          <use href="#b-portal" width="140" height="140" />
+        </g>
+        <g class="portal" transform="translate(1420 380)"><use href="#b-portal" width="140" height="140" /></g>
+        <g class="portal" transform="translate(1420 520)"><use href="#b-portal" width="140" height="140" /></g>
+        <g class="portal" transform="translate(1420 660)"><use href="#b-portal" width="140" height="140" /></g>
+        <g id="plates"></g>
+        <path d="M480 640 Q720 520 960 670 Q990 580 1030 525 Q1050 440 1070 385 Q1110 330 1170 326" fill="none" stroke="#FF3E9A" stroke-width="8" stroke-dasharray="8 18" opacity=".9" shape-rendering="crispEdges" />
+
+        <!-- runners -->
+        <g fill="#2DE2E6" opacity=".18" shape-rendering="crispEdges">
+          <rect x="985" y="524" width="112" height="6" /><rect x="800" y="798" width="112" height="6" /><rect x="330" y="798" width="112" height="6" /><rect x="110" y="798" width="112" height="6" />
+        </g>
+        <g class="advance"><use class="runner sofia" href="#b-dev" x="975" y="383" width="140" height="147" style="--phase:-.12s" /></g>
+        <g class="advance"><use class="runner mateo" href="#b-dev" x="790" y="653" width="140" height="147" style="--phase:-.24s" /></g>
+        <use class="runner ricardo" href="#b-dev" x="330" y="653" width="140" height="147" />
+        <g class="fall-behind"><use class="runner alex" href="#b-dev" x="110" y="653" width="140" height="147" style="--phase:-.3s" /></g>
+        <g shape-rendering="crispEdges">
+          <rect class="glitch" x="463" y="730" width="7" height="7" fill="#FF3E9A" />
+          <rect class="glitch" x="456" y="716" width="7" height="7" fill="#F2F4FF" style="--phase:-.4s" />
+          <rect class="glitch" x="470" y="744" width="7" height="7" fill="#2DE2E6" style="--phase:-.7s" />
+        </g>
+
+        <g font-family="Silkscreen" font-size="17" text-anchor="middle" shape-rendering="crispEdges">
+          <g class="advance"><g transform="translate(1032 362)"><rect x="-46" y="-20" width="92" height="28" fill="#0E0B1F" stroke="#FF3E9A" stroke-width="3" /><text y="1" fill="#F2F4FF">SOFIA</text></g></g>
+          <g class="advance"><g transform="translate(846 632)"><rect x="-48" y="-20" width="96" height="28" fill="#0E0B1F" stroke="#FFB547" stroke-width="3" /><text y="1" fill="#F2F4FF">MATEO</text></g></g>
+          <g transform="translate(386 630)"><rect x="-62" y="-22" width="124" height="32" fill="#2DE2E6" /><text y="2" fill="#0E0B1F" data-s="player.name">RICARDO</text><path d="M-8 10 h16 v6 h-4 v6 h-8 v-6 h-4 z" fill="#2DE2E6" /></g>
+          <g class="fall-behind"><g transform="translate(166 632)"><rect x="-38" y="-20" width="76" height="28" fill="#0E0B1F" stroke="#A98CFF" stroke-width="3" /><text y="1" fill="#F2F4FF">ALEX</text></g></g>
+        </g>
+      </svg>
+
+      <div class="hud">
+        <div class="player-card panel">
+          <div class="name" data-s="player.name">RICARDO</div>
+          <div class="title" data-s="player.title">Senior Fullstack Developer</div>
+          <div class="cv-meter">
+            <span class="icon" aria-hidden="true"></span>
+            <span class="bar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i></span>
+            <span>CV <span data-s="cvHealth">80</span>%</span>
+          </div>
+          <div class="stages" aria-label="Recruiter now; ATS, Hiring Manager and Final next">
+            <span class="now">REC</span><span>ATS</span><span>HM</span><span>FIN</span>
+          </div>
+        </div>
+
+        <div class="question panel">
+          <div class="bar"><span>◆ RECRUITER · <span data-s="recruiter.counter"></span></span><span class="timer">0:0<span data-s="recruiter.seconds">7</span></span></div>
+          <div class="prompt" data-s="recruiter.prompt">Where is the role based?</div>
+        </div>
+
+        <div class="race-status">
+          <div class="score panel"><small>SCORE</small><span data-s="score">12,480</span></div>
+          <div class="position panel"><b data-s="position" style="text-transform: uppercase">3rd</b><small>OF 4</small></div>
+        </div>
+
+        <div class="hint panel">
+          <span class="desktop">RUN INTO A PORTAL · <kbd>↑</kbd> <kbd>↓</kbd> OR <kbd>1</kbd>-<kbd>4</kbd></span>
+          <span class="phone">TAP A SIGN TO PICK</span>
+        </div>
+
+        <div class="touch"><div class="jump">JUMP</div></div>
+      </div>
+
+      <div class="rotate">
+        <div class="phone" aria-hidden="true"></div>
+        <div>ROTATE YOUR DEVICE TO PLAY</div>
+      </div>
+    </div>
+    <script src="../shared/scenario.js"></script>
+    <script src="sprites.js"></script>
+    <script src="scene.js"></script>
+    <script>
+      window.pixelStars('stars', 70, 470);
+      window.campusSkyline('skyline', [[-40, 470, 160], [120, 520, 130], [640, 450, 140], [780, 500, 100], [1080, 470, 60]]);
+      window.groundJoints('joints');
+      window.answerPlates('plates', window.SCENARIO.recruiter);
+    </script>
+  </body>
+</html>

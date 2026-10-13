@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CV Rush Design Lab</title>
+    <style>
+      :root {
+        --bg: #f6f5f2;
+        --surface: #ffffff;
+        --text: #1d1d22;
+        --muted: #62626e;
+        --line: #e3e1db;
+        --accent: #3b5bdb;
+        color-scheme: light;
+        font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        color: var(--text);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141418;
+          --surface: #1d1d23;
+          --text: #ececf1;
+          --muted: #a1a1ad;
+          --line: #2e2e36;
+          --accent: #8ea6ff;
+          color-scheme: dark;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        line-height: 1.5;
+      }
+      main {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 32px 16px 64px;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 0 0 4px;
+      }
+      h2 {
+        font-size: 20px;
+        margin: 40px 0 12px;
+      }
+      p {
+        margin: 0 0 8px;
+        color: var(--muted);
+      }
+      a {
+        color: var(--accent);
+      }
+      .directions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+        margin-top: 24px;
+      }
+      .direction {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+      }
+      .direction h3 {
+        margin: 0 0 4px;
+        font-size: 18px;
+      }
+      .swatches {
+        display: flex;
+        gap: 4px;
+        margin: 10px 0;
+      }
+      .swatches span {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1px solid var(--line);
+      }
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 12px;
+        font-size: 14px;
+      }
+      .grid {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .grid th,
+      .grid td {
+        padding: 8px;
+        vertical-align: top;
+        text-align: left;
+        border-top: 1px solid var(--line);
+      }
+      .grid th[scope='row'] {
+        width: 130px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .grid img {
+        display: block;
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+      }
+      .grid td.portrait img {
+        max-width: 180px;
+      }
+      .scroll {
+        overflow-x: auto;
+      }
+      .scroll table {
+        min-width: 760px;
+      }
+      code {
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>CV Rush · Design lab</h1>
+      <p>S2.5 Round 1: three art directions, the same moment of the same run. Prototypes only, never imported by the apps.</p>
+      <p>Analysis, pros and risks, mobile and the recommendation: <a href="round-1.md">round-1.md</a>. Rules for this folder: <a href="README.md">README.md</a>.</p>
+
+      <div class="directions">
+        <section class="direction">
+          <h3>A · Corporate Arcade</h3>
+          <p>A bright cartoon office arcade: ink outlines, chibi developers holding their CV high, elevator doors for answers.</p>
+          <div class="swatches" aria-hidden="true">
+            <span style="background: #1d1b2f"></span><span style="background: #fff8ec"></span><span style="background: #ff5a4e"></span><span style="background: #ffc93c"></span><span style="background: #1fb5a6"></span><span style="background: #8fd3ff"></span><span style="background: #b9a6ff"></span>
+          </div>
+          <p>Lilita One + Nunito</p>
+          <div class="links">
+            <a href="a-corporate-arcade/race.html">Race</a><a href="a-corporate-arcade/ats.html">ATS 9000</a><a href="a-corporate-arcade/recruiter.html">Recruiter</a><a href="a-corporate-arcade/race.html?portrait=fit">Portrait sample</a>
+          </div>
+        </section>
+        <section class="direction">
+          <h3>B · Neon Pixel Campus</h3>
+          <p>A tech campus at night in modern pixel art: neon signs, server racks, holographic portals, a mainframe ATS.</p>
+          <div class="swatches" aria-hidden="true">
+            <span style="background: #0e0b1f"></span><span style="background: #1e1a3d"></span><span style="background: #3b2f6e"></span><span style="background: #2de2e6"></span><span style="background: #ff3e9a"></span><span style="background: #b7f34b"></span><span style="background: #ffb547"></span>
+          </div>
+          <p>Silkscreen + Pixelify Sans</p>
+          <div class="links">
+            <a href="b-neon-pixel/race.html">Race</a><a href="b-neon-pixel/ats.html">ATS 9000</a><a href="b-neon-pixel/recruiter.html">Recruiter</a><a href="b-neon-pixel/race.html?portrait=fit">Portrait sample</a>
+          </div>
+        </section>
+        <section class="direction">
+          <h3>C · Paper Trail</h3>
+          <p>A paper-craft world made of hiring paperwork: paper dolls with clipboards, archive-box doors, a copier ATS.</p>
+          <div class="swatches" aria-hidden="true">
+            <span style="background: #e9dcc4"></span><span style="background: #fbf8f2"></span><span style="background: #22304a"></span><span style="background: #d9483b"></span><span style="background: #ffe45c"></span><span style="background: #6e9bc9"></span><span style="background: #8cc9a8"></span>
+          </div>
+          <p>Fraunces + IBM Plex Mono</p>
+          <div class="links">
+            <a href="c-paper-trail/race.html">Race</a><a href="c-paper-trail/ats.html">ATS 9000</a><a href="c-paper-trail/recruiter.html">Recruiter</a><a href="c-paper-trail/race.html?portrait=fit">Portrait sample</a>
+          </div>
+        </section>
+      </div>
+
+      <h2>Side by side</h2>
+      <p>Click a screenshot to open the live prototype (resize the window or use device emulation for the phone layouts).</p>
+      <div class="scroll">
+        <table class="grid">
+          <thead>
+            <tr><th></th><th>A · Corporate Arcade</th><th>B · Neon Pixel Campus</th><th>C · Paper Trail</th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </main>
+    <script>
+      const views = [
+        ['Race + question', 'race-desktop', 'race.html', ''],
+        ['ATS 9000', 'ats-desktop', 'ats.html', ''],
+        ['Recruiter', 'recruiter-desktop', 'recruiter.html', ''],
+        ['Phone, landscape 844×390', 'race-mobile-landscape', 'race.html', ''],
+        ['Phone, portrait (playing anyway)', 'race-mobile-portrait-fit', 'race.html?portrait=fit', 'portrait'],
+        ['Phone, portrait (rotate prompt)', 'race-mobile-portrait-rotate', 'race.html', 'portrait'],
+      ];
+      const dirs = [
+        ['a', 'a-corporate-arcade'],
+        ['b', 'b-neon-pixel'],
+        ['c', 'c-paper-trail'],
+      ];
+      document.getElementById('rows').innerHTML = views
+        .map(
+          ([label, shot, page, cls]) =>
+            `<tr><th scope="row">${label}</th>${dirs
+              .map(
+                ([letter, folder]) =>
+                  `<td class="${cls}"><a href="${folder}/${page}"><img loading="lazy" src="screenshots/round-1/${letter}-${shot}.jpg" alt="${letter.toUpperCase()} · ${label}"></a></td>`,
+              )
+              .join('')}</tr>`,
+        )
+        .join('');
+    </script>
+  </body>
+</html>

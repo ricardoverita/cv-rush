@@ -1,0 +1,81 @@
+/*
+ * Frame shared by every prototype: a full-viewport game stage with the scene underneath and the
+ * HUD on top, plus the rotate prompt for portrait phones. Each direction styles everything else.
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.stage > svg.scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hud > * {
+  pointer-events: auto;
+}
+
+/* Touch controls only exist on small landscape screens (the phone layout). */
+.touch {
+  display: none;
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .touch {
+    display: flex;
+  }
+}
+
+/* Portrait phones: gameplay asks to rotate (the rest of the site stays portrait-friendly). */
+.rotate {
+  display: none;
+}
+
+@media (orientation: portrait) and (max-width: 700px) {
+  html:not(.portrait-fit) .rotate {
+    display: flex;
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 32px;
+    text-align: center;
+  }
+
+  html:not(.portrait-fit) .hud {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+  }
+}

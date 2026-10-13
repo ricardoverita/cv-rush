@@ -34,6 +34,13 @@ export default defineConfig([
     },
   },
 
+  // design-lab/: throwaway decision prototypes (S2.5), plain browser scripts. Never imported by
+  // the apps; its capture tool runs on Node.
+  {
+    files: ['design-lab/**/*.js'],
+    languageOptions: { sourceType: 'script', globals: { ...globals.browser } },
+  },
+
   // Next.js rules, scoped to the web app.
   ...nextVitals.map((config) => ({ ...config, files: ['apps/web/**/*.{js,jsx,ts,tsx}'] })),
   {

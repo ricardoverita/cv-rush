@@ -65,6 +65,8 @@ Not a technical slice: a short phase to decide how CV Rush looks and feels befor
 
 Rules: the prototypes live apart from production code and are never imported by the apps; original assets only, or assets whose license allows redistribution, with origin, license and author recorded; nothing that copies other franchises (no Mario or Nintendo characters, blocks, pipes, coins, sounds or maps). Humor targets the hiring process, never people, and never turns ranked questions into jokes.
 
+The prototypes live in [`design-lab/`](../../design-lab/README.md). Round 1, the three directions compared: [design-lab/round-1.md](../../design-lab/round-1.md).
+
 **Done when:** the owner has chosen a direction, adjusted it, and approved the visual bible. Only then does S3 start.
 
 ## S3 · First playable game (Phaser)
