@@ -3,5 +3,19 @@
   "NOT_FOUND": "We couldn't find what you were looking for.",
   "RATE_LIMITED": "Too many requests. Try again in {seconds} seconds.",
   "INTERNAL_ERROR": "Something went wrong on our side.",
-  "SERVICE_UNAVAILABLE": "The service is temporarily unavailable."
+  "SERVICE_UNAVAILABLE": "The service is temporarily unavailable.",
+  "CSRF_CHECK_FAILED": "This request was blocked for security reasons. Reload the page and try again.",
+  "UNAUTHENTICATED": "We don't recognise this device yet.",
+  "DEVELOPER_ALREADY_EXISTS": "This device already has a developer profile.",
+  "DISPLAY_NAME_TOO_SHORT": "Your name needs at least {min} characters.",
+  "DISPLAY_NAME_TOO_LONG": "Your name can have up to {max} characters.",
+  "DISPLAY_NAME_INVALID_CHARACTERS": "Use letters, spaces, apostrophes, hyphens and dots only.",
+  "DISPLAY_NAME_CONTACT_INFO": "Names can't include web addresses or contact details.",
+  "DISPLAY_NAME_NOT_ALLOWED": "Please choose a different name.",
+  "PROFILE_ROLE_UNKNOWN": "Choose one of the available roles.",
+  "PROFILE_SENIORITY_NOT_ALLOWED": "This role is available from {minSeniority} seniority.",
+  "PROFILE_STACK_SIZE": "Choose between {min} and {max} technologies.",
+  "PROFILE_TECHNOLOGY_UNKNOWN": "One of the technologies is not in the catalog.",
+  "PROFILE_TECHNOLOGY_INCOMPATIBLE": "One of the technologies doesn't fit this role.",
+  "PROFILE_CORE_CATEGORY_MISSING": "Add at least one {category} technology."
 }

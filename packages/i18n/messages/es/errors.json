@@ -2,6 +2,20 @@
   "VALIDATION_FAILED": "Algunos datos no son válidos.",
   "NOT_FOUND": "No encontramos lo que buscabas.",
   "RATE_LIMITED": "Demasiadas solicitudes. Inténtalo de nuevo en {seconds} segundos.",
-  "INTERNAL_ERROR": "Algo salió mal por nuestra parte.",
-  "SERVICE_UNAVAILABLE": "El servicio no está disponible temporalmente."
+  "INTERNAL_ERROR": "Algo salió mal de nuestro lado.",
+  "SERVICE_UNAVAILABLE": "El servicio no está disponible temporalmente.",
+  "CSRF_CHECK_FAILED": "Bloqueamos esta solicitud por seguridad. Recarga la página e inténtalo de nuevo.",
+  "UNAUTHENTICATED": "Todavía no reconocemos este dispositivo.",
+  "DEVELOPER_ALREADY_EXISTS": "Este dispositivo ya tiene un perfil de developer.",
+  "DISPLAY_NAME_TOO_SHORT": "Tu nombre necesita al menos {min} caracteres.",
+  "DISPLAY_NAME_TOO_LONG": "Tu nombre puede tener hasta {max} caracteres.",
+  "DISPLAY_NAME_INVALID_CHARACTERS": "Usa solo letras, espacios, apóstrofos, guiones y puntos.",
+  "DISPLAY_NAME_CONTACT_INFO": "El nombre no puede incluir direcciones web ni datos de contacto.",
+  "DISPLAY_NAME_NOT_ALLOWED": "Elige otro nombre, por favor.",
+  "PROFILE_ROLE_UNKNOWN": "Elige uno de los roles disponibles.",
+  "PROFILE_SENIORITY_NOT_ALLOWED": "Este rol está disponible desde la seniority {minSeniority}.",
+  "PROFILE_STACK_SIZE": "Elige entre {min} y {max} tecnologías.",
+  "PROFILE_TECHNOLOGY_UNKNOWN": "Una de las tecnologías no está en el catálogo.",
+  "PROFILE_TECHNOLOGY_INCOMPATIBLE": "Una de las tecnologías no encaja con este rol.",
+  "PROFILE_CORE_CATEGORY_MISSING": "Añade al menos una tecnología de {category}."
 }
