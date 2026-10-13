@@ -77,3 +77,52 @@ jobs:
       - name: Seed (twice, to prove idempotency)
         run: pnpm db:seed && pnpm db:seed
       - run: pnpm test:integration
+
+  e2e:
+    name: End-to-end journey (Playwright, Chrome)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: cvrush
+          POSTGRES_PASSWORD: cvrush
+          POSTGRES_DB: cvrush
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U cvrush -d cvrush"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+      redis:
+        image: redis:8-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      DATABASE_URL: postgresql://cvrush:cvrush@localhost:5432/cvrush
+      REDIS_URL: redis://localhost:6379
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:migrate
+      - name: Seed (season and question pools)
+        run: pnpm db:seed
+      - run: pnpm build
+      # Uses the runner's Google Chrome (channel "chrome"): no browser download.
+      - name: Onboarding → Ranked → Apply → every challenge → result
+        run: pnpm test:e2e
+      - name: Keep the report and traces of a failed run
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: |
+            apps/web/playwright-report
+            apps/web/test-results
+          retention-days: 7

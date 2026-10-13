@@ -20,6 +20,7 @@
     "format:check": "prettier --check .",
     "test": "pnpm -r --if-present test",
     "test:integration": "pnpm --filter @cv-rush/api test:integration",
+    "test:e2e": "pnpm --filter @cv-rush/web test:e2e",
     "db:migrate": "pnpm --filter @cv-rush/api db:migrate",
     "db:migrate:dev": "pnpm --filter @cv-rush/api db:migrate:dev",
     "db:seed": "pnpm --filter @cv-rush/api db:seed",
