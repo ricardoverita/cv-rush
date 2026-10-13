@@ -24,7 +24,8 @@
     "passed": "Superado",
     "failed": "No superado",
     "correct": "{correct}/{total}",
-    "match": "{match}%"
+    "match": "{match}%",
+    "completed": "Completado"
   },
   "header": {
     "ranked": "Ranked",

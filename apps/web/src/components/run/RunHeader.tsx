@@ -62,7 +62,7 @@ export function RunHeader({
             </span>
             <span className="text-muted">
               <span aria-hidden="true">{STATE_ICONS[p.state]} </span>
-              {t(`progress.${p.state}`)}
+              {t(`progress.${p.state === 'passed' && p.stage !== 'ats' ? 'completed' : p.state}`)}
               {p.total !== undefined && p.state !== 'pending'
                 ? ` · ${t('progress.correct', { correct: p.correct ?? 0, total: p.total })}`
                 : ''}
