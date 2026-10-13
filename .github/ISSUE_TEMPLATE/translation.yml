@@ -1,0 +1,20 @@
+name: Translation
+description: Fix a translation or propose a new language.
+labels: [translation]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Type
+      options:
+        - Fix an existing translation
+        - Add a new language
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Which keys or screens, or which language. See docs/contributing/adding-a-language.md.
+    validations:
+      required: true

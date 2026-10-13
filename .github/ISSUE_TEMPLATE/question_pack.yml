@@ -1,0 +1,25 @@
+name: New question pack
+description: Propose questions for a technology or topic.
+labels: [questions, content]
+body:
+  - type: input
+    id: technology
+    attributes:
+      label: Technology or topic
+      placeholder: e.g. Redis, HTTP, React hooks
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: What will the pack cover?
+      description: Topics, difficulty levels (1–5) and seniority ranges. See docs/contributing/adding-questions.md.
+    validations:
+      required: true
+  - type: checkboxes
+    id: origin
+    attributes:
+      label: Origin
+      options:
+        - label: The questions will be original (not copied from paid banks, books or certification exams).
+          required: true

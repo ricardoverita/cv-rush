@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  quality:
+    name: Format, lint, typecheck, unit tests, validation, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6 # version from package.json "packageManager"
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - name: Validate content, questions, translations and documentation links
+        run: pnpm validate
+      - run: pnpm build
+
+  database:
+    name: Migrations and integration tests (PostgreSQL, Redis)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: cvrush
+          POSTGRES_PASSWORD: cvrush
+          POSTGRES_DB: cvrush
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U cvrush -d cvrush"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+      redis:
+        image: redis:8-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      DATABASE_URL: postgresql://cvrush:cvrush@localhost:5432/cvrush
+      REDIS_URL: redis://localhost:6379
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Apply migrations
+        run: pnpm db:migrate
+      - name: Check that the schema matches the migrations
+        run: pnpm db:check
+      - name: Seed (twice, to prove idempotency)
+        run: pnpm db:seed && pnpm db:seed
+      - run: pnpm test:integration

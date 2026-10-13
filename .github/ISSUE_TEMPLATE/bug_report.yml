@@ -1,0 +1,32 @@
+name: Bug report
+description: Something doesn't work as expected.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Run `pnpm dev`
+        2. Open http://localhost:3000/es
+        3. …
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: OS, browser, Node.js version (node -v), pnpm version (pnpm -v)
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Please remove any personal data before pasting.
+      render: shell

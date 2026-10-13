@@ -1,0 +1,26 @@
+name: New technology
+description: Add a technology to the catalog.
+labels: [content]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Technology name
+    validations:
+      required: true
+  - type: input
+    id: category
+    attributes:
+      label: Category
+      description: One of the categories in packages/content/data/catalog/technology-categories.yaml
+    validations:
+      required: true
+  - type: input
+    id: aliases
+    attributes:
+      label: Aliases (optional)
+      placeholder: e.g. postgres, pg
+  - type: textarea
+    id: roles
+    attributes:
+      label: Which roles should recommend it?

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability (privately)
+    url: https://github.com/ricardoverita/cv-rush/security/advisories/new
+    about: Please don't open public issues for vulnerabilities. See SECURITY.md.
+  - name: Documentation
+    url: https://github.com/ricardoverita/cv-rush/tree/main/docs
+    about: Product, game design and architecture documents.

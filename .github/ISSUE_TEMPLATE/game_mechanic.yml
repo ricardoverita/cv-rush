@@ -1,0 +1,27 @@
+name: Game mechanic proposal
+description: Propose a new challenge, stage or mechanic.
+labels: [gameplay]
+body:
+  - type: textarea
+    id: moment
+    attributes:
+      label: Which hiring-process moment does it represent?
+    validations:
+      required: true
+  - type: textarea
+    id: mechanic
+    attributes:
+      label: How does it play? (inputs, time window, outcomes)
+    validations:
+      required: true
+  - type: textarea
+    id: fairness
+    attributes:
+      label: How does it stay fair in ranked runs, and what can the server verify?
+      description: See docs/game-design/challenges/README.md (anatomy of a challenge).
+    validations:
+      required: true
+  - type: textarea
+    id: accessibility
+    attributes:
+      label: Mobile, desktop and accessibility considerations
