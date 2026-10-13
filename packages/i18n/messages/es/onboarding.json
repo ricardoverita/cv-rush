@@ -1,0 +1,54 @@
+{
+  "title": "Crea tu perfil de developer",
+  "editTitle": "Edita tu perfil",
+  "intro": "Cuatro pasos rápidos. Sin email ni contraseña: tu perfil se guarda en este dispositivo.",
+  "progress": "Paso {current} de {total}",
+  "back": "Atrás",
+  "next": "Continuar",
+  "cancel": "Cancelar",
+  "name": {
+    "label": "¿Cómo te llamamos?",
+    "hint": "Tu nombre visible. Puede ser un apodo; nunca tu email.",
+    "placeholder": "Ricardo"
+  },
+  "seniority": {
+    "label": "¿Cuál es tu seniority?",
+    "hint": "Decláralo tal cual: compites contra perfiles comparables."
+  },
+  "role": {
+    "label": "¿Cuál es tu rol?",
+    "minSeniority": "Desde {seniority}"
+  },
+  "stack": {
+    "label": "¿Cuál es tu stack?",
+    "hint": "Elige de 1 a {max} tecnologías con las que trabajas.",
+    "count": "{count} de {max} seleccionadas",
+    "selected": "Tu stack",
+    "empty": "Todavía no has elegido nada.",
+    "remove": "Quitar {name}",
+    "recommended": "Recomendadas para {role}",
+    "search": "Buscar tecnologías",
+    "searchPlaceholder": "p. ej. node, postgres, k8s",
+    "noResults": "Ninguna tecnología de las categorías de este rol coincide con «{query}».",
+    "requirement": "Al menos una tecnología de {category}",
+    "categories": "Todas las categorías de este rol",
+    "limit": "Has llegado al límite de {max} tecnologías."
+  },
+  "review": {
+    "label": "¿Listo para competir?",
+    "create": "Crear mi perfil",
+    "save": "Guardar cambios",
+    "privacy": "Tu perfil es privado. Nada es público hasta que tú lo decidas."
+  },
+  "networkError": "No pudimos conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+  "loading": "Cargando…",
+  "competing": {
+    "title": "Compitiendo como",
+    "category": "Categoría",
+    "savedOnDevice": "Tu progreso está guardado en este dispositivo.",
+    "private": "Perfil privado",
+    "edit": "Editar perfil",
+    "nextTitle": "Siguiente: tu primer Job Challenge",
+    "nextBody": "Play Ranked y Practice llegan en la próxima actualización. Tu perfil ya está listo."
+  }
+}

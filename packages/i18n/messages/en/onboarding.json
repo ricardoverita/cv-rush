@@ -1,0 +1,54 @@
+{
+  "title": "Create your developer profile",
+  "editTitle": "Edit your profile",
+  "intro": "Four quick steps. No email and no password: your profile is saved on this device.",
+  "progress": "Step {current} of {total}",
+  "back": "Back",
+  "next": "Continue",
+  "cancel": "Cancel",
+  "name": {
+    "label": "What should we call you?",
+    "hint": "Your display name. Nicknames are fine; never your email.",
+    "placeholder": "Ricardo"
+  },
+  "seniority": {
+    "label": "What's your seniority?",
+    "hint": "Declare it as it is: you compete against comparable profiles."
+  },
+  "role": {
+    "label": "What's your role?",
+    "minSeniority": "From {seniority}"
+  },
+  "stack": {
+    "label": "What's your stack?",
+    "hint": "Choose 1 to {max} technologies you work with.",
+    "count": "{count} of {max} selected",
+    "selected": "Your stack",
+    "empty": "Nothing selected yet.",
+    "remove": "Remove {name}",
+    "recommended": "Recommended for {role}",
+    "search": "Search technologies",
+    "searchPlaceholder": "e.g. node, postgres, k8s",
+    "noResults": "No technology in this role's categories matches “{query}”.",
+    "requirement": "At least one {category} technology",
+    "categories": "All categories for this role",
+    "limit": "You've reached the limit of {max} technologies."
+  },
+  "review": {
+    "label": "Ready to compete?",
+    "create": "Create my profile",
+    "save": "Save changes",
+    "privacy": "Your profile is private. Nothing is public until you choose it."
+  },
+  "networkError": "We couldn't reach the server. Check your connection and try again.",
+  "loading": "Loading…",
+  "competing": {
+    "title": "Competing as",
+    "category": "Category",
+    "savedOnDevice": "Your progress is saved on this device.",
+    "private": "Private profile",
+    "edit": "Edit profile",
+    "nextTitle": "Next: your first Job Challenge",
+    "nextBody": "Play Ranked and Practice arrive in the next update. Your profile is ready for them."
+  }
+}

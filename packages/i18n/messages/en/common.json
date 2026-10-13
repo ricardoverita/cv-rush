@@ -6,11 +6,11 @@
   "landing": {
     "title": "CV Rush",
     "tagline": "Grab your CV and race through recruiters, an ATS machine and interviews to deliver it at the company.",
-    "statusTitle": "Project status",
-    "statusBody": "We are building the foundations. There is no playable game yet: follow the roadmap or help us build it.",
-    "apiStatus": "API status: {status}",
-    "apiOnline": "online",
-    "apiOffline": "unavailable",
+    "cta": "Create your developer profile",
+    "welcomeBack": "Welcome back, {name}",
+    "continue": "Continue",
+    "previewTitle": "Early preview",
+    "previewBody": "Today you can create your developer profile: name, seniority, role and stack. The first playable Job Challenge comes next.",
     "readDocs": "Read the documentation",
     "viewRoadmap": "View the roadmap",
     "contribute": "Contribute on GitHub"
@@ -19,5 +19,23 @@
     "label": "Language",
     "en": "English",
     "es": "Español"
-  }
+  },
+  "seniority": {
+    "trainee": "Trainee",
+    "junior": "Junior",
+    "mid": "Mid",
+    "senior": "Senior",
+    "lead": "Lead",
+    "staff": "Staff",
+    "principal": "Principal"
+  },
+  "band": {
+    "junior": "Junior",
+    "mid": "Mid",
+    "senior_plus": "Senior+"
+  },
+  "jobTitle": "{seniority} {role}",
+  "category": "{track} · {band}",
+  "moreTechnologies": "+{count}",
+  "home": "CV Rush home"
 }
