@@ -1,0 +1,13 @@
+categories:
+  - { id: frontend, labels: { en: Frontend, es: Frontend } }
+  - { id: backend, labels: { en: Backend, es: Backend } }
+  - { id: databases, labels: { en: Databases, es: Bases de datos } }
+  - { id: caching_search, labels: { en: Caching & Search, es: Caché y búsqueda } }
+  - { id: messaging, labels: { en: Messaging, es: Mensajería } }
+  - { id: cloud, labels: { en: Cloud, es: Cloud } }
+  - { id: infrastructure, labels: { en: Infrastructure, es: Infraestructura } }
+  - { id: testing, labels: { en: Testing, es: Testing } }
+  - { id: mobile, labels: { en: Mobile, es: Mobile } }
+  - { id: data, labels: { en: Data, es: Datos } }
+  - { id: machine_learning, labels: { en: Machine Learning, es: Machine Learning } }
+  - { id: security, labels: { en: Security, es: Seguridad } }

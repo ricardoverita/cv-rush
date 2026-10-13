@@ -1,0 +1,28 @@
+@import 'tailwindcss';
+
+/* Design tokens (CSS variables). The visual identity comes later; these keep contrast accessible. */
+:root {
+  --color-bg: #0f172a;
+  --color-fg: #f8fafc;
+  --color-muted: #cbd5e1;
+  --color-accent: #38bdf8;
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-fg: var(--color-fg);
+  --color-muted: var(--color-muted);
+  --color-accent: var(--color-accent);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

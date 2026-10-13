@@ -1,0 +1,14 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Dependencies allowed to run install scripts (pnpm blocks them by default).
+# Everything else (including msgpackr-extract, an optional native speed-up) stays blocked.
+allowBuilds:
+  '@parcel/watcher': true
+  '@prisma/engines': true
+  '@swc/core': true
+  esbuild: true
+  msgpackr-extract: false
+  prisma: true
+  unrs-resolver: true

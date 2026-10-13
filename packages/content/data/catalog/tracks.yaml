@@ -1,0 +1,13 @@
+# Competitive tracks: families of roles compared with the same kind of content.
+# See docs/product/competitive-identity.md
+tracks:
+  - { id: frontend, labels: { en: Frontend, es: Frontend } }
+  - { id: backend, labels: { en: Backend, es: Backend } }
+  - { id: fullstack, labels: { en: Fullstack, es: Fullstack } }
+  - { id: platform, labels: { en: Platform (DevOps & Cloud), es: Plataforma (DevOps y Cloud) } }
+  - { id: mobile, labels: { en: Mobile, es: Mobile } }
+  - { id: quality, labels: { en: Quality, es: Calidad } }
+  - { id: data_engineering, labels: { en: Data Engineering, es: Ingeniería de datos } }
+  - { id: data_science_ml, labels: { en: Data Science & ML, es: Ciencia de datos y ML } }
+  - { id: security, labels: { en: Security, es: Seguridad } }
+  - { id: architecture, labels: { en: Architecture, es: Arquitectura } }

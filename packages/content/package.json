@@ -1,0 +1,35 @@
+{
+  "name": "@cv-rush/content",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Open content (catalogs, sample questions) with schemas and validators. Content under data/ is CC BY 4.0; code under src/ is Apache-2.0.",
+  "license": "SEE LICENSE IN data/LICENSE (content) and ../../LICENSE (code)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./data/*": "./data/*"
+  },
+  "files": [
+    "dist",
+    "data"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "validate:catalog": "tsx src/cli/validate-catalog.ts",
+    "validate:questions": "tsx src/cli/validate-questions.ts"
+  },
+  "dependencies": {
+    "@cv-rush/contracts": "workspace:*",
+    "yaml": "2.9.1",
+    "zod": "4.6.6"
+  },
+  "devDependencies": {
+    "@cv-rush/config": "workspace:*"
+  }
+}

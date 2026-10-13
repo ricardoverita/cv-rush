@@ -1,0 +1,32 @@
+{
+  "name": "@cv-rush/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Next.js web app: pages, i18n routing, SEO and (later) the game host. No business rules.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start --port 3000",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@cv-rush/contracts": "workspace:*",
+    "@cv-rush/i18n": "workspace:*",
+    "next": "16.4.0",
+    "next-intl": "4.14.9",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "4.6.6"
+  },
+  "devDependencies": {
+    "@cv-rush/config": "workspace:*",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "postcss": "8.5.29",
+    "tailwindcss": "4.3.3"
+  }
+}

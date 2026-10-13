@@ -1,0 +1,11 @@
+{
+  "extends": "@cv-rush/config/tsconfig.nextjs.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "src", "*.ts", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

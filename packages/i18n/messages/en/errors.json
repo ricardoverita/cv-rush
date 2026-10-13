@@ -1,0 +1,7 @@
+{
+  "VALIDATION_FAILED": "Some data is not valid.",
+  "NOT_FOUND": "We couldn't find what you were looking for.",
+  "RATE_LIMITED": "Too many requests. Try again in {seconds} seconds.",
+  "INTERNAL_ERROR": "Something went wrong on our side.",
+  "SERVICE_UNAVAILABLE": "The service is temporarily unavailable."
+}

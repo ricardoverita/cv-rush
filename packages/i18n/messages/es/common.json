@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "title": "CV Rush — el proceso de selección, como videojuego",
+    "description": "Un juego web 2D open source sobre llevar tu CV a través de un proceso de selección. Construido en abierto."
+  },
+  "landing": {
+    "title": "CV Rush",
+    "tagline": "Toma tu CV y atraviesa recruiters, una máquina ATS y entrevistas para entregarlo en la empresa.",
+    "statusTitle": "Estado del proyecto",
+    "statusBody": "Estamos construyendo las bases. Todavía no hay un juego jugable: sigue el roadmap o ayúdanos a construirlo.",
+    "apiStatus": "Estado de la API: {status}",
+    "apiOnline": "en línea",
+    "apiOffline": "no disponible",
+    "readDocs": "Leer la documentación",
+    "viewRoadmap": "Ver el roadmap",
+    "contribute": "Contribuir en GitHub"
+  },
+  "language": {
+    "label": "Idioma",
+    "en": "English",
+    "es": "Español"
+  }
+}

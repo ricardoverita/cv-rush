@@ -1,0 +1,28 @@
+{
+  "name": "@cv-rush/game",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Game engine package (framework-agnostic). Today it only defines the contracts between the game and its host; the Phaser implementation arrives in slice S4.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@cv-rush/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@cv-rush/config": "workspace:*"
+  }
+}

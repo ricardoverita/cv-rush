@@ -1,0 +1,85 @@
+# Roles map to tracks. Adding a role is a content change: id, track, labels,
+# technology categories (core: at least one technology required from each; allowed: optional)
+# and recommended technologies shown first in the stack picker.
+roles:
+  - id: frontend_developer
+    track: frontend
+    labels: { en: Frontend Developer, es: Frontend Developer }
+    coreCategories: [frontend]
+    allowedCategories: [testing, cloud, infrastructure]
+    recommended: [javascript, typescript, react, vue, angular, nextjs, html, css, jest, playwright]
+  - id: backend_developer
+    track: backend
+    labels: { en: Backend Developer, es: Backend Developer }
+    coreCategories: [backend]
+    allowedCategories: [databases, caching_search, messaging, cloud, infrastructure, testing]
+    recommended:
+      [nodejs, nestjs, java, spring_boot, python, go, php, postgresql, redis, kafka, docker, aws]
+  - id: fullstack_developer
+    track: fullstack
+    labels: { en: Fullstack Developer, es: Fullstack Developer }
+    coreCategories: [frontend, backend]
+    allowedCategories: [databases, caching_search, messaging, cloud, infrastructure, testing]
+    recommended:
+      [typescript, react, nextjs, nodejs, nestjs, php, laravel, postgresql, redis, docker, aws]
+  - id: mobile_developer
+    track: mobile
+    labels: { en: Mobile Developer, es: Mobile Developer }
+    coreCategories: [mobile]
+    allowedCategories: [frontend, backend, testing, cloud]
+    recommended: [swift, kotlin, flutter, react_native, typescript]
+  - id: devops_engineer
+    track: platform
+    labels: { en: DevOps Engineer, es: DevOps Engineer }
+    coreCategories: [infrastructure]
+    allowedCategories: [cloud, backend, databases, caching_search, messaging, testing, security]
+    recommended: [docker, kubernetes, terraform, aws, azure, gcp, python, go]
+  - id: cloud_engineer
+    track: platform
+    labels: { en: Cloud Engineer, es: Cloud Engineer }
+    coreCategories: [cloud]
+    allowedCategories: [infrastructure, backend, databases, caching_search, messaging, security]
+    recommended: [aws, azure, gcp, terraform, kubernetes, docker]
+  - id: qa_engineer
+    track: quality
+    labels: { en: QA Engineer, es: QA Engineer }
+    coreCategories: [testing]
+    allowedCategories: [frontend, backend, databases]
+    recommended: [playwright, cypress, selenium, jest, javascript]
+  - id: qa_automation_engineer
+    track: quality
+    labels: { en: QA Automation Engineer, es: QA Automation Engineer }
+    coreCategories: [testing]
+    allowedCategories: [frontend, backend, databases, infrastructure, cloud]
+    recommended: [playwright, cypress, selenium, typescript, java, python, docker]
+  - id: data_engineer
+    track: data_engineering
+    labels: { en: Data Engineer, es: Data Engineer }
+    coreCategories: [data]
+    allowedCategories: [databases, backend, messaging, cloud, infrastructure]
+    recommended: [python, spark, airflow, dbt, kafka, postgresql, aws]
+  - id: data_scientist
+    track: data_science_ml
+    labels: { en: Data Scientist, es: Data Scientist }
+    coreCategories: [machine_learning, data]
+    allowedCategories: [databases, backend, cloud]
+    recommended: [python, pandas, scikit_learn, pytorch, tensorflow]
+  - id: machine_learning_engineer
+    track: data_science_ml
+    labels: { en: Machine Learning Engineer, es: Machine Learning Engineer }
+    coreCategories: [machine_learning]
+    allowedCategories: [data, backend, databases, cloud, infrastructure]
+    recommended: [python, pytorch, tensorflow, scikit_learn, docker, kubernetes]
+  - id: cybersecurity_engineer
+    track: security
+    labels: { en: Cybersecurity Engineer, es: Cybersecurity Engineer }
+    coreCategories: [security]
+    allowedCategories: [infrastructure, cloud, backend, frontend]
+    recommended: [owasp_zap, burp_suite, python, aws, docker]
+  - id: software_architect
+    track: architecture
+    labels: { en: Software Architect, es: Software Architect }
+    minSeniority: senior
+    coreCategories: [backend]
+    allowedCategories: [frontend, databases, caching_search, messaging, cloud, infrastructure]
+    recommended: [java, nodejs, go, postgresql, kafka, redis, kubernetes, aws]

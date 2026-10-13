@@ -1,0 +1,34 @@
+// Prisma schema for the CV Rush API.
+// Tables are added by the vertical slices; see docs/architecture/05-data-model.md.
+
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// A competition period. Every result, XP entry and ranking entry will carry a season.
+/// Season 0 (Beta) exists from day one.
+model Season {
+  id        String       @id
+  name      String
+  status    SeasonStatus
+  startsAt  DateTime     @map("starts_at") @db.Timestamptz(3)
+  endsAt    DateTime?    @map("ends_at") @db.Timestamptz(3)
+  createdAt DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@map("seasons")
+}
+
+enum SeasonStatus {
+  upcoming
+  active
+  closed
+
+  @@map("season_status")
+}

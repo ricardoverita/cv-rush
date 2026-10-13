@@ -1,0 +1,63 @@
+# SAMPLE questions for local development, demos and tests.
+# They are public (this repository is open source), so they are never used in ranked play.
+pack:
+  id: sample
+  source: sample
+  description: Sample questions that demonstrate the question format.
+questions:
+  - id: react.usestate.state-and-setter
+    version: 1
+    category: stack
+    technologies: [react]
+    topics: [react.hooks.state]
+    difficulty: 1
+    seniority: { min: trainee, max: mid }
+    options: [a, b, c, d]
+    correctOptionId: a
+    translations:
+      en:
+        prompt: Which hook returns a state value and a function to update it?
+        options: { a: useState, b: useEffect, c: useMemo, d: useRef }
+        explanation: useState returns the current state and a setter that triggers a re-render.
+      es:
+        prompt: ¿Qué hook devuelve un valor de estado y una función para actualizarlo?
+        options: { a: useState, b: useEffect, c: useMemo, d: useRef }
+        explanation: useState devuelve el estado actual y un setter que provoca un nuevo render.
+
+  - id: redis.data-structures.list-as-queue
+    version: 1
+    category: stack
+    technologies: [redis]
+    topics: [redis.data-structures]
+    difficulty: 2
+    seniority: { min: junior, max: senior }
+    options: [a, b, c, d]
+    correctOptionId: b
+    translations:
+      en:
+        prompt: Which Redis data structure is commonly used as a basic queue?
+        options: { a: Set, b: List, c: HyperLogLog, d: Bitmap }
+        explanation: A List supports LPUSH/RPOP (or blocking BRPOP), which gives FIFO queue behavior.
+      es:
+        prompt: ¿Qué estructura de datos de Redis se usa habitualmente como cola básica?
+        options: { a: Set, b: List, c: HyperLogLog, d: Bitmap }
+        explanation: Una List admite LPUSH/RPOP (o BRPOP bloqueante), lo que da un comportamiento de cola FIFO.
+
+  - id: http.status.created
+    version: 1
+    category: technical
+    technologies: []
+    topics: [http.status-codes]
+    difficulty: 1
+    seniority: { min: trainee, max: mid }
+    options: [a, b, c, d]
+    correctOptionId: c
+    translations:
+      en:
+        prompt: Which HTTP status code means a new resource was created?
+        options: { a: 200 OK, b: 204 No Content, c: 201 Created, d: 202 Accepted }
+        explanation: 201 Created confirms that the request created a resource, usually with its location.
+      es:
+        prompt: ¿Qué código de estado HTTP indica que se creó un recurso nuevo?
+        options: { a: 200 OK, b: 204 No Content, c: 201 Created, d: 202 Accepted }
+        explanation: 201 Created confirma que la petición creó un recurso, normalmente indicando su ubicación.

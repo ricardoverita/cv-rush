@@ -1,16 +1,33 @@
-# OS
-.DS_Store
-Thumbs.db
-
 # Dependencies
 node_modules/
+
+# Builds and caches
+dist/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+.turbo/
+
+# Generated code
+apps/api/src/generated/
 
 # Environment (never commit secrets)
 .env
 .env.*
 !.env.example
 
-# Editors
+# OS and editors
+.DS_Store
+Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Next.js generated types
+apps/web/next-env.d.ts

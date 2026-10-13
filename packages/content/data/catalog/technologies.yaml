@@ -1,0 +1,57 @@
+# Technology names are never translated. Aliases help search ("postgres" → PostgreSQL).
+technologies:
+  - { id: javascript, name: JavaScript, category: frontend, aliases: [js] }
+  - { id: typescript, name: TypeScript, category: frontend, aliases: [ts] }
+  - { id: html, name: HTML, category: frontend }
+  - { id: css, name: CSS, category: frontend }
+  - { id: react, name: React, category: frontend, aliases: [reactjs] }
+  - { id: vue, name: Vue, category: frontend, aliases: [vuejs] }
+  - { id: angular, name: Angular, category: frontend }
+  - { id: nextjs, name: Next.js, category: frontend, aliases: [next] }
+  - { id: nodejs, name: Node.js, category: backend, aliases: [node] }
+  - { id: nestjs, name: NestJS, category: backend, aliases: [nest] }
+  - { id: php, name: PHP, category: backend }
+  - { id: laravel, name: Laravel, category: backend }
+  - { id: symfony, name: Symfony, category: backend }
+  - { id: magento, name: Magento, category: backend }
+  - { id: java, name: Java, category: backend }
+  - { id: spring_boot, name: Spring Boot, category: backend, aliases: [spring] }
+  - { id: python, name: Python, category: backend, aliases: [py] }
+  - { id: django, name: Django, category: backend }
+  - { id: fastapi, name: FastAPI, category: backend }
+  - { id: go, name: Go, category: backend, aliases: [golang] }
+  - { id: csharp, name: 'C#', category: backend, aliases: [c-sharp] }
+  - { id: dotnet, name: .NET, category: backend, aliases: [dot-net, asp.net] }
+  - { id: postgresql, name: PostgreSQL, category: databases, aliases: [postgres, pg] }
+  - { id: mysql, name: MySQL, category: databases }
+  - { id: mongodb, name: MongoDB, category: databases, aliases: [mongo] }
+  - { id: redis, name: Redis, category: caching_search }
+  - { id: elasticsearch, name: Elasticsearch, category: caching_search, aliases: [elastic] }
+  - { id: opensearch, name: OpenSearch, category: caching_search }
+  - { id: kafka, name: Kafka, category: messaging, aliases: [apache-kafka] }
+  - { id: rabbitmq, name: RabbitMQ, category: messaging, aliases: [rabbit] }
+  - { id: sqs, name: SQS, category: messaging, aliases: [amazon-sqs] }
+  - { id: nats, name: NATS, category: messaging }
+  - { id: aws, name: AWS, category: cloud, aliases: [amazon-web-services] }
+  - { id: azure, name: Azure, category: cloud }
+  - { id: gcp, name: GCP, category: cloud, aliases: [google-cloud] }
+  - { id: docker, name: Docker, category: infrastructure }
+  - { id: kubernetes, name: Kubernetes, category: infrastructure, aliases: [k8s] }
+  - { id: terraform, name: Terraform, category: infrastructure }
+  - { id: jest, name: Jest, category: testing }
+  - { id: playwright, name: Playwright, category: testing }
+  - { id: cypress, name: Cypress, category: testing }
+  - { id: selenium, name: Selenium, category: testing }
+  - { id: swift, name: Swift, category: mobile }
+  - { id: kotlin, name: Kotlin, category: mobile }
+  - { id: flutter, name: Flutter, category: mobile }
+  - { id: react_native, name: React Native, category: mobile, aliases: [rn] }
+  - { id: spark, name: Spark, category: data, aliases: [apache-spark] }
+  - { id: airflow, name: Airflow, category: data, aliases: [apache-airflow] }
+  - { id: dbt, name: dbt, category: data }
+  - { id: pandas, name: pandas, category: data }
+  - { id: pytorch, name: PyTorch, category: machine_learning }
+  - { id: tensorflow, name: TensorFlow, category: machine_learning }
+  - { id: scikit_learn, name: scikit-learn, category: machine_learning, aliases: [sklearn] }
+  - { id: owasp_zap, name: OWASP ZAP, category: security, aliases: [zap] }
+  - { id: burp_suite, name: Burp Suite, category: security, aliases: [burp] }

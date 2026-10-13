@@ -1,0 +1,9 @@
+{
+  "extends": "@cv-rush/config/tsconfig.nest.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "types": ["node"],
+    "noEmit": true
+  },
+  "include": ["src", "test", "prisma", "*.ts"]
+}
