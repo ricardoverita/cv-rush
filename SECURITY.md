@@ -18,6 +18,10 @@ The project is designed so that **its integrity does not depend on the code bein
 
 The project is pre-release. Fixes go to the `main` branch.
 
+## Dependencies
+
+Vulnerable dependencies are handled by the [dependency vulnerability policy](docs/security/dependency-policy.md), enforced in CI by `pnpm audit:check`.
+
 ## Secrets
 
 Never commit secrets. `.env` files are git-ignored; `.env.example` contains only safe defaults.

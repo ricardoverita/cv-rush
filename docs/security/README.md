@@ -50,7 +50,9 @@ See [deployment §4](../architecture/18-deployment.md#4-security-headers-at-the-
 
 - Lockfile committed; installs with `--frozen-lockfile` in CI.
 - New dependencies require a short justification in the PR (maintenance, size, license, necessity), per the project principles.
-- GitHub: secret scanning + push protection, Dependabot alerts and updates, CodeQL for TypeScript, branch protection on `main` with required CI checks (set up in Part 3).
+- GitHub (enabled): secret scanning with push protection, private vulnerability reporting, Dependabot alerts, and Dependabot version updates (weekly, with a cooldown and held-back majors; every update goes through CI and review, nothing is merged automatically).
+- GitHub (planned, not enabled yet): CodeQL for TypeScript and branch protection on `main` with required CI checks.
+- Vulnerable dependencies follow the [dependency vulnerability policy](dependency-policy.md): runtime findings are fixed or justified before release; tooling findings get a documented exception with a review date. `pnpm audit:check` enforces it in CI.
 - No production data, real emails or real LinkedIn profiles in seeds or fixtures.
 
 ## 5. What stays private even though the repository is public

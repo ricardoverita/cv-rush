@@ -338,3 +338,10 @@ All ADRs (001–024) are **Accepted**, with these approval notes:
 - **Status:** Accepted
 - **Decision:** `CHECK` constraints for invariants outside Prisma's schema language: a device credential stores a 32-byte SHA-256 digest, and a profile has between 1 and 12 technologies. They live in their own migration, which Prisma's drift check ignores.
 
+## 2026-10-13 · Slice S2: the Job Challenge without Phaser
+
+### D-076 · Dependency vulnerability policy
+- **Status:** Accepted (owner request)
+- **Decision:** a vulnerability's scope is where the code runs. **Runtime** findings are fixed (update or compatible, verified override) or justified before a release. **Tooling** findings are assessed for real exploitability and, when not exploitable, get a temporary exception with the advisory, the reason, the dependency that introduces it, a removal condition and a review date ([policy](../security/dependency-policy.md), [`tools/audit-exceptions.json`](../../tools/audit-exceptions.json)). `pnpm audit:check` fails CI on unlisted advisories, expired exceptions and new dependency paths. Dependabot alerts enabled; no automatic merges.
+- **Discarded:** lowering the audit threshold or ignoring by severity (hides future runtime findings); overriding Prisma's internal `deepmerge-ts` to a new major (risks breaking the CLI only to silence a non-exploitable advisory).
+

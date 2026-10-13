@@ -1,0 +1,56 @@
+{
+  "$comment": "Documented exceptions to the dependency vulnerability policy (docs/security/dependency-policy.md). Each entry needs the exact dependency paths reported by `pnpm audit`, a reason, a removal condition and a review date. Checked by `pnpm audit:check`.",
+  "exceptions": [
+    {
+      "advisory": "GHSA-3f6p-5ww8-9rcr",
+      "cve": null,
+      "package": "mysql2",
+      "severity": "high",
+      "scope": "tooling",
+      "introducedBy": "prisma CLI 7.10.0 → mysql2 3.15.3",
+      "paths": ["apps__api>prisma>mysql2", "apps__api>@prisma/client>prisma>mysql2"],
+      "reason": "Loaded only for MySQL datasources; our datasource is PostgreSQL, so the module is never imported. Exploiting it requires connecting to a malicious MySQL server.",
+      "removeWhen": "A stable Prisma release depends on mysql2 >= 3.22.0.",
+      "reviewBy": "2026-12-15"
+    },
+    {
+      "advisory": "GHSA-rgwj-5xj2-c3m3",
+      "cve": null,
+      "package": "mysql2",
+      "severity": "moderate",
+      "scope": "tooling",
+      "introducedBy": "prisma CLI 7.10.0 → mysql2 3.15.3",
+      "paths": ["apps__api>prisma>mysql2", "apps__api>@prisma/client>prisma>mysql2"],
+      "reason": "Needs a compressed MySQL protocol connection, which the project never opens (PostgreSQL only).",
+      "removeWhen": "A stable Prisma release depends on mysql2 >= 3.23.1.",
+      "reviewBy": "2026-12-15"
+    },
+    {
+      "advisory": "GHSA-ggr8-5vv4-36mx",
+      "cve": "CVE-2026-40345",
+      "package": "deepmerge-ts",
+      "severity": "high",
+      "scope": "tooling",
+      "introducedBy": "@prisma/config 7.10.0 (Prisma CLI) → deepmerge-ts 7.1.5",
+      "paths": [
+        "apps__api>prisma>@prisma/config>deepmerge-ts",
+        "apps__api>@prisma/client>prisma>@prisma/config>deepmerge-ts"
+      ],
+      "reason": "Only merges layers of our own prisma7.config.ts (remote and RC configs disabled). The input is a repository file without recursive objects.",
+      "removeWhen": "A stable Prisma release depends on deepmerge-ts >= 8.",
+      "reviewBy": "2026-12-15"
+    },
+    {
+      "advisory": "GHSA-vfj7-8cjw-p6xm",
+      "cve": "CVE-2026-93687",
+      "package": "braces",
+      "severity": "high",
+      "scope": "tooling",
+      "introducedBy": "eslint-config-next 16.4.0 → @next/eslint-plugin-next → fast-glob → micromatch → braces 3.0.3",
+      "paths": [".>eslint-config-next>@next/eslint-plugin-next>fast-glob>micromatch>braces"],
+      "reason": "Runs only while linting, on glob patterns written in this repository; no untrusted input reaches it. No patched version exists yet.",
+      "removeWhen": "A patched braces release exists (then update or override), or the plugin stops depending on it.",
+      "reviewBy": "2026-12-15"
+    }
+  ]
+}

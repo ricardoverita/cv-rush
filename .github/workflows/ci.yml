@@ -28,6 +28,8 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Dependency audit (policy in docs/security/dependency-policy.md)
+        run: pnpm audit:check
       - run: pnpm format:check
       - run: pnpm lint
       - run: pnpm typecheck

@@ -29,6 +29,7 @@
     "questions:validate": "pnpm --filter @cv-rush/content validate:questions",
     "translations:validate": "pnpm --filter @cv-rush/i18n validate",
     "docs:check": "node tools/check-doc-links.mjs",
+    "audit:check": "node tools/check-audit.mjs",
     "validate": "pnpm content:validate && pnpm questions:validate && pnpm translations:validate && pnpm docs:check",
     "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm validate && pnpm build"
   },
