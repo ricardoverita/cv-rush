@@ -10,7 +10,8 @@
 flowchart LR
   p3["Part 3<br/>Foundations"] --> s1["S1<br/>Identity + onboarding"]
   s1 --> s2["S2<br/>Job Challenge, no Phaser"]
-  s2 --> s3["S3<br/>First playable game"]
+  s2 --> s25["S2.5<br/>Theme + visual design gate"]
+  s25 --> s3["S3<br/>First playable game"]
   s3 --> s4["S4<br/>Recruiter + ATS"]
   s4 --> s5["S5<br/>Hiring Manager, Final, progression"]
   s5 --> s6["S6<br/>AI question pipeline"]
@@ -19,8 +20,9 @@ flowchart LR
 ```
 
 1. **Rules before graphics:** S2 plays a whole run with a plain HTML UI. If that works, the rules of the game live in the server, not in the engine.
-2. **Playable as soon as the rules hold:** S3 turns the same protocol into a short real race in Phaser, so fun, feel and readability are tested early instead of after progression and profiles.
-3. **Then depth, then the network:** the hiring stages (S4, S5), real questions (S6), and the profile features that make progress worth keeping (S7), before hardening for launch (S8).
+2. **Look decided before it is built:** S2.5 is a short design gate. The theme, art direction, characters, world, HUD and mobile layout are chosen from browser prototypes and written down in a visual bible before any gameplay code, so the look isn't decided while implementing it.
+3. **Playable as soon as the rules hold:** S3 turns the same protocol into a short real race in Phaser, so fun, feel and readability are tested early instead of after progression and profiles.
+4. **Then depth, then the network:** the hiring stages (S4, S5), real questions (S6), and the profile features that make progress worth keeping (S7), before hardening for launch (S8).
 
 ## Who decides what (S3 onward)
 
@@ -52,6 +54,18 @@ The first real experience. Light landing (SSR) with automatic `es`/`en` detectio
 The heart of the product, played without a game engine. **Play Ranked / Practice**; Job Challenge generation adapted to the frozen profile snapshot (practice: generated company); GameSession and its state machine; **apply** to the offer, which commits the ranked attempt ([ADR-019](../adr/ADR-019-ranked-attempt-commitment.md)); A/B/C/D questions selected **just in time** from the sample pool; server-authoritative answers with deadlines; a preliminary score; finishing the run; an immutable **GameResult**. A plain HTML UI.
 
 **Done when:** a ranked and a practice run can be completed start to finish in the plain UI; the tampering suite (double answers, invalid transitions, late answers, re-rolled ranked attempts) passes; no answer key appears in any response.
+
+## S2.5 · Game theme and visual design (gate before S3)
+
+Not a technical slice: a short phase to decide how CV Rush looks and feels before Phaser work starts ([D-085](../case-study/decision-log.md#d-085--a-visual-design-gate-before-the-game-engine)).
+
+1. **Three clearly different art directions**, each with a name, description, palette, typography, character, environment and HUD styles, advantages, risks, mobile behavior and production effort, shown as browser prototypes (HTML/CSS/SVG) and screenshots so they can be compared side by side. A recommendation, but the owner chooses.
+2. **The chosen direction worked out** in prototypes of at least: job posting, countdown and start, normal race, an A/B/C/D question in the level, Recruiter, ATS 9000, Hiring Manager, final sprint and company, results, and mobile gameplay; plus the Apply → race and arrival → results transitions, the developer carrying a visible CV (with its damage states and `CV HEALTH`), the bots, obstacles, power-ups, and the desktop and mobile HUDs.
+3. **`docs/game-design/visual-bible.md`**: art direction, tone, colors, typography, character, environment, HUD, Recruiter, ATS, Hiring Manager, visual language, responsive and mobile rules, animation principles and what not to do.
+
+Rules: the prototypes live apart from production code and are never imported by the apps; original assets only, or assets whose license allows redistribution, with origin, license and author recorded; nothing that copies other franchises (no Mario or Nintendo characters, blocks, pipes, coins, sounds or maps). Humor targets the hiring process, never people, and never turns ranked questions into jokes.
+
+**Done when:** the owner has chosen a direction, adjusted it, and approved the visual bible. Only then does S3 start.
 
 ## S3 · First playable game (Phaser)
 

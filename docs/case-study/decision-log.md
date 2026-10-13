@@ -377,3 +377,10 @@ All ADRs (001–024) are **Accepted**, with these approval notes:
 - **Status:** Accepted
 - **Decision:** Playwright drives the system's Google Chrome (`channel: 'chrome'`), locally and on GitHub's runners (Chrome is preinstalled), so neither contributors nor CI download browsers. One smoke test protects the main journey; deeper rules stay in API integration tests.
 
+## 2026-10-13 · Before S3
+
+### D-085 · A visual design gate before the game engine
+- **Status:** Accepted (owner request)
+- **Decision:** after S2 is approved and before any Phaser gameplay, a short phase (S2.5) decides the theme and the visual design: three clearly different art directions shown as browser prototypes, the owner's choice and adjustments, prototypes of at least ten key screens (desktop and mobile) and the transitions, and an approved `docs/game-design/visual-bible.md`. The core fantasy stays: a developer physically carrying their CV to a company through the hiring process, competing with other candidates; tech + arcade + corporate satire, with humor about the process and never about people. Original or redistributable assets only, with their origin and license recorded.
+- **Why:** so the look isn't decided while implementing it, and contributors get written rules to follow.
+
