@@ -8,7 +8,7 @@
 |---|---|---|---|
 | Unit | Vitest | Domain rules: state machine, scoring, XP, levels, anti-farming, ranking order, LinkedIn normalization, blueprint validation, question selection, job generation determinism, simulation (race model, ATS re-simulation) | Every package and module |
 | Contract | Vitest + Zod | Every API response conforms to its schema; **no public schema contains email fields**; error codes have translations | `packages/contracts`, API |
-| Integration | Vitest + Testcontainers (Postgres, Redis) | Use cases end to end against a real database: create session → apply → answer → complete; constraints (attempts, double answers, idempotency); daily close; merges (Stage 2) | `apps/api` |
+| Integration | Vitest against real Postgres and Redis (Docker Compose locally, service containers in CI; Testcontainers is an option if tests need isolated databases) | Use cases end to end against a real database: create session → apply → answer → complete; constraints (attempts, double answers, idempotency); daily close; merges (Stage 2) | `apps/api` |
 | E2E | Playwright | Full journeys on desktop and mobile viewports (onboarding → play → result → Save your progress → My Profile), accessibility checks (axe), visual snapshots of key screens | `apps/web` |
 | Game | Vitest (pure logic) + Playwright with a fake server port | Input mapping, layout from scripts, scene flow | `packages/game` |
 | Content | Validators | Catalogs, rulesets, templates, sample pool, translations | `tools/` |

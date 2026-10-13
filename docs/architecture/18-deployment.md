@@ -7,7 +7,7 @@
 | Environment | Purpose | Data |
 |---|---|---|
 | **Local** | Development | `docker compose up` (Postgres, Redis) + `pnpm dev`; seeded catalogs, the fake sample pool, fake developers and rankings; fake AI adapters |
-| **CI** | Tests | Testcontainers for Postgres and Redis |
+| **CI** | Tests | GitHub Actions service containers for Postgres and Redis |
 | **Preview** *(V1)* | Per pull request: UI, mechanics, translations | Ephemeral database seeded with fake data; no real AI keys (fake adapters) |
 | **Production** | Public | Real data; backups; secrets from the platform |
 

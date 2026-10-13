@@ -274,3 +274,21 @@ All ADRs (001–024) are **Accepted**, with these approval notes:
 ### D-062 · LinkedIn example
 - **Status:** Accepted
 - **Decision:** documentation keeps "Ricardo Vera" as the real example; normalized `linkedinUsername = ricardo-vera`; canonical URL `https://www.linkedin.com/in/ricardo-vera/` (built with a trailing slash).
+
+## 2026-10-13 · Part 3: repository foundations
+
+### D-063 · Respect pnpm's supply-chain policies
+- **Status:** Accepted
+- **Decision:** keep pnpm 12's minimum release age and install-script allowlist (`allowBuilds`). Pin the newest versions older than the policy window rather than adding exclusions.
+
+### D-064 · Version choices at foundation time
+- **Status:** Accepted
+- **Decision:** NestJS 11.2.7 (12 released the same day), TypeScript 6.0.x (typescript-eslint doesn't support 7 yet), ESLint 9.39.x (Next.js plugins' peers), PostgreSQL 17 and Redis 8 images for local development and CI. Revisit through Dependabot updates.
+
+### D-065 · Structure kept from Part 2
+- **Status:** Accepted
+- **Decision:** the worker is a second entrypoint of `apps/api` (not a separate `apps/worker`), the domain stays inside `apps/api` (no shared `packages/domain`), and `packages/game` contains only the engine contracts until slice S4.
+
+### D-066 · Zero-config local development
+- **Status:** Accepted
+- **Decision:** the API, Prisma and the seed fall back to local defaults matching `compose.yaml` when no `.env` exists (development only; production fails without explicit values). The documented flow needs no manual environment step.

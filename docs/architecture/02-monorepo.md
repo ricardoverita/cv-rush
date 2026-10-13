@@ -18,13 +18,12 @@ cv-rush/
 │  ├─ game/                Phaser game engine (framework-agnostic): scenes, entities, input, rendering
 │  ├─ simulation/          Pure deterministic logic shared by API and game: seeded PRNG, ATS stream model,
 │  │                       race timing model, bot pacing model (no secrets, no I/O)
-│  ├─ content/             Open content: catalogs (roles, technologies, tracks, bands, compatibility),
-│  │                       job templates and fragments, bot personas, rulesets (tunables),
-│  │                       question templates, a FAKE sample question pool, Daily Company pool
+│  ├─ content/             data/ (CC BY 4.0): catalogs, sample question pack (later: job fragments,
+│  │                       bot personas, rulesets, templates); src/ (Apache-2.0): schemas and validators
 │  ├─ i18n/                UI message catalogs (es, en) by namespace + helpers
 │  └─ config/              Shared tsconfig, ESLint and Prettier presets
-├─ tools/                  Content and translation validators, generators for local seeds
-├─ infra/                  Dockerfiles, docker-compose (Postgres, Redis), reverse proxy config
+├─ tools/                  Repository tooling (documentation link checker)
+├─ compose.yaml            Local PostgreSQL and Redis (Docker Compose)
 ├─ docs/
 └─ .github/                CI workflows, issue/PR templates (Part 3)
 ```
@@ -64,7 +63,7 @@ flowchart LR
 - `apps/web` must not import from `apps/api`.
 - Inside `apps/api`, modules import each other only through their public entry (`index.ts`). See [backend modules](03-backend-modules.md).
 
-## 4. Scripts (target for Part 3)
+## 4. Scripts (implemented in Part 3)
 
 | Script | Does |
 |---|---|
@@ -75,14 +74,16 @@ flowchart LR
 | `pnpm test:e2e` | Playwright on desktop and mobile viewports |
 | `pnpm lint`, `pnpm typecheck` | Lint and strict type checks |
 | `pnpm db:migrate`, `pnpm db:seed` | Prisma migrations; seeds catalogs, sample pool, fake developers and rankings |
-| `pnpm content:validate` | Validates catalogs, rulesets, job templates, bot content |
+| `pnpm content:validate` | Validates catalogs (later also rulesets, job templates, bot content) |
+| `pnpm db:check` | Fails if the Prisma schema and the migrations differ |
+| `pnpm docs:check` | Validates relative links and anchors in Markdown |
 | `pnpm questions:validate` | Validates question files (sample pool, later community packs) |
 | `pnpm translations:validate` | Missing keys, ICU syntax, unused keys, es/en parity |
 
 ## 5. Pinning
 
 - Node 24 LTS: `.nvmrc` and `.node-version` (for nvm, fnm, asdf/mise, Volta users), plus `engines.node` in the root `package.json`.
-- pnpm: `packageManager` field (Corepack), plus `engines.pnpm`.
+- pnpm: `packageManager` field (Corepack), plus `engines.pnpm`. pnpm 12 blocks dependency install scripts unless they're listed in `allowBuilds` (`pnpm-workspace.yaml`) and applies a minimum release age to new versions; we keep both policies and pin versions that satisfy them.
 - `engine-strict=true` in `.npmrc` so mismatched versions fail early.
 
 ## 6. Growth path

@@ -18,7 +18,7 @@ Relicensing later requires every contributor's permission, so the choice must be
 | Material | License | Where |
 |---|---|---|
 | Code | **Apache License 2.0** | Root `LICENSE` + `NOTICE` |
-| Content (`packages/content/**`, `docs/**`, non-brand game art) | **Creative Commons Attribution 4.0 International (CC BY 4.0)** | `LICENSE` files in those directories + a section in the root README |
+| Content (`packages/content/data/**`, `docs/**`, non-brand game art) | **Creative Commons Attribution 4.0 International (CC BY 4.0)** | `LICENSE` files in those directories + a section in the root README |
 | Branding (name, logos, wordmarks, brand mascot art) | **Not licensed**; a brand policy (`TRADEMARKS.md`) explains permitted references and asks forks to rebrand | `TRADEMARKS.md`, `assets/brand/` |
 | UI message catalogs (`packages/i18n`) | Apache-2.0 (part of the application) | — |
 | Third-party assets (fonts, sounds) | Their own licenses | `THIRD_PARTY_NOTICES.md` |
@@ -69,7 +69,7 @@ Apache-2.0 matches the goals better: recognition (NOTICE), clean contribution te
 
 - Positive: clear rules for contributors; recognition preserved; brand protected; content reusable for learning.
 - Negative: two licenses to explain (one README section handles it); Apache-2.0's change-marking obligation for redistributors.
-- Follow-ups (Part 3): `LICENSE`, `NOTICE`, `packages/content/LICENSE`, `docs/LICENSE`, `TRADEMARKS.md`, `THIRD_PARTY_NOTICES.md`, PR template attestation, README section. Until Part 3 lands, the repository has no license file, which means all rights are reserved by default.
+- Implemented in Part 3: `LICENSE` (Apache-2.0), `NOTICE`, `docs/LICENSE` and `packages/content/data/LICENSE` (CC BY 4.0), `TRADEMARKS.md`, `THIRD_PARTY_NOTICES.md`, the PR template attestation and the README section. The content package keeps code (`src/`, Apache-2.0) and content (`data/`, CC BY 4.0) in separate directories.
 
 ## Related
 
