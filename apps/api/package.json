@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@cv-rush/config": "workspace:*",
-    "@nestjs/testing": "11.2.7",
+    "@nestjs/testing": "12.1.2",
     "@swc/core": "1.16.18",
     "pino-pretty": "13.2.0",
     "prisma": "7.10.0",
