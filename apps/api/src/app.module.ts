@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CatalogModule } from './modules/catalog/index.js';
+import { GameSessionsModule } from './modules/game-sessions/index.js';
 import { HealthModule } from './modules/health/index.js';
 import { IdentityModule } from './modules/identity/index.js';
 import { ProfilesModule } from './modules/profiles/index.js';
@@ -21,6 +22,7 @@ import { RedisModule } from './platform/redis/redis.module.js';
     CatalogModule,
     IdentityModule,
     ProfilesModule,
+    GameSessionsModule,
   ],
 })
 export class AppModule {}

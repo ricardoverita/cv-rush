@@ -8,6 +8,7 @@ const profileFields = {
   technologyIds: true,
   version: true,
   updatedAt: true,
+  rankedLockedUntil: true,
 } as const;
 
 @Injectable()
@@ -28,6 +29,14 @@ export class ProfileRepository {
       where: { developerId },
       data: { ...profile, version: { increment: 1 } },
       select: profileFields,
+    });
+  }
+
+  /** Locks role, seniority and stack for ranked until `until` (end of the UTC day). */
+  async lockRanked(db: Db, developerId: string, until: Date): Promise<void> {
+    await db.developerProfile.update({
+      where: { developerId },
+      data: { rankedLockedUntil: until },
     });
   }
 }

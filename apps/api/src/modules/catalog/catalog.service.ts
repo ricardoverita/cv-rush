@@ -34,6 +34,11 @@ export class CatalogService {
     return this.views.get(locale) as CatalogResponse;
   }
 
+  /** The validated catalog content (labels in every locale). */
+  content(): Catalog {
+    return this.catalog;
+  }
+
   /** What the profile rules need. Locale-independent. */
   rules(): CatalogRules {
     return this.view('en');

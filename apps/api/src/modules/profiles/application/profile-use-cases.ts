@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import type {
+  CompetingContext,
   CreateDeveloperRequest,
   MeResponse,
   ProfileInput,
   UpdateProfileRequest,
 } from '@cv-rush/contracts';
+import type { Db } from '../../../platform/database/db.js';
 import { PrismaService } from '../../../platform/database/prisma.service.js';
 import { AppError } from '../../../platform/http/app-error.js';
 import { CatalogService } from '../../catalog/index.js';
@@ -83,15 +85,26 @@ export class UpdateProfile {
   async execute(developerId: string, request: UpdateProfileRequest): Promise<MeResponse> {
     const current = await this.profiles.find(this.prisma, developerId);
     if (!current) throw AppError.unauthenticated();
+    const touchesCompetitiveProfile =
+      request.seniority !== undefined ||
+      request.roleId !== undefined ||
+      request.technologyIds !== undefined;
+    // The first ranked run of a UTC day locks the ranked profile until the day ends
+    // (docs/product/competitive-identity.md §6): no category hopping within a day.
+    if (
+      touchesCompetitiveProfile &&
+      current.rankedLockedUntil &&
+      current.rankedLockedUntil > new Date()
+    ) {
+      throw new AppError('RANKED_PROFILE_LOCKED', 409, {
+        until: current.rankedLockedUntil.toISOString(),
+      });
+    }
     const displayName =
       request.displayName === undefined
         ? undefined
         : this.identity.checkDisplayName(request.displayName);
-    const touchesProfile =
-      request.seniority !== undefined ||
-      request.roleId !== undefined ||
-      request.technologyIds !== undefined;
-    const profile = touchesProfile
+    const profile = touchesCompetitiveProfile
       ? this.policy.check({
           seniority: request.seniority ?? current.seniority,
           roleId: request.roleId ?? current.roleId,
@@ -125,5 +138,41 @@ export class GetMe {
     ]);
     if (!profile) throw AppError.unauthenticated();
     return this.policy.toMe(developer, profile);
+  }
+}
+
+/**
+ * The competitive identity snapshot (docs/product/competitive-identity.md §5): frozen when a
+ * session is created and never read from the live profile again.
+ */
+@Injectable()
+export class CompetitiveSnapshots {
+  constructor(
+    private readonly identity: IdentityService,
+    private readonly profiles: ProfileRepository,
+    private readonly catalog: CatalogService,
+  ) {}
+
+  async take(db: Db, developerId: string): Promise<CompetingContext> {
+    const [developer, profile] = await Promise.all([
+      this.identity.getDeveloper(db, developerId),
+      this.profiles.find(db, developerId),
+    ]);
+    if (!profile) throw AppError.unauthenticated();
+    const category = categoryOf(this.catalog.rules(), profile);
+    return {
+      displayName: developer.displayName,
+      seniority: profile.seniority,
+      band: category.band,
+      roleId: profile.roleId,
+      trackId: category.trackId,
+      categoryKey: category.key,
+      technologyIds: profile.technologyIds,
+      profileVersion: profile.version,
+    };
+  }
+
+  lockRanked(db: Db, developerId: string, until: Date): Promise<void> {
+    return this.profiles.lockRanked(db, developerId, until);
   }
 }
