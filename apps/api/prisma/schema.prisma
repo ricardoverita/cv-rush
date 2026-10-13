@@ -22,6 +22,9 @@ model Season {
   endsAt    DateTime?    @map("ends_at") @db.Timestamptz(3)
   createdAt DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
 
+  sessions GameSession[]
+  results  GameResult[]
+
   @@map("seasons")
 }
 
@@ -48,6 +51,8 @@ model Developer {
 
   deviceCredentials DeviceCredential[]
   profile           DeveloperProfile?
+  sessions          GameSession[]
+  results           GameResult[]
 
   @@index([lastActiveAt])
   @@map("developers")
@@ -90,12 +95,14 @@ enum ProfileVisibility {
 /// The current professional profile. Runs copy it into an immutable snapshot (slice S2).
 /// Catalog IDs are stable strings from packages/content.
 model DeveloperProfile {
-  developerId   String    @id @map("developer_id") @db.Uuid
-  seniority     Seniority
-  roleId        String    @map("role_id") @db.VarChar(64)
-  technologyIds String[]  @map("technology_ids") @db.VarChar(64)
-  version       Int       @default(1)
-  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  developerId       String    @id @map("developer_id") @db.Uuid
+  seniority         Seniority
+  roleId            String    @map("role_id") @db.VarChar(64)
+  technologyIds     String[]  @map("technology_ids") @db.VarChar(64)
+  version           Int       @default(1)
+  /// Set by the first ranked run of a UTC day: role, seniority and stack can't change until then.
+  rankedLockedUntil DateTime? @map("ranked_locked_until") @db.Timestamptz(3)
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   developer Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
 
@@ -113,4 +120,394 @@ enum Seniority {
   principal
 
   @@map("seniority")
+}
+
+// ---------------------------------------------------------------- questions
+
+/// A pool of questions: technology, track fundamentals, seniority band or general, at one level
+/// (e.g. `tech:redis:3`, `track:fullstack:3`, `band:senior_plus:4`, `general:2`).
+model QuestionContext {
+  key       String   @id @db.VarChar(80)
+  kind      String   @db.VarChar(16)
+  level     Int
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  questions Question[]
+  batches   GenerationBatch[]
+
+  @@map("question_contexts")
+}
+
+/// One run of the generation pipeline for a context: provider, counts and rejection reasons.
+model GenerationBatch {
+  id            String    @id @default(uuid(7)) @db.Uuid
+  contextKey    String    @map("context_key") @db.VarChar(80)
+  provider      String    @db.VarChar(40)
+  verifier      String    @db.VarChar(40)
+  promptVersion String    @map("prompt_version") @db.VarChar(40)
+  requested     Int
+  accepted      Int       @default(0)
+  rejected      Int       @default(0)
+  rejections    Json      @default("[]")
+  status        String    @db.VarChar(16)
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  completedAt   DateTime? @map("completed_at") @db.Timestamptz(3)
+
+  context   QuestionContext @relation(fields: [contextKey], references: [key])
+  questions Question[]
+
+  @@index([contextKey])
+  @@map("generation_batches")
+}
+
+model Question {
+  id                 String                 @id @default(uuid(7)) @db.Uuid
+  contextKey         String                 @map("context_key") @db.VarChar(80)
+  source             QuestionSource
+  /// Stable reference of the origin item (fixture or pack id), for idempotent seeding.
+  externalRef        String?                @unique @map("external_ref") @db.VarChar(160)
+  lifecycleState     QuestionLifecycleState @map("lifecycle_state")
+  verificationTier   VerificationTier       @map("verification_tier")
+  batchId            String?                @map("batch_id") @db.Uuid
+  rankedExposures    Int                    @default(0) @map("ranked_exposures")
+  competitiveSince   DateTime?              @map("competitive_since") @db.Timestamptz(3)
+  retiredAt          DateTime?              @map("retired_at") @db.Timestamptz(3)
+  invalidatedAt      DateTime?              @map("invalidated_at") @db.Timestamptz(3)
+  invalidationReason String?                @map("invalidation_reason")
+  createdAt          DateTime               @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  context  QuestionContext   @relation(fields: [contextKey], references: [key])
+  batch    GenerationBatch?  @relation(fields: [batchId], references: [id])
+  versions QuestionVersion[]
+
+  @@index([contextKey, lifecycleState])
+  @@map("questions")
+}
+
+/// Immutable: a fix creates version n + 1 (a database trigger rejects updates).
+model QuestionVersion {
+  id              String   @id @default(uuid(7)) @db.Uuid
+  questionId      String   @map("question_id") @db.Uuid
+  version         Int
+  /// Per locale: { prompt, options: { a, b, c, d }, explanation }.
+  content         Json
+  optionIds       String[] @map("option_ids") @db.VarChar(1)
+  correctOptionId String   @map("correct_option_id") @db.VarChar(1)
+  difficulty      Int
+  technologyIds   String[] @map("technology_ids") @db.VarChar(64)
+  topics          String[] @db.VarChar(80)
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  question Question @relation(fields: [questionId], references: [id])
+
+  @@unique([questionId, version])
+  @@map("question_versions")
+}
+
+enum QuestionSource {
+  sample
+  fake_provider
+  ai_generated
+  community
+  curated
+
+  @@map("question_source")
+}
+
+enum QuestionLifecycleState {
+  generated
+  validated
+  rejected
+  competitive
+  practice
+  retired
+  invalidated
+  archived
+
+  @@map("question_lifecycle_state")
+}
+
+enum VerificationTier {
+  sample
+  ai_generated
+  ai_validated
+  human_reviewed
+  curated
+
+  @@map("verification_tier")
+}
+
+// ---------------------------------------------------------------- job-challenges
+
+/// A posting: generated for a profile snapshot today, published by a real company later
+/// (Play to Apply, Stage 3). Facts are language-independent; texts are rendered per locale.
+model JobPosting {
+  id             String           @id @default(uuid(7)) @db.Uuid
+  origin         JobPostingOrigin
+  companyName    String           @map("company_name") @db.VarChar(120)
+  facts          Json
+  texts          Json
+  contentVersion String           @map("content_version") @db.VarChar(40)
+  createdAt      DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  challenges JobChallenge[]
+
+  @@map("job_postings")
+}
+
+/// What a session is played against. Sessions, questions, scoring and results don't care about
+/// the source (ADR-017).
+model JobChallenge {
+  id             String             @id @default(uuid(7)) @db.Uuid
+  source         JobChallengeSource
+  jobPostingId   String             @map("job_posting_id") @db.Uuid
+  runType        RunType            @map("run_type")
+  categoryKey    String             @map("category_key") @db.VarChar(80)
+  dayKey         String             @map("day_key") @db.VarChar(10)
+  /// Stages, slots, levels and windows for this challenge (from the ruleset).
+  blueprint      Json
+  rulesetVersion String             @map("ruleset_version") @db.VarChar(40)
+  createdAt      DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  posting JobPosting   @relation(fields: [jobPostingId], references: [id])
+  session GameSession?
+
+  @@map("job_challenges")
+}
+
+enum JobChallengeSource {
+  generated
+  daily
+  job_posting
+
+  @@map("job_challenge_source")
+}
+
+enum JobPostingOrigin {
+  generated
+  published
+
+  @@map("job_posting_origin")
+}
+
+// ---------------------------------------------------------------- game-sessions
+
+enum RunType {
+  ranked
+  practice
+
+  @@map("run_type")
+}
+
+enum SessionStatus {
+  created
+  in_progress
+  delivered
+  failed
+  abandoned
+  expired_unstarted
+
+  @@map("session_status")
+}
+
+enum SessionStage {
+  job_review
+  segment_1
+  recruiter
+  segment_2
+  ats
+  segment_3
+  hiring_manager
+  segment_4
+  final
+  finished
+
+  @@map("session_stage")
+}
+
+/// One run. Every transition goes through the domain state machine; the row is locked per
+/// mutation. The profile snapshot is frozen at creation and never read from the live profile.
+model GameSession {
+  id              String        @id @default(uuid(7)) @db.Uuid
+  developerId     String        @map("developer_id") @db.Uuid
+  runType         RunType       @map("run_type")
+  status          SessionStatus @default(created)
+  stage           SessionStage  @default(job_review)
+  /// true while the session is active (created or in progress), null afterwards. The unique
+  /// index on (developer_id, active) allows one active session per Developer.
+  active          Boolean?      @default(true)
+  snapshot        Json
+  categoryKey     String        @map("category_key") @db.VarChar(80)
+  jobChallengeId  String        @unique @map("job_challenge_id") @db.Uuid
+  /// 32 random bytes; never leaves the server.
+  seed            Bytes
+  locale          String        @db.VarChar(5)
+  rulesetVersion  String        @map("ruleset_version") @db.VarChar(40)
+  scoringVersion  String        @map("scoring_version") @db.VarChar(40)
+  seasonId        String        @map("season_id")
+  dayKey          String        @map("day_key") @db.VarChar(10)
+  cvHealth        Int           @map("cv_health")
+  reasonCode      String?       @map("reason_code") @db.VarChar(40)
+  createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  reviewExpiresAt DateTime      @map("review_expires_at") @db.Timestamptz(3)
+  committedAt     DateTime?     @map("committed_at") @db.Timestamptz(3)
+  stageStartedAt  DateTime?     @map("stage_started_at") @db.Timestamptz(3)
+  expiresAt       DateTime?     @map("expires_at") @db.Timestamptz(3)
+  endedAt         DateTime?     @map("ended_at") @db.Timestamptz(3)
+  lastActivityAt  DateTime      @default(now()) @map("last_activity_at") @db.Timestamptz(3)
+  version         Int           @default(0)
+
+  developer     Developer         @relation(fields: [developerId], references: [id], onDelete: Cascade)
+  jobChallenge  JobChallenge      @relation(fields: [jobChallengeId], references: [id])
+  season        Season            @relation(fields: [seasonId], references: [id])
+  rankedAttempt RankedAttempt?
+  challenges    Challenge[]
+  attempts      QuestionAttempt[]
+  result        GameResult?
+
+  @@unique([developerId, active])
+  @@index([developerId, createdAt])
+  @@index([status, reviewExpiresAt])
+  @@index([status, expiresAt])
+  @@map("game_sessions")
+}
+
+/// Allocated atomically at apply (ADR-019). The primary key and a CHECK make a fourth attempt
+/// on the same UTC day impossible.
+model RankedAttempt {
+  developerId String   @map("developer_id") @db.Uuid
+  dayKey      String   @map("day_key") @db.VarChar(10)
+  number      Int
+  sessionId   String   @unique @map("session_id") @db.Uuid
+  committedAt DateTime @map("committed_at") @db.Timestamptz(3)
+
+  session GameSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@id([developerId, dayKey, number])
+  @@map("ranked_attempts")
+}
+
+enum ChallengeStage {
+  recruiter
+  ats
+  hiring_manager
+  final
+
+  @@map("challenge_stage")
+}
+
+enum ChallengeStatus {
+  open
+  completed
+
+  @@map("challenge_status")
+}
+
+model Challenge {
+  /// Random (v4), unguessable, bound to its session.
+  id          String          @id @db.Uuid
+  sessionId   String          @map("session_id") @db.Uuid
+  stage       ChallengeStage
+  status      ChallengeStatus @default(open)
+  openedAt    DateTime        @map("opened_at") @db.Timestamptz(3)
+  deadlineAt  DateTime?       @map("deadline_at") @db.Timestamptz(3)
+  completedAt DateTime?       @map("completed_at") @db.Timestamptz(3)
+  /// Server-only state (e.g. the ATS tokens and their relevance).
+  payload     Json?
+  outcome     Json?
+
+  session  GameSession       @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  attempts QuestionAttempt[]
+
+  @@unique([sessionId, stage])
+  @@map("challenges")
+}
+
+enum AttemptOutcome {
+  correct
+  incorrect
+  timeout
+  graded
+  neutral
+
+  @@map("attempt_outcome")
+}
+
+/// A question as served to one developer in one slot, and how it was answered. `presented` is
+/// exactly what the client saw; `answer_key` never leaves the server.
+model QuestionAttempt {
+  /// Random (v4), unguessable: the client's handle for this question.
+  id                String          @id @db.Uuid
+  sessionId         String          @map("session_id") @db.Uuid
+  challengeId       String          @map("challenge_id") @db.Uuid
+  developerId       String          @map("developer_id") @db.Uuid
+  runType           RunType         @map("run_type")
+  stage             ChallengeStage
+  slot              String          @db.VarChar(4)
+  kind              String          @db.VarChar(32)
+  level             Int
+  questionId        String?         @map("question_id") @db.Uuid
+  questionVersionId String?         @map("question_version_id") @db.Uuid
+  templateId        String?         @map("template_id") @db.VarChar(40)
+  presented         Json
+  answerKey         Json            @map("answer_key")
+  explanation       String?
+  servedAt          DateTime        @map("served_at") @db.Timestamptz(3)
+  deadlineAt        DateTime        @map("deadline_at") @db.Timestamptz(3)
+  windowMs          Int             @map("window_ms")
+  answeredAt        DateTime?       @map("answered_at") @db.Timestamptz(3)
+  selectedOptionId  String?         @map("selected_option_id") @db.VarChar(1)
+  outcome           AttemptOutcome?
+  grade             String?         @db.VarChar(16)
+  responseMs        Int?            @map("response_ms")
+
+  session   GameSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  challenge Challenge   @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@unique([challengeId, slot])
+  @@index([developerId, questionId])
+  @@map("question_attempts")
+}
+
+enum ResultStatus {
+  delivered
+  failed
+  abandoned
+
+  @@map("result_status")
+}
+
+/// The immutable fact of a finished run (ADR-016). A database trigger rejects updates;
+/// corrections go through verification records or projections, never by rewriting this row.
+model GameResult {
+  id               String       @id @default(uuid(7)) @db.Uuid
+  sessionId        String       @unique @map("session_id") @db.Uuid
+  developerId      String       @map("developer_id") @db.Uuid
+  jobChallengeId   String       @map("job_challenge_id") @db.Uuid
+  runType          RunType      @map("run_type")
+  status           ResultStatus
+  reasonCode       String?      @map("reason_code") @db.VarChar(40)
+  totalScore       Int          @map("total_score")
+  breakdown        Json
+  accuracy         Float?
+  counts           Json
+  atsMatch         Float?       @map("ats_match")
+  cvHealth         Int          @map("cv_health")
+  /// The competitive identity snapshot the run was played with.
+  competingContext Json         @map("competing_context")
+  jobSummary       Json         @map("job_summary")
+  seasonId         String       @map("season_id")
+  dayKey           String       @map("day_key") @db.VarChar(10)
+  scoringVersion   String       @map("scoring_version") @db.VarChar(40)
+  rulesetVersion   String       @map("ruleset_version") @db.VarChar(40)
+  startedAt        DateTime?    @map("started_at") @db.Timestamptz(3)
+  endedAt          DateTime     @map("ended_at") @db.Timestamptz(3)
+  createdAt        DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  session   GameSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  developer Developer   @relation(fields: [developerId], references: [id], onDelete: Cascade)
+  season    Season      @relation(fields: [seasonId], references: [id])
+
+  @@index([developerId, createdAt(sort: Desc)])
+  @@map("game_results")
 }

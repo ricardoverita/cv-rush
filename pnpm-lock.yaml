@@ -208,6 +208,9 @@ importers:
       '@cv-rush/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
+      '@cv-rush/simulation':
+        specifier: workspace:*
+        version: link:../../packages/simulation
       '@nestjs/common':
         specifier: 11.2.7
         version: 11.2.7(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@7.2.0)
