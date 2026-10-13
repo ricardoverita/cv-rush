@@ -1,6 +1,6 @@
 name: Translation
 description: Fix a translation or propose a new language.
-labels: [translation]
+labels: [i18n]
 body:
   - type: dropdown
     id: kind
