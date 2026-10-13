@@ -246,3 +246,7 @@
 ### D-057 · No blanket queue for projections
 - **Status:** Accepted (analysis in Part 2)
 - **Decision:** don't assume BullMQ for every derived view. Part 2 must justify where a queue adds value (AI generation, asynchronous work, ranking close and verification, retries) and where XP, basic stats and result updates can stay transactional or in-process without unnecessary eventual consistency.
+
+## 2026-10-12 · Part 2: architecture (draft)
+
+Architecture decisions are recorded as ADRs in [`docs/adr/`](../adr/README.md) (ADR-001 to ADR-024, all **Proposed** until the Part 2 review). Highlights: modular monolith (ADR-001), Phaser decoupled from Next.js (ADR-002), server-authoritative gameplay (ADR-003), provisional Developer identity with device credentials (ADR-007), rankings as projections (ADR-008), licensing split (ADR-010), one origin for web and API (ADR-012), BullMQ only where it pays (ADR-015), immutable results and XP ledger (ADR-016), Job Challenge abstraction (ADR-017), AI pipeline (ADR-018), ranked attempt committed at apply (ADR-019), claim and merge by proof of control (ADR-020), personal data handling (ADR-021).

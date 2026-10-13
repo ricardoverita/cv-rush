@@ -7,7 +7,7 @@
 | Part | Scope | Status |
 |---|---|---|
 | **1** | Product and game design | ✅ **Approved (revision 4)** |
-| 2 | Technical architecture and ADRs | In progress |
+| 2 | Technical architecture and ADRs | **Draft, in review** |
 | 3 | Repository foundations (tooling, CI, community files) | Not started |
 | 4+ | Vertical slices | Not started |
 
@@ -21,9 +21,13 @@ Revision history of Part 1: **r1** initial design → **r2** profile-first ranke
 | [`game-design/`](game-design/README.md) | Run structure (side-scrolling), challenges, bots, CV Health, job generation, progression, scoring principles, fairness, replayability |
 | [`questions/`](questions/README.md) | Content strategy (AI-generated pools in the MVP) and question strategy |
 | [`roadmap/`](roadmap/README.md) | MVP, V1, V2, V3 (jobs), later (recruiters), ideas, postponed |
+| [`architecture/`](architecture/README.md) | Part 2: overview, monorepo, modules, domain and data model, identity, GameSession, Job Challenges, Question Engine, AI pipeline, scoring and progression, rankings, API, game integration, async processing, observability, configuration, deployment, web app, testing, future evolution, implementation plan |
+| [`adr/`](adr/README.md) | Architecture Decision Records (ADR-001 to ADR-024) |
+| [`security/`](security/README.md) · [`anti-cheat/`](anti-cheat/README.md) | Threat model, privacy engineering; anti-cheat design assuming public source code |
+| [`i18n/`](i18n/README.md) · [`analytics/`](analytics/README.md) | Locales, routing, catalogs; event catalog and privacy rules |
 | [`case-study/`](case-study/README.md) | Working notes for the future technical article, plus the decision log |
 
-Planned for later parts: `architecture/`, `adr/`, `security/`, `anti-cheat/`, `i18n/`, `analytics/`, `contributing/`.
+Planned for Part 3: `contributing/` (guides for questions, technologies, roles, languages, challenges and scenes).
 
 ## Suggested reading order (Part 1 review)
 
