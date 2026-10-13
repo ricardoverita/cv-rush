@@ -4,11 +4,28 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # Respect a minimum release age (also enforced by pnpm's supply-chain policy).
+    cooldown:
+      default-days: 3
     open-pull-requests-limit: 5
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      # Majors blocked by known compatibility issues (decision log D-064):
+      # typescript-eslint doesn't support TypeScript 7 yet; Next.js lint plugins require ESLint 9;
+      # NestJS 12 was too fresh at foundation time. Revisit manually.
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      - dependency-name: eslint
+        update-types: [version-update:semver-major]
+      - dependency-name: '@eslint/js'
+        update-types: [version-update:semver-major]
+      - dependency-name: '@nestjs/*'
+        update-types: [version-update:semver-major]
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 3
