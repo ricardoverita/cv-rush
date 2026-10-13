@@ -21,3 +21,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   - Translation and documentation link validation.
   - ESLint (with architecture boundary rules), Prettier, Vitest, GitHub Actions CI.
   - Open-source files: licenses (Apache-2.0 for code, CC BY 4.0 for content), NOTICE, trademarks policy, contributing guide, code of conduct, security policy, issue and pull request templates.
+
+### Security
+
+- The API's HTTP server now runs fastify 5.12.5 instead of the 5.11.3 copy pinned by `@nestjs/platform-fastify` (seven advisories, including `X-Forwarded-*` spoofing under `trustProxy`). One fastify version for the whole workspace, guarded by a test.
