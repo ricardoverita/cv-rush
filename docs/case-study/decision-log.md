@@ -314,3 +314,27 @@ All ADRs (001–024) are **Accepted**, with these approval notes:
 ### D-070 · Conduct contact through GitHub
 - **Status:** Accepted
 - **Decision:** no personal email in the repository. Conduct reports go to the maintainer privately through GitHub, and vulnerabilities through GitHub's private vulnerability reporting (enabled). A project address (for example `opensource@` or `security@` on a project domain) may come later if the project grows.
+
+## 2026-10-13 · Slice S1: identity and onboarding
+
+### D-071 · S1 scope: what waits for later slices
+- **Status:** Accepted (for review with S1)
+- **Decision:** S1 ships what the slice needs and nothing that would be fake. The **terms acknowledgement** (`termsVersion` and its consent record) waits for the privacy and terms pages (S7): recording consent to a text that doesn't exist yet would be meaningless. **Creation rate limits** come with the rest of rate limiting (S8). The **"Practice only" badge** per track comes with ranked/practice and the ruleset (S2). **Progressive stack suggestions** (NestJS → Node.js) need relations the catalog doesn't have yet.
+
+### D-072 · Shared profile rules, server-side moderation
+- **Status:** Accepted
+- **Decision:** display-name structure and profile rules (catalog membership, role compatibility, core categories, 1–12 technologies, minimum seniority) are pure functions in `packages/contracts`. The API applies them as the authority; the web app applies the same functions for instant feedback. The moderation blocklist stays on the server and a blocked name gets a neutral code (`DISPLAY_NAME_NOT_ALLOWED`) that never reveals the matched term.
+- **Discarded:** duplicating the rules in the UI (they would drift); shipping the blocklist to the browser.
+
+### D-073 · Device cookie and CSRF in practice
+- **Status:** Accepted
+- **Decision:** the cookie is `__Host-dc` with `Secure` when `PUBLIC_BASE_URL` uses https (required in production) and a plain `dc` on local http, where browsers don't all accept `Secure`. State-changing requests need `X-CVR-Client: web`, a JSON content type and, when the browser sends one, the site's own `Origin` (or `Sec-Fetch-Site: same-origin`). Requests with neither header come from non-browser clients, which carry no victim cookie.
+
+### D-074 · One Developer per device
+- **Status:** Accepted
+- **Decision:** `POST /developers` from a browser that already has a valid device credential returns `409 DEVELOPER_ALREADY_EXISTS`; the web app continues with the existing profile (for example after a double submit in two tabs). Changing the profile goes through `PATCH /me/profile`, validated as a whole.
+
+### D-075 · Database checks for what Prisma can't express
+- **Status:** Accepted
+- **Decision:** `CHECK` constraints for invariants outside Prisma's schema language: a device credential stores a 32-byte SHA-256 digest, and a profile has between 1 and 12 technologies. They live in their own migration, which Prisma's drift check ignores.
+

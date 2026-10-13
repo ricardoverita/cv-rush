@@ -20,13 +20,15 @@ sequenceDiagram
 - The Developer ID is a **UUIDv7** (time-ordered, unguessable enough for an internal identifier, and **never** used as a credential).
 - Creation is rate-limited per IP hash and protected by an optional human-verification challenge when abuse signals appear (see [anti-cheat](../anti-cheat/README.md)).
 
+> **Implemented in S1:** creation, the device credential, `GET /me` and profile edits. Still to come, as designed: the terms acknowledgement (`termsVersion` and its consent record) together with the privacy and terms pages (S7), and creation rate limits with the rest of rate limiting (S8). See [D-071](../case-study/decision-log.md#d-071--s1-scope-what-waits-for-later-slices).
+
 ## 2. Device credential
 
 | Property | Design |
 |---|---|
 | Token | 32 random bytes from a CSPRNG, base64url-encoded |
 | Storage | Server stores **SHA-256(token)** only (high-entropy token, so a fast hash is enough; no plaintext at rest) |
-| Cookie | `__Host-dc=<token>; Secure; HttpOnly; SameSite=Lax; Path=/; Max-Age≈400 days` (browsers cap long expirations around 400 days) |
+| Cookie | `__Host-dc=<token>; Secure; HttpOnly; SameSite=Lax; Path=/; Max-Age≈400 days` (browsers cap long expirations around 400 days). Local development over plain http uses `dc` without `Secure` (the prefix requires it); production requires an https `PUBLIC_BASE_URL` |
 | Origin | Web and API share **one origin** (`/` and `/api`), so the cookie is first-party and works in in-app browsers without third-party cookie issues ([ADR-012](../adr/ADR-012-web-and-api-applications.md)) |
 | Use | Every API request resolves `developerId` from the cookie; no request body ever carries a developer ID as proof |
 | Sliding | `last_used_at` is updated at most once per hour; the cookie's Max-Age is refreshed on use |

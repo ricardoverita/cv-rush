@@ -15,6 +15,8 @@
 
 ### Identity and profile
 
+> Implemented in S1: `POST /developers` (without `locale` and `termsVersion` yet), `GET /me` (without level, XP, contact or ranked fields, which arrive with their slices), `PATCH /me/profile` (the ranked daily lock arrives in S2) and `GET /catalog`.
+
 | Method and path | Purpose |
 |---|---|
 | `POST /developers` | Light onboarding: create the provisional Developer (name, seniority, role, technologies, locale, terms version); sets the device credential |

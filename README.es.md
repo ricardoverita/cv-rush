@@ -10,17 +10,17 @@
 
 ## Estado actual
 
-**Fundaciones: todavía no hay un juego jugable.**
+**Slice S1: ya puedes crear tu perfil de developer. Todavía no hay un juego jugable.**
 
 | Hecho | Todavía no |
 |---|---|
 | Diseño de producto y de juego ([Parte 1](docs/README.md)) y arquitectura técnica con 24 ADRs ([Parte 2](docs/architecture/README.md)) | El juego en sí (runner en Phaser, retos, preguntas en partida) |
-| Un monorepo que compila, pasa los tests y se levanta en local | Perfiles de developer, XP, rankings, compartir |
-| Un esqueleto web con i18n (en, es) y una página de estado | Generación de preguntas con IA |
-| Un esqueleto de API con health y readiness, y un worker con un job de heartbeat | Cuentas, empleos y funcionalidades para recruiters (etapas posteriores) |
+| Un monorepo que compila, pasa los tests y se levanta en local | Historial, XP, niveles, rankings, compartir |
+| Identidad de developer y onboarding (S1): un perfil de developer provisional (nombre, seniority, rol y stack del catálogo) que se reconoce en el mismo dispositivo, en inglés y español | Generación de preguntas con IA |
+| Una API con health y readiness, y un worker con un job de heartbeat | Cuentas, empleos y funcionalidades para recruiters (etapas posteriores) |
 | Validación de contenido con un pack de preguntas de ejemplo; CI | |
 
-Siguiente paso: los vertical slices del [plan de implementación](docs/architecture/22-implementation-plan.md) (en inglés).
+Siguiente paso: S2, un Job Challenge completo jugado sin motor gráfico, y después S3, la primera carrera jugable. Ver el [plan de implementación](docs/architecture/22-implementation-plan.md) (en inglés).
 
 ## La arquitectura en un minuto
 
@@ -59,7 +59,7 @@ pnpm db:migrate
 pnpm dev
 ```
 
-- Web: http://localhost:3000 (redirige a `/en` o `/es`)
+- Web: http://localhost:3000 (redirige a `/en` o `/es`); crea tu perfil en `/es/play`
 - API: http://localhost:4000/api/health y http://localhost:4000/api/ready
 
 Para desarrollo local no hace falta un archivo `.env`; [`.env.example`](.env.example) muestra lo que se puede sobrescribir. Detalles y todos los scripts: [desarrollo local](docs/contributing/local-development.md) (en inglés).

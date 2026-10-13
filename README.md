@@ -10,17 +10,17 @@
 
 ## Current status
 
-**Foundations: there is no playable game yet.**
+**Slice S1: you can create your developer profile. There is no playable game yet.**
 
 | Done | Not yet |
 |---|---|
 | Product and game design ([Part 1](docs/README.md)) and technical architecture with 24 ADRs ([Part 2](docs/architecture/README.md)) | The game itself (Phaser runner, challenges, questions in play) |
-| A monorepo that builds, tests and runs locally | Developer profiles, XP, rankings, sharing |
-| A web app skeleton with i18n (en, es) and a status page | AI question generation |
-| An API skeleton with health and readiness checks, a worker with a heartbeat job | Accounts, jobs, recruiter features (later stages) |
+| A monorepo that builds, tests and runs locally | History, XP, levels, rankings, sharing |
+| Developer identity and onboarding (S1): a provisional developer profile (name, seniority, role, stack from the catalog) recognised on the same device, in English and Spanish | AI question generation |
+| An API with health and readiness checks, a worker with a heartbeat job | Accounts, jobs, recruiter features (later stages) |
 | Content validation with a sample question pack; CI | |
 
-Next: the vertical slices in the [implementation plan](docs/architecture/22-implementation-plan.md).
+Next: S2, a complete Job Challenge played without the game engine, then S3, the first playable race. See the [implementation plan](docs/architecture/22-implementation-plan.md).
 
 ## Architecture in one minute
 
@@ -59,7 +59,7 @@ pnpm db:migrate
 pnpm dev
 ```
 
-- Web: http://localhost:3000 (redirects to `/en` or `/es`)
+- Web: http://localhost:3000 (redirects to `/en` or `/es`); create your profile at `/en/play`
 - API: http://localhost:4000/api/health and http://localhost:4000/api/ready
 
 No `.env` file is needed for local development; see [`.env.example`](.env.example) for overrides. Details and all scripts: [local development](docs/contributing/local-development.md).

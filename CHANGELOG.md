@@ -21,6 +21,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   - Translation and documentation link validation.
   - ESLint (with architecture boundary rules), Prettier, Vitest, GitHub Actions CI.
   - Open-source files: licenses (Apache-2.0 for code, CC BY 4.0 for content), NOTICE, trademarks policy, contributing guide, code of conduct, security policy, issue and pull request templates.
+- Developer identity and onboarding (slice S1):
+  - `GET /api/v1/catalog`: roles, tracks, technology categories and technologies with localized labels, validated at boot.
+  - `POST /api/v1/developers`: creates a provisional Developer (UUIDv7) and its profile, and sets an httpOnly device credential cookie (only its SHA-256 is stored).
+  - `GET /api/v1/me` and `PATCH /api/v1/me/profile`: the same device is recognised on return; the profile can be edited.
+  - Shared name and profile rules (`packages/contracts`) applied by the API and, for instant feedback, by the web app; display-name moderation on the server.
+  - CSRF protection for state-changing requests (client header, JSON content type, origin check) and a uniform error envelope.
+  - Web: landing with automatic `en`/`es` detection, a four-step onboarding (name, seniority, role, stack picker with search by aliases) and a "Competing as" card.
 
 ### Security
 

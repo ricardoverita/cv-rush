@@ -22,7 +22,10 @@ pnpm dev                      # web + API + worker in watch mode
 Open:
 
 - http://localhost:3000 → redirects to `/en` or `/es` depending on your browser language.
+- http://localhost:3000/en/play → onboarding: create a provisional developer profile (name, seniority, role, stack). The device is recognised on return through an httpOnly cookie.
 - http://localhost:4000/api/health and http://localhost:4000/api/ready (also reachable through the web origin at http://localhost:3000/api/…).
+
+Use `http://localhost:3000`, not `127.0.0.1`: state-changing API requests must come from `PUBLIC_BASE_URL` (CSRF check), so creating a profile from another origin is rejected. To start over as a new visitor, delete the `dc` cookie for `localhost` (or use a private window).
 
 **No `.env` file is needed** for local development: the defaults match `compose.yaml`. Copy `.env.example` to `.env` only to override something (ports, URLs, log level).
 

@@ -9,7 +9,7 @@
 | **1** | Product and game design | ✅ **Approved (revision 4)** |
 | 2 | Technical architecture and ADRs | ✅ **Approved** (current decisions, evolving through ADRs) |
 | 3 | Repository foundations (tooling, CI, community files) | ✅ **Approved** ([local development](contributing/local-development.md)) |
-| 4+ | Vertical slices | Not started |
+| 4+ | Vertical slices ([plan](architecture/22-implementation-plan.md)) | S1 (identity and onboarding) ✅ **Implemented, in review** · S2–S8 not started |
 
 Revision history of Part 1: **r1** initial design → **r2** profile-first ranked ("compete as who you are") → **r3** the game as the entry point to a developer network, with persistent identity and progression → **r4** approval adjustments (save progress after the first game, explicit ranked, question lifecycle, practice XP). See the [case study](case-study/01-product-definition.md) and the [decision log](case-study/decision-log.md).
 
