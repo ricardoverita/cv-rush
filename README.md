@@ -38,7 +38,7 @@ packages/
   simulation/  Pure deterministic logic (seeded RNG)
   content/     Catalogs and sample questions (YAML) + validators
   i18n/        Message catalogs (en, es) + validator
-  game/        Game engine contracts (Phaser arrives in slice S4)
+  game/        Game engine contracts (Phaser arrives in slice S3)
   config/      Shared TypeScript presets
 docs/          Product, game design, architecture, ADRs, case study
 ```

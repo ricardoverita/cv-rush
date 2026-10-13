@@ -28,4 +28,4 @@ See the Part 2 summary in the conversation and the [architecture README](../arch
 
 ## To record during implementation
 
-Prototype findings for the Phaser camera and readability (S4); the AI provider benchmark (S6); real latency from Latin America and Spain to the chosen region; the first tampering-suite failures and fixes; the cost per 1,000 runs.
+Prototype findings for the Phaser camera and readability (S3); the AI provider benchmark (S6); real latency from Latin America and Spain to the chosen region; the first tampering-suite failures and fixes; the cost per 1,000 runs.

@@ -9,4 +9,4 @@
 | [Adding a role](adding-a-role.md) | Roles, tracks and stack rules |
 | [Adding a language](adding-a-language.md) | Translations and new locales |
 
-Guides for **new challenges** and **game scenes** will be written together with the slices that introduce them (S2 and S4); until then, see the [challenge anatomy](../game-design/challenges/README.md) and the [game integration design](../architecture/14-game-client-integration.md).
+Guides for **new challenges** and **game scenes** will be written together with the slices that introduce them (S3 to S5); until then, see the [challenge anatomy](../game-design/challenges/README.md) and the [game integration design](../architecture/14-game-client-integration.md).

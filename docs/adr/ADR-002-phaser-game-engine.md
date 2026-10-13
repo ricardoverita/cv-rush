@@ -24,7 +24,7 @@ Use **Phaser** (the latest stable major at implementation time; validate v4 stab
 
 - Positive: arcade physics fits a platformer; mature input and scaling for mobile; a large community; the game can be tested and embedded without Next.js; the web app stays light outside runs.
 - Negative: Phaser's bundle size (mitigated by dynamic import); its scene lifecycle must be bridged carefully with React (destroy on unmount).
-- Follow-ups: a prototype in slice S4 to validate camera, readability and fps on mid-range Android in LinkedIn's in-app browser.
+- Follow-ups: a prototype in slice S3 to validate camera, readability and fps on mid-range Android in LinkedIn's in-app browser.
 
 ## Related
 

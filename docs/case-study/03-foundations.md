@@ -27,6 +27,8 @@ A pnpm monorepo (Node 24, pnpm 12 via Corepack) with a Next.js skeleton (i18n en
 | **API restart loop found only in a clean clone** | `node --watch-path=dist` restarted the API and worker on changes outside `dist` (the web app's `.next` output) when the repository lived under another path; the project looked healthy in the original folder | Use `node --watch` (module graph only). Lesson: verify the documented flow in a fresh clone, not only in the working copy |
 | **`pnpm ci` is a pnpm 12 built-in** | Our `ci` script was shadowed by pnpm's own clean-install command | Renamed the script to `pnpm verify` |
 | **No `.env` friction** | The ideal flow had no `cp .env.example .env` step | Local defaults that match `compose.yaml` (development only; production requires explicit values) |
+| **A security update that wouldn't have reached the server** | Dependabot's fastify bump (seven advisories) was green in CI, but `@nestjs/platform-fastify` pins its own fastify: the running server would have stayed on the vulnerable copy | One fastify for the whole workspace (pnpm catalog + override) and a test that compares the server's fastify with ours. Lesson: a green CI only proves what the tests check; read where a dependency is actually used ([D-067](decision-log.md#d-067--fastify-pinned-through-a-catalog-and-an-override)) |
+| **Dependabot "ignoring" its ignore rules** | NestJS 12 and `@types/node` 26 pull requests reappeared minutes after the ignore rules were pushed | The job logs showed the rules working ("All updates for @nestjs/common were ignored"); the new pull requests had been queued by jobs that ran with the first configuration. Closed them and confirmed with a fresh run |
 
 ## Verification (actually run)
 

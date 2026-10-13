@@ -2,7 +2,7 @@
   "name": "@cv-rush/game",
   "version": "0.0.0",
   "private": true,
-  "description": "Game engine package (framework-agnostic). Today it only defines the contracts between the game and its host; the Phaser implementation arrives in slice S4.",
+  "description": "Game engine package (framework-agnostic). Today it only defines the contracts between the game and its host; the Phaser implementation arrives in slice S3.",
   "license": "Apache-2.0",
   "type": "module",
   "exports": {

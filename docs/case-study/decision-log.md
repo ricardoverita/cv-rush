@@ -287,8 +287,30 @@ All ADRs (001–024) are **Accepted**, with these approval notes:
 
 ### D-065 · Structure kept from Part 2
 - **Status:** Accepted
-- **Decision:** the worker is a second entrypoint of `apps/api` (not a separate `apps/worker`), the domain stays inside `apps/api` (no shared `packages/domain`), and `packages/game` contains only the engine contracts until slice S4.
+- **Decision:** the worker is a second entrypoint of `apps/api` (not a separate `apps/worker`), the domain stays inside `apps/api` (no shared `packages/domain`), and `packages/game` contains only the engine contracts until the playable slice (S4 in the Part 2 plan; S3 after [D-068](#d-068--slice-order-the-playable-game-comes-third)).
 
 ### D-066 · Zero-config local development
 - **Status:** Accepted
 - **Decision:** the API, Prisma and the seed fall back to local defaults matching `compose.yaml` when no `.env` exists (development only; production fails without explicit values). The documented flow needs no manual environment step.
+
+## 2026-10-13 · Part 3 review
+
+### D-067 · fastify pinned through a catalog and an override
+- **Status:** Accepted
+- **Context:** Dependabot proposed fastify 5.11.3 → 5.12.5 (seven advisories, including one about `X-Forwarded-*` spoofing under `trustProxy`, which the API uses). The pull request only changed our direct dependency, and its CI was green. But `@nestjs/platform-fastify` 11.2.7 pins its own `fastify@5.11.3`, and that copy is the one serving requests: merging as proposed would have left the running server unpatched.
+- **Decision:** fastify's version lives in the pnpm catalog (`pnpm-workspace.yaml`) and a workspace override applies it to Nest's copy too, so there is a single fastify. A unit test fails if the server's fastify ever differs from ours (checked: it fails without the override).
+- **Discarded:** merging the pull request as is (fixes nothing at runtime); upgrading to NestJS 12 for its newer fastify (a major upgrade in the middle of the first slices, see D-069).
+
+### D-068 · Slice order: the playable game comes third
+- **Status:** Accepted (owner review of Part 3)
+- **Decision:** S1 identity and onboarding; S2 the Job Challenge without Phaser (ranked/practice, apply and attempt commitment, just-in-time questions, preliminary score, GameResult); **S3 the first playable Phaser slice**; S4 Recruiter and ATS; S5 Hiring Manager, Final Interview and progression; S6 AI question pipeline; S7 Save your progress and the developer profile (with rankings); S8 launch hardening. See the [implementation plan](../architecture/22-implementation-plan.md).
+- **Replaces:** the Part 2 order, which put progression and "Save your progress" (S3) before the Phaser runner (S4), and ranked/rankings after it (S5).
+- **Why:** once S2 proves that the rules live in the server, playing the game early tests fun, feel and readability. Phaser remains a representation of the domain's state, never the owner of a rule.
+
+### D-069 · Hold back majors during the first slices
+- **Status:** Accepted
+- **Decision:** stay on NestJS 11 and on `@types/node` 24 (runtime: Node.js 24 LTS). Dependabot ignores those majors (plus TypeScript and ESLint, D-064); its pull requests for NestJS 12 and `@types/node` 26 were closed. Upgrades happen deliberately, each in its own pull request.
+
+### D-070 · Conduct contact through GitHub
+- **Status:** Accepted
+- **Decision:** no personal email in the repository. Conduct reports go to the maintainer privately through GitHub, and vulnerabilities through GitHub's private vulnerability reporting (enabled). A project address (for example `opensource@` or `security@` on a project domain) may come later if the project grows.

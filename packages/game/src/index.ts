@@ -1,7 +1,7 @@
 /**
  * Contracts between the game engine and its host (the web app).
  *
- * The engine (Phaser, slice S4) will implement `createGame`. It never performs network I/O
+ * The engine (Phaser, slice S3) will implement `createGame`. It never performs network I/O
  * itself (everything goes through `GameServerPort`), never imports React or Next.js, never
  * holds answer keys and never computes scores: it renders outcomes decided by the server.
  * See docs/architecture/14-game-client-integration.md.

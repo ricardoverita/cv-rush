@@ -38,7 +38,7 @@ packages/
   simulation/  Lógica pura y determinista (RNG con semilla)
   content/     Catálogos y preguntas de ejemplo (YAML) + validadores
   i18n/        Catálogos de mensajes (en, es) + validador
-  game/        Contratos del motor de juego (Phaser llega en el slice S4)
+  game/        Contratos del motor de juego (Phaser llega en el slice S3)
   config/      Presets compartidos de TypeScript
 docs/          Producto, diseño de juego, arquitectura, ADRs, case study
 ```
