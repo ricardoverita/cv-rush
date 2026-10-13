@@ -6,20 +6,31 @@ import { z } from 'zod';
  * thanks to the defaults below (they match compose.yaml); production requires explicit values.
  */
 const LOCAL_DEFAULTS = {
+  PUBLIC_BASE_URL: 'http://localhost:3000',
   DATABASE_URL: 'postgresql://cvrush:cvrush@localhost:5432/cvrush',
   REDIS_URL: 'redis://localhost:6379',
 } as const;
 
-export const EnvSchema = z.object({
-  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-  API_HOST: z.string().min(1).default('0.0.0.0'),
-  API_PORT: z.coerce.number().int().min(1).max(65535).default(4000),
-  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
-  DATABASE_URL: z.url({ protocol: /^postgres(ql)?$/ }),
-  REDIS_URL: z.url({ protocol: /^rediss?$/ }),
-  QUESTION_GENERATION_PROVIDER: z.enum(['fake']).default('fake'),
-  QUESTION_VERIFICATION_PROVIDER: z.enum(['fake']).default('fake'),
-});
+export const EnvSchema = z
+  .object({
+    NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+    API_HOST: z.string().min(1).default('0.0.0.0'),
+    API_PORT: z.coerce.number().int().min(1).max(65535).default(4000),
+    LOG_LEVEL: z
+      .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'])
+      .default('info'),
+    // The single public origin of the web app and the API (ADR-012). State-changing requests
+    // must come from it, and device cookies are `Secure` when it uses HTTPS.
+    PUBLIC_BASE_URL: z.url({ protocol: /^https?$/ }),
+    DATABASE_URL: z.url({ protocol: /^postgres(ql)?$/ }),
+    REDIS_URL: z.url({ protocol: /^rediss?$/ }),
+    QUESTION_GENERATION_PROVIDER: z.enum(['fake']).default('fake'),
+    QUESTION_VERIFICATION_PROVIDER: z.enum(['fake']).default('fake'),
+  })
+  .refine((env) => env.NODE_ENV !== 'production' || env.PUBLIC_BASE_URL.startsWith('https://'), {
+    path: ['PUBLIC_BASE_URL'],
+    message: 'must use https in production',
+  });
 
 export type Env = z.infer<typeof EnvSchema>;
 

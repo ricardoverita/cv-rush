@@ -32,3 +32,85 @@ enum SeasonStatus {
 
   @@map("season_status")
 }
+
+// ---------------------------------------------------------------- identity
+
+/// The anchor of all history: created at onboarding, before any account exists.
+/// Contact identifiers (email, LinkedIn) arrive with "Save your progress" (slice S7).
+model Developer {
+  id                String            @id @default(uuid(7)) @db.Uuid
+  status            DeveloperStatus   @default(provisional)
+  displayName       String            @map("display_name") @db.VarChar(64)
+  profileVisibility ProfileVisibility @default(private) @map("profile_visibility")
+  createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  lastActiveAt      DateTime          @default(now()) @map("last_active_at") @db.Timestamptz(3)
+
+  deviceCredentials DeviceCredential[]
+  profile           DeveloperProfile?
+
+  @@index([lastActiveAt])
+  @@map("developers")
+}
+
+/// Proves "this browser is this Developer". Only the SHA-256 of the token is stored;
+/// the token itself only exists in the httpOnly cookie.
+model DeviceCredential {
+  id          String    @id @default(uuid(7)) @db.Uuid
+  developerId String    @map("developer_id") @db.Uuid
+  tokenHash   Bytes     @unique @map("token_hash")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  lastUsedAt  DateTime  @default(now()) @map("last_used_at") @db.Timestamptz(3)
+  revokedAt   DateTime? @map("revoked_at") @db.Timestamptz(3)
+
+  developer Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
+
+  @@index([developerId])
+  @@map("device_credentials")
+}
+
+enum DeveloperStatus {
+  provisional
+  claimed
+  merged
+  deleted
+
+  @@map("developer_status")
+}
+
+enum ProfileVisibility {
+  private
+  public
+
+  @@map("profile_visibility")
+}
+
+// ---------------------------------------------------------------- profiles
+
+/// The current professional profile. Runs copy it into an immutable snapshot (slice S2).
+/// Catalog IDs are stable strings from packages/content.
+model DeveloperProfile {
+  developerId   String    @id @map("developer_id") @db.Uuid
+  seniority     Seniority
+  roleId        String    @map("role_id") @db.VarChar(64)
+  technologyIds String[]  @map("technology_ids") @db.VarChar(64)
+  version       Int       @default(1)
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  developer Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
+
+  @@index([technologyIds], type: Gin)
+  @@map("developer_profiles")
+}
+
+enum Seniority {
+  trainee
+  junior
+  mid
+  senior
+  lead
+  staff
+  principal
+
+  @@map("seniority")
+}

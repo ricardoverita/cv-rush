@@ -1,25 +1,13 @@
-import 'reflect-metadata';
-import { existsSync } from 'node:fs';
 import { ReadyResponseSchema } from '@cv-rush/contracts';
-import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Test } from '@nestjs/testing';
+import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { AppModule } from '../src/app.module.js';
 import { PrismaService } from '../src/platform/database/prisma.service.js';
-
-// Requires: docker compose up -d --wait && pnpm db:migrate && pnpm db:seed
-const rootEnv = new URL('../../../.env', import.meta.url);
-if (existsSync(rootEnv)) process.loadEnvFile(rootEnv);
-process.env.LOG_LEVEL ??= 'silent';
+import { createTestApp } from './support/app.js';
 
 let app: NestFastifyApplication;
 
 beforeAll(async () => {
-  const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
-  app = moduleRef.createNestApplication<NestFastifyApplication>(new FastifyAdapter());
-  app.setGlobalPrefix('api');
-  await app.init();
-  await app.getHttpAdapter().getInstance().ready();
+  app = await createTestApp();
 });
 
 afterAll(async () => {

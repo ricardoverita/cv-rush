@@ -17,11 +17,23 @@ describe('loadEnv', () => {
   it('accepts explicit production configuration', () => {
     const env = loadEnv({
       NODE_ENV: 'production',
+      PUBLIC_BASE_URL: 'https://cvrush.example',
       DATABASE_URL: 'postgres://u:p@db:5432/app',
       REDIS_URL: 'rediss://cache:6380',
       API_PORT: '8080',
     });
     expect(env.API_PORT).toBe(8080);
+  });
+
+  it('requires an https public origin in production', () => {
+    expect(() =>
+      loadEnv({
+        NODE_ENV: 'production',
+        PUBLIC_BASE_URL: 'http://cvrush.example',
+        DATABASE_URL: 'postgres://u:p@db:5432/app',
+        REDIS_URL: 'rediss://cache:6380',
+      }),
+    ).toThrow(/PUBLIC_BASE_URL/);
   });
 
   it('rejects invalid values', () => {
