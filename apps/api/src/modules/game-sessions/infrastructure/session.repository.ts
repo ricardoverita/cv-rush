@@ -57,6 +57,23 @@ export class SessionRepository {
       .then((row) => row?.id ?? null);
   }
 
+  /** The active session the developer can still resume (not past its review window or lifetime). */
+  resumableSessionId(db: Db, developerId: string, now: Date): Promise<string | null> {
+    return db.gameSession
+      .findFirst({
+        where: {
+          developerId,
+          active: true,
+          OR: [
+            { status: 'created', reviewExpiresAt: { gt: now } },
+            { status: 'in_progress', expiresAt: { gt: now } },
+          ],
+        },
+        select: { id: true },
+      })
+      .then((row) => row?.id ?? null);
+  }
+
   rankedAttemptsOn(db: Db, developerId: string, dayKey: string): Promise<number> {
     return db.rankedAttempt.count({ where: { developerId, dayKey } });
   }

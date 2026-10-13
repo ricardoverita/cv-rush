@@ -96,7 +96,7 @@ export class GameSessionsService {
     const [used, snapshot, activeSessionId] = await Promise.all([
       this.sessions.rankedAttemptsOn(this.prisma, developerId, dayKey),
       this.snapshots.take(this.prisma, developerId),
-      this.sessions.activeSessionId(this.prisma, developerId),
+      this.sessions.resumableSessionId(this.prisma, developerId, now),
     ]);
     const max = ruleset.ranked.attemptsPerDay;
     return {
@@ -220,6 +220,12 @@ export class GameSessionsService {
       if (agg.status === 'in_progress' && agg.committedAt) return agg; // double click or retry
       if (agg.status === 'expired_unstarted') throw new AppError('SESSION_EXPIRED', 409);
       const ruleset = this.rulesets.get(agg.rulesetVersion);
+      // The state machine first: only a session in job review can be applied to. The attempt is
+      // allocated in the same transaction, so a refused allocation rolls the transition back.
+      await this.move(tx, agg, { type: 'APPLY' }, now, {
+        committedAt: now,
+        expiresAt: new Date(now.getTime() + ruleset.session.maxLifetimeMs),
+      });
       if (agg.runType === 'ranked') {
         const dayKey = utcDayKey(now);
         const used = await this.sessions.rankedAttemptsOn(tx, developerId, dayKey);
@@ -233,10 +239,6 @@ export class GameSessionsService {
         });
         await this.snapshots.lockRanked(tx, developerId, endOfUtcDay(now));
       }
-      await this.move(tx, agg, { type: 'APPLY' }, now, {
-        committedAt: now,
-        expiresAt: new Date(now.getTime() + ruleset.session.maxLifetimeMs),
-      });
       return this.sessions.load(tx, agg.id);
     });
     return view;

@@ -384,6 +384,17 @@ describe('state machine over HTTP', () => {
     expect(code(final)).toBe('INVALID_TRANSITION');
   });
 
+  it('refuses to apply again to a finished run, without touching attempts', async () => {
+    const player = await newPlayer({ ...RICARDO, displayName: 'Again' });
+    const created = await create(player);
+    await step(player, 'POST', `/game-sessions/${created.id}/apply`);
+    await playToTheEnd(player, await view(player, created.id));
+    const again = await call(player, 'POST', `/game-sessions/${created.id}/apply`);
+    expect(again.statusCode).toBe(409);
+    expect(code(again)).toBe('INVALID_TRANSITION');
+    expect(await prisma.rankedAttempt.count({ where: { developerId: player.id } })).toBe(1);
+  });
+
   it("never exposes another developer's session", async () => {
     const owner = await newPlayer({ ...RICARDO, displayName: 'Owner' });
     const other = await newPlayer({ ...RICARDO, displayName: 'Intruder' });
