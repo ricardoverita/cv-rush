@@ -1,6 +1,6 @@
 # Salary Negotiation
 
-> Part 1 · Product & Game Design · Status: **Draft for review** · MVP (light) / **V1** (stage) · Feature flag: `salaryNegotiation`
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)** · MVP (light) / **V1** (stage) · Feature flag: `salaryNegotiation`
 
 ## MVP: a graded recruiter question
 

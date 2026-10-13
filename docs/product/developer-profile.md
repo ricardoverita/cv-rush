@@ -1,6 +1,6 @@
 # Developer profile
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > The persistent developer profile is the asset that CV Rush builds over time. The game is how it grows. This document defines what the profile contains, what is private or public, and how it evolves from the MVP's private profile page to a public developer page.
 
@@ -22,8 +22,9 @@ Progression (XP, level), history, stats and ranks are **derived from results**; 
 | Display name | | ✅ | |
 | Declared seniority, role | | ✅ | |
 | Stack | | ✅ | |
-| **Email** (`contactEmail`) | ✅ | | ✅ **never**: not in leaderboards, public pages, HTML, share cards, public API, analytics or logs |
-| LinkedIn (`linkedinUsername`) | | ✅ (separate consent) | |
+| **Email** (`contactEmail`, optional) | ✅ | | ✅ **never**, and no option to make it public: not in rankings, public pages, HTML, share cards, the public API, analytics or logs |
+| LinkedIn identifier (`linkedinIdentifier`, optional) | ✅ by default | ✅ only if `linkedinVisibility` is enabled **and** the profile is public | |
+| LinkedIn visibility (`linkedinVisibility`) | ✅ setting | | |
 | Portfolio URL *(Stage 2)* | | ✅ | |
 | CV Rush Level, XP | ✅ by default | ✅ | |
 | Games played, best ranks | ✅ by default | ✅ | |
@@ -56,8 +57,11 @@ Recent games
 …
 
 Visibility: Private  [Show me publicly]
-LinkedIn: linkedin.com/in/ricardovera (shown only if public)
+LinkedIn: linkedin.com/in/ricardovera · Show on public rankings: No  [Change]
 Email: r••••@example.com (private, never shown)    [Manage / delete data]
+
+(Without an email:)
+⚠ Your progress is saved on this device for now. [Add an email] to keep it safe.
 ```
 
 ## 4. Public developer page (Stage 2, designed now)

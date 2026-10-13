@@ -1,6 +1,6 @@
 # Fairness strategy
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > The *why* is in [competitive identity](../product/competitive-identity.md) and [game modes](../product/game-modes.md). This document explains **how ranked fairness holds within a category** and how we monitor it.
 
@@ -63,7 +63,7 @@ Residual risk: accepted and monitored (e.g. score distributions per band; Junior
 
 ## 4. Content equivalence
 
-> **MVP note (revision 3):** question pools are AI-generated, validated and cross-checked, with ~20 questions per context, and rankings run as **Season 0 (Beta)**. Shared slots draw **the same daily selection** of a pool for everyone in the category. The full family and calibration rules below are the **target** for curated content, applied progressively as data and curation grow.
+> **MVP note:** question pools are AI-generated and AI-validated (an independent check that detects problems but doesn't prove correctness), with ~20 questions per context, and rankings run as **Season 0 (Beta)**. Shared slots draw **the same daily selection** of a pool for everyone in the category. The full family and calibration rules below are the **target** for curated content, applied progressively as data and curation grow.
 
 ### Shared daily families (H2 track fundamentals, H3 seniority, F1 scenario)
 
@@ -88,7 +88,7 @@ Different players get different technologies at the **same difficulty level**. E
 
 ### New content
 
-New questions start in practice partitions, or in a **ranked preview** category, to gather calibration data before they count for titles. The exact mechanism is in Part 2.
+New questions start in practice (or practice-only content), or in a **ranked preview** category, to gather calibration data before they count for titles. The exact mechanism is in Part 2.
 
 ### Job-derived questions
 

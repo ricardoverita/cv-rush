@@ -1,6 +1,6 @@
 # Bots (rival candidates)
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 
 ## 1. Purpose
 

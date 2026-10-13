@@ -1,6 +1,6 @@
 # Question strategy
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: AI-generated pools in the MVP)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > Product-level rules for questions. The Question Engine (selection strategies, interfaces, storage, schemas) is designed in Part 2.
 
@@ -40,8 +40,9 @@ Every run combines five ingredients:
 | `correctOptionId` or grades | **Never sent to the client** |
 | `translations.{es,en}` | Prompt, option texts, explanation |
 | `source` | `ai_generated`, `curated`, `community`, `job_derived` or `template` |
-| `verificationLevel` | `auto_validated`, `cross_checked`, `human_reviewed`, `curated` (or `quarantined`) |
-| `partition` | `ranked` or `practice` (for pool questions) |
+| `verificationTier` | AI generated · AI validated · Human reviewed · Curated |
+| `lifecycle` | Generated → Validated → Competitive → Retired → Practice (or Invalidated, Archived); see the [lifecycle](content-strategy.md#5-question-lifecycle) |
+| Generation metadata | Generator and prompt version, second-check result, confidence, batch |
 | `context` | The pool it belongs to (e.g. Redis × level 3) |
 | `family` | Its equivalence family (later, for curated competitive content) |
 | `author` | For attribution (community) |
@@ -105,7 +106,7 @@ See the [Category Blueprint](../product/game-modes.md#33-the-category-blueprint)
 - No repeats within a run; diverse topics within a stage.
 - Shuffle options per run; balance the correct position across the run.
 - Select at the moment the challenge starts (just-in-time), never in advance on the client.
-- Draw from the **context's pool**, preferring higher verification levels, never `quarantined` questions.
+- Draw from the **context's pool**, preferring higher verification tiers, never invalidated questions.
 - Prefer questions the developer **hasn't seen** (per-developer exposure); a low unseen count triggers an asynchronous pool refill.
 
 - Respect the **topic boundaries** (section 1.1); the profile always comes from the server-side snapshot, never from the request.
@@ -114,13 +115,13 @@ See the [Category Blueprint](../product/game-modes.md#33-the-category-blueprint)
 
 - Stack slots: the player's stack ∩ the generated job's stack (falling back to role fundamentals).
 - Difficulty from the exact seniority; mild adaptivity (after 2 consecutive technical misses, the next technical slot drops one level, never below the seniority's floor).
-- Use the **practice partition** of each pool; avoid questions seen in the developer's last 5 practice runs.
+- Use questions in the **Practice** lifecycle state (retired from competition, or practice-only); never a question currently in competitive rotation. Avoid questions seen in the developer's last 5 practice runs.
 - An optional humor question (category G).
 
 **Ranked runs**
 
 - Difficulty from the **category's band curve**, identical for everyone in the category.
-- Use the **ranked partition** of each pool, at verification level `cross_checked` or higher.
+- Use questions in **competitive rotation** only, at tier **AI validated** or higher (Season 0 · Beta); later seasons may require Human reviewed or Curated.
 - **Shared slots** (H2 role fundamentals, H3 seniority, F1 scenario) draw from **the same daily selection** of the category's (or band's) pool for everyone in the category, themed by the Daily Company.
 - **Stack slot** (H1, and the stack part of F1) draws from the pool of **one of the developer's technologies** at the band's level, chosen by the seed among technologies with a usable pool. Coverage fallback: the track fundamentals pool at the same level.
 - No adaptivity, no humor.
@@ -157,11 +158,11 @@ Parameters come from the run's seed, so a lookup table of answers doesn't help.
 
 | | During the run | Post-run review |
 |---|---|---|
-| Practice run | Correct or incorrect + effects | Prompt, all options, the correct answer, the explanation (practice partition; attribution for community questions later) |
+| Practice run | Correct or incorrect + effects | Prompt, all options, the correct answer, the explanation and learning notes (retired or practice-only questions; attribution for community questions later) |
 | Ranked run, job-derived and templates | Correct or incorrect + effects | Prompt, the developer's answer, the correct answer and the explanation (the facts are public anyway) |
-| Ranked run, ranked partition | Correct or incorrect + effects | Prompt, the developer's answer, correct or incorrect, the topic. **No answer key.** |
+| Ranked run, competitive questions | Correct or incorrect + effects | Prompt, the developer's answer, correct or incorrect, the topic. **No answer key** while the question is in competitive rotation. |
 
-The ranked/practice partition is what lets practice teach (by revealing answers) without exposing the ranked answers.
+The **lifecycle** is what lets practice teach (by revealing answers) without exposing questions that are active in ranked.
 
 ## 9. Localization
 
@@ -201,13 +202,13 @@ Example flag: a question labeled **Junior / difficulty 1** with an **18% correct
 
 ## 13. AI-generated questions
 
-**In the MVP**, most pool questions are AI-generated, validated and stored (see the [content strategy pipeline](content-strategy.md#3-ai-generated-questions-the-mvp-pipeline)):
+**In the MVP**, most pool questions are AI-generated, validated and stored (see the [content strategy pipeline](content-strategy.md#3-ai-generated-questions-the-pipeline)):
 
 - Generated **ahead of time or asynchronously per context**, never on the request path of a run, and never per frame or per challenge.
 - **Structured output** (question, options A–D, correct option, explanation, technology, difficulty, seniority, role, es + en), validated against the schema.
-- **Server-side validation:** rules, deduplication and an independent cross-check; quarantine on reports or outlier stats.
+- **Server-side validation:** rules, heuristics, deduplication and an independent second check. The second check **detects problems but doesn't prove correctness**; questions can always be invalidated (individually or by batch).
 - **Stored and reused**, versioned, with `source = ai_generated` and a verification level.
-- **Ranked** uses `cross_checked` or better, and its rankings are **Season 0 (Beta)**.
+- **Ranked** uses **AI validated** or better, and its rankings are **Season 0 (Beta)**, clearly labeled as calibrating content.
 - **Gradually replaced** by curated and community content with higher verification levels.
 
 ## 14. Example (illustrative format, not the final schema)

@@ -1,6 +1,6 @@
 # Competitive identity: compete as who you are
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > **Central principle of competition.** It replaces the first ranked design (one global daily job for everyone), which forced every player into the same position regardless of their profile. Since revision 3, the profile also belongs to a persistent **Developer** (see [identity and accounts](identity-and-accounts.md)) and every result feeds their progression (see [progression](../game-design/progression.md)). See the [decision log](../case-study/decision-log.md) (D-028 onwards) and the [case-study notes](../case-study/01-product-definition.md#11-revision-competing-as-who-you-are).
 
@@ -125,8 +125,8 @@ The client *asks* to play as a profile. The server **validates** it before creat
 | Technologies | Exist and are active; deduplicated; **1–12** selected |
 | Stack compatibility | Each role defines **core** technology categories (at least one technology required from each) and **allowed** categories (anything else is rejected). Fullstack: core = Frontend + Backend; allowed = Databases, Caching/Search, Messaging, Cloud, Infrastructure, Testing. Frontend: core = Frontend (web). Mobile: core = Mobile. |
 | Display name | Moderation rules (see [privacy](public-profile-and-privacy.md#6-display-names-and-moderation)) |
-| Run type | Ranked requires the category to be in preview or official, ranked runs left today, and a profile consistent with today's ranked lock (section 6) |
-| Claim identifiers (at developer creation) | At least one of email (format check, stored unverified and private) or LinkedIn (normalized `/in/` username, stored unverified). See [privacy](public-profile-and-privacy.md). |
+| Run type | Chosen explicitly. Ranked requires the category to be in preview or official, ranked attempts left today, and a profile consistent with today's ranked lock (section 6) |
+| Contact identifiers (optional, after the first game) | Email (format check, stored unverified and private) and/or LinkedIn (normalized `/in/` username, stored unverified, hidden by default). Not part of the profile snapshot and never required to play. See [privacy](public-profile-and-privacy.md). |
 
 Errors use semantic codes (`PROFILE_ROLE_UNKNOWN`, `PROFILE_TECHNOLOGY_INCOMPATIBLE`, `RANKED_PROFILE_LOCKED`…), translated by the client.
 

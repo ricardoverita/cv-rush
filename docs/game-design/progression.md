@@ -1,6 +1,6 @@
 # Progression: score, XP, levels, history and stats
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > Progression turns single runs into a **persistent developer profile**. All numbers are initial values (tunables); every value is computed by the server.
 
@@ -19,22 +19,36 @@
 
 ### Earning XP (initial rules)
 
-| Source | XP |
-|---|---|
-| Delivered run | **100** + score ÷ 50 (max +500) |
-| Failed run (`ATS_FAILED`, `CV_DESTROYED`) | **25** + partial score ÷ 50 |
-| Abandoned run | 0 |
-| First delivered run of the UTC day | **+50** |
-| Daily Champion title (category) | **+250** |
+XP and competitive score are **separate concepts**: the score ranks a run, XP rewards playing and improving over time. Practice is rewarded, but less than ranked, and farming is bounded.
 
-A typical delivered run (18,000 points) gives 100 + 360 = **460 XP**, plus 50 for the first run of the day.
+| Source | Ranked run | Practice run |
+|---|---|---|
+| Delivered run | **100** + score ÷ 50 (max +500) | **50%** of the ranked amount |
+| Failed run (`ATS_FAILED`, `CV_DESTROYED`) | **25** + partial score ÷ 50 | 50% of the ranked amount |
+| Abandoned run | 0 | 0 |
+| **Discovery bonus**: first time the developer answers a given question correctly | **+5 × difficulty level** (1–5) | The same |
+| First delivered run of the UTC day (any type) | **+50** | — (counted once per day) |
+| Daily Champion title (category) | **+250** | — |
 
-### Anti-farming
+Examples: a delivered ranked run with 18,000 points earns 100 + 360 = **460 XP** (+50 if it's the first of the day, + discovery bonuses). The same performance in practice earns **230 XP** + discovery bonuses.
 
-- XP comes only from **server-computed results**. The client never sends XP.
-- **Diminishing returns:** after the 10th run in a UTC day, XP is multiplied by 0.25.
-- Runs that fail verification have their XP **voided** with a compensating ledger entry (audited).
-- Rate limits and bot protection apply to starting runs.
+### Anti-farming (simple, from day one)
+
+The goal is to make "repeat an easy question 10,000 times and become Level 100" impossible, without designing a complex economy:
+
+| Mechanism | Rule (initial) | What it prevents |
+|---|---|---|
+| **Reduced practice XP** | Practice = 50% of ranked XP | Unlimited practice outpacing competitive play |
+| **Discovery bonus only once** | A question's bonus is paid only the first time it's answered correctly | Repeating known (easy) questions for XP |
+| **Diminishing returns** | After the 10th run in a UTC day, run XP × 0.25 | Marathon grinding |
+| **Daily practice cap** | At most **1,000 practice XP** per UTC day | Unbounded farming; level growth stays tied to activity over **time** |
+| **Server-only XP** | XP comes only from server-computed results; the client never sends XP | Forged XP |
+| **Voiding** | Runs that fail verification get a compensating ledger entry (audited) | Automated or tampered runs |
+| **Rate limits and bot protection** | On starting runs | Scripted farming |
+
+A difficulty multiplier on run XP was considered and **rejected**: in practice, difficulty follows the declared seniority, so a multiplier would reward declaring a higher seniority. Difficulty is rewarded through the discovery bonus instead, which is bounded by the number of distinct questions.
+
+With these rules, the maximum XP per day is bounded (three ranked runs + capped practice + bonuses ≈ 3,000–3,500 XP), so very high levels require weeks or months of regular play, which is what a level should mean.
 
 ### The XP ledger
 
@@ -121,4 +135,4 @@ Rules:
 
 ## 8. Tunables
 
-XP per outcome, score-to-XP divisor, first-of-day bonus, title bonus, diminishing-returns threshold and multiplier, level curve constants, minimum sample for stats, activity buckets.
+XP per outcome, practice multiplier, score-to-XP divisor, discovery bonus per level, first-of-day bonus, title bonus, diminishing-returns threshold and multiplier, daily practice cap, level curve constants, minimum sample for stats, activity buckets.

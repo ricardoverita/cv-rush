@@ -1,6 +1,6 @@
 # Challenges: common anatomy and catalog
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > The game-design anatomy that every challenge follows. Part 2 turns it into a technical contract (definition, state, start, action, result, renderer, server validation) so that new challenges can be added without modifying ten core modules.
 
@@ -44,7 +44,7 @@ Every challenge is documented with these sections:
 1. **Just-in-time.** A challenge's content is created or selected by the server **only when the runner reaches it**. Nothing about future challenges exists on the client.
 2. **Single-use and ephemeral.** Each challenge instance and question has its own ID, a deadline, and accepts **one** answer. Duplicates and late answers are rejected.
 3. **The server decides outcomes.** The client sends *intents* ("selected option B"); the server replies with *results* ("correct: false; effects: CV_DAMAGE 10, SLOWDOWN").
-4. **No answer keys on the client.** Neither before nor after answering. In practice runs, explanations and correct answers come only in the post-run review (from the practice partition).
+4. **No answer keys on the client.** Neither before nor after answering. In practice runs, explanations and correct answers come only in the post-run review, and only for questions that are not in competitive rotation.
 5. **Semantic codes, not sentences.** Results and effects use codes (`CV_DAMAGE`, `ATS_FAILED`); the client translates them.
 6. **Order is enforced.** A challenge can only start when the run is in the right state (e.g. no Final Interview while in Recruiter Screening).
 7. **Bounded client-reported events.** Anything only the browser can observe (collisions, pickups, ATS movement) has a capped effect.

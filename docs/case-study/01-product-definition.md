@@ -102,6 +102,17 @@ The brief described one game. Analysing it surfaced tensions that turned it into
 - **Side effect that helps security:** AI pools live in the private database, not in the public repository, so the "open-source answer key" problem from turning point 1 doesn't affect the MVP.
 - **Article angle:** how to use an LLM as an offline content pipeline with validation, instead of a runtime dependency.
 
+### 16. Approval adjustments: show value before asking for anything
+
+- **Date:** 2026-10-12, Part 1 approval.
+- **Save your progress after the first game.** Asking for email or LinkedIn before playing is a barrier before any value exists. After the first game there is XP, a level, a result and a history entry, which is something worth saving. The funnel `first_game_completed` → `identity_contact_added` measures whether that works. Skipping never loses progress: the provisional Developer stays on the device.
+- **Ranked must be a conscious choice.** Consuming the first 3 runs automatically would punish people learning the controls. Ranked became a primary CTA with a visible attempt counter, and attempts are committed server-side when a competitive session starts, which also closes the "peek and re-roll" exploit.
+- **A lifecycle, not a split.** A fixed ranked/practice split per pool runs out quickly. Questions now rotate: competitive → retired → practice. Practice can teach (answers, explanations) without exposing active competitive questions.
+- **Honesty about AI validation.** A second model agreeing with the first detects problems; it doesn't prove correctness. Verification tiers, metadata for batch invalidation, and an explicit "still calibrating" Beta label keep that honest.
+- **XP without an economy.** Reduced practice XP, a one-time discovery bonus, diminishing returns and a daily practice cap: enough to stop "repeat an easy question 10,000 times → Level 100" without designing an economy. A difficulty multiplier was rejected because it would reward declaring a higher seniority.
+- **Principle:** *The game creates engagement. The profile accumulates value. Jobs create opportunity.*
+- **Article angle:** "Ask for identity after delivering value", and "let the user choose when they compete".
+
 ## Alternatives discarded (Part 1)
 
 - One ranking with seniority-based difficulty (exploitable).
@@ -113,6 +124,10 @@ The brief described one game. Analysing it surfaced tensions that turned it into
 - Mandatory accounts in the MVP (too much friction) and anonymous-only play (progress would be lost).
 - An LLM call per question at runtime (latency, cost, dependency).
 - Unlimited ranked runs with small pools (memorization).
+- Email or LinkedIn before the first game (a barrier before value; revision 3).
+- The first 3 runs of the day ranked automatically (revision 3).
+- A fixed ranked/practice split per pool (runs out quickly).
+- A difficulty multiplier on XP (rewards inflating declared seniority).
 - Seniority multipliers (exploitable the other way).
 - The same questions for everyone (shared in minutes).
 - A ranked-only product (loses personalization and learning).
@@ -131,10 +146,10 @@ These are written down now so the "lessons learned" chapter can be honest:
 7. Most traffic will come from LinkedIn on mobile.
 8. The 9 launch categories will each get enough daily runs to feel alive.
 9. Smurfing will be rare, because results are publicly labeled with their context.
-10. Most new developers will accept giving an email or LinkedIn before the first run.
+10. A meaningful share of developers (hypothesis ≥ 35%) will save their progress after the first game.
 11. XP and levels will measurably improve D7 and 4-week retention.
 12. AI-generated, cross-checked questions will keep the report rate below 1%.
 
-## Open questions handed to the maintainer for review
+## Outcome
 
-See [game modes › open questions](../product/game-modes.md#7-open-questions-for-review) and the "Proposed" entries in the [decision log](decision-log.md).
+Part 1 was approved on 2026-10-12 after four revisions. The decisions taken at approval are in [game modes](../product/game-modes.md#7-decisions-taken-at-part-1-approval), [MVP scope](../product/mvp-scope.md#6-decisions-taken-at-part-1-approval) and the [decision log](decision-log.md) (D-050 onwards).

@@ -1,41 +1,36 @@
 # Player journey and game loop
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 
 This document describes the experience from discovery to "play again" and back, including the failure, return and interruption paths. Every run starts from the developer's profile ([competitive identity](competitive-identity.md)) and every run grows their persistent progress ([progression](../game-design/progression.md)).
 
-## 1. Complete journey
+## 1. Main journey
+
+The first onboarding is **light**: name, seniority, role and stack. Contact details are asked **after the first game**, once there is something worth saving.
 
 ```mermaid
 flowchart TD
-  discover["Discover: shared result, ranking, search"] --> landing["Landing page"]
-  landing --> known{"Developer recognised on this device?"}
-  known -->|"No"| who["Who are you? name, seniority, role, stack"]
-  who --> claimId["Email and/or LinkedIn<br/>(to keep your progress)"]
-  claimId --> privacy["Privacy and visibility<br/>(private by default)"]
-  privacy --> created["Server creates the provisional Developer"]
-  known -->|"Yes"| competing
-  created --> competing["Competing as: Senior Fullstack Developer<br/>Node.js · PHP · React… · CV Rush Level 17"]
-  competing --> runType{"Play: Ranked (2 of 3 left) or Practice"}
-  runType --> snapshot["Server validates and freezes the profile snapshot"]
-  snapshot --> job["Read your Job Challenge"]
-  job --> apply["Apply"]
-  apply --> lobby["Lobby: N candidates applied, 3-2-1 GO"]
-  lobby --> race1["Race"] --> recruiter["Recruiter Screening"] --> race2["Race"] --> ats["ATS Scan"]
-  ats -->|"Match below threshold"| rejected["Application rejected"]
-  ats -->|"ATS approved"| race3["Race"] --> hm["Hiring Manager"] --> race4["Race"] --> final["Final Interview"]
-  final --> sprint["Final sprint"] --> deliver["Deliver CV"]
-  anyStage["Any moment: CV Health reaches 0"] -.-> rejected
-  rejected --> resultsFail["Result: partial score + XP"]
-  deliver --> results["Result: score, context, XP, level"]
-  results --> rank["Category ranking (ranked runs)"]
-  results --> profile["My profile: history, stats"]
-  rank --> shareStep["Share"]
-  resultsFail --> retry["Play again"]
-  shareStep --> retry
-  profile --> retry
-  retry --> runType
+  landing["Landing"] --> known{"Developer recognised on this device?"}
+  known -->|"No"| name["Name"]
+  name --> seniority["Seniority"] --> role["Role"] --> stack["Stack"]
+  stack --> created["Server creates a provisional Developer<br/>+ secure device credential"]
+  known -->|"Yes"| choose
+  created --> choose{"Play Ranked (primary)<br/>or Practice (secondary)"}
+  choose --> snapshot["Server freezes the profile snapshot<br/>(Ranked: the attempt is committed when the session starts)"]
+  snapshot --> job["Job Challenge generated for the profile"]
+  job --> play["Play: Recruiter → ATS → Hiring Manager → Final"]
+  play --> result["Result · Score · XP · Level"]
+  result --> firstSave{"First completed game<br/>and no email or LinkedIn yet?"}
+  firstSave -->|"Yes"| save["Save your progress<br/>email and/or LinkedIn (optional)"]
+  firstSave -->|"No"| profile
+  save --> profile["My Profile"]
+  profile --> again["Play again"]
+  again --> choose
 ```
+
+Condensed:
+
+**Landing → Name → Seniority → Role → Stack → provisional Developer created → choose Ranked or Practice → Job Challenge → play → result → score → XP → level → Save your progress (optional email/LinkedIn) → My Profile → play again.**
 
 ## 2. Step by step
 
@@ -43,37 +38,52 @@ flowchart TD
 |---|---|---|---|---|
 | 1 | **Discover** | A shared result, a ranking or a search result | Taps the link | Most traffic is expected from LinkedIn on mobile, inside the in-app browser |
 | 2 | **Landing** | Server-rendered page: pitch, today's company, leaders by category, the countdown, language switch | Taps **Play** | Indexable HTML, readable without JavaScript |
-| 3 | **Who are you?** | Name → seniority → role → stack | Fills in (first time) | See section 2.1 |
-| 4 | **Keep your progress** | "Email and/or LinkedIn, so you can keep your progress and claim it when accounts arrive" | Enters at least one | Email is private and never shown. LinkedIn is public only with consent. Both are stored as **unverified**. See [identity and accounts](identity-and-accounts.md). |
-| 5 | **Privacy and visibility** | Accept terms and privacy (required); "Show me on public rankings" (off by default, with a live preview); "Email me about CV Rush" (off by default) | Chooses | Separate consents, recorded with text version and timestamp. See [privacy](public-profile-and-privacy.md). |
-| 6 | **Developer created** | — (invisible) | — | The server validates everything, creates a **provisional Developer** with a server-generated ID and sets the device credential |
-| 7 | **Competing as** | "You'll play as **Senior Fullstack Developer** · Node.js · PHP · React · PostgreSQL · Redis · Fullstack · Senior+ · CV Rush Level 17" | Confirms or edits | Makes the context explicit before every run |
-| 8 | **Run type** | **Play: Ranked (2 of 3 left today)** and **Practice** | Chooses (ranked by default while ranked runs are left) | Ranked: "Your profile stays locked until 00:00 UTC (19:00 your time)". If the category isn't ranked yet: practice only, with "Help us unlock ranked for Mobile". |
-| 9 | **Snapshot** | — | — | The server freezes the profile into the run's snapshot. From here on, the client never says "who it is". |
-| 10 | **Job Challenge** | A posting **for this profile**: company (today's company in ranked), title, location, salary range, responsibilities, stack, experience | Reads, taps **APPLY** | Reading timer (ranked 45 s, practice 60 s); applying early is allowed; reading time isn't scored |
-| 11 | **Lobby** | "237 candidates applied to Kestrel Pay today · 41 in Fullstack · Senior+", runners holding CVs, the company on the horizon | Waits for 3-2-1-GO | Real counts in ranked; small numbers become "Be one of the first candidates today" |
-| 12 | **Run** | A side-scrolling level with four stages; questions appear **in the world** as A/B/C/D paths | Runs, jumps, avoids obstacles, enters the answer path | See [run structure](../game-design/run-structure.md) |
-| 13 | **Delivery** | "APPLICATION DELIVERED" at reception | Watches (~3 s) | — |
-| 14 | **Result** | "**Ricardo scored 18,492 points competing as a Senior Fullstack Developer.**" Stack chips; then Recruiter 3/3 · ATS 91% · Technical 3/4 · CV Health 75% · position; **+460 XP**, the level bar, a level-up animation if any; for ranked runs, "#1 of 41 today in Fullstack · Senior+ (provisional)" | Reads; opens the breakdown or review | Practice: "Practice run, not ranked". See [progression](../game-design/progression.md). |
-| 15 | **Visibility nudge** (if private) | "Want to appear on the ranking with your name and LinkedIn?" with a preview | Chooses, or skips | Never pre-checked; it's easy to say no |
-| 16 | **Ranking** | The developer's category ranking (daily, weekly), the spotlight of other categories | Browses; opens public LinkedIn profiles | LinkedIn clicks counted in aggregate |
-| 17 | **My profile** | Level, XP, games played, best ranks, history, initial technology stats, last active, visibility settings | Reviews progress; edits profile | Private in the MVP; see [developer profile](developer-profile.md) |
-| 18 | **Share** | A result card with the context (and optionally the level), plus LinkedIn, X, WhatsApp and Copy link | Shares or skips | Respects visibility; **never includes the email** |
-| 19 | **Play again** | One-tap retry | Retries or leaves | ≤ 2 taps, < 3 s; after 3 ranked runs, Play becomes Practice |
-| 20 | **Review and report** | The questions seen, with results (practice: correct answers and explanations) | Can report a question | Only after the run; see [question strategy](../questions/question-strategy.md#10-reporting-questions) |
+| 3 | **Who are you?** | Name → seniority → role → stack | Fills in | Nothing else. No email, no LinkedIn, no consent wall beyond terms acknowledgement (see section 2.1) |
+| 4 | **Developer created** | — (invisible) | — | The server validates the profile, creates a **provisional Developer** with a server-generated ID and sets a **secure device credential**. Progress is saved from this moment. |
+| 5 | **Competing as** | "You'll play as **Senior Fullstack Developer** · Node.js · PHP · React · PostgreSQL · Redis · Fullstack · Senior+" | Confirms or edits | Makes the context explicit before every run |
+| 6 | **Choose: Ranked or Practice** | **Play Ranked** (primary CTA) — "3 attempts remaining today" · affects daily and category rankings, Daily Champion and competitive stats. **Practice** (secondary CTA) — "Unlimited · doesn't affect rankings" | Chooses explicitly | Ranked is **never** chosen implicitly. Before a first-ever ranked run, a short explainer ("Ranked attempts count for today's ranking; practice first if you want to learn the controls"). If the category isn't ranked yet: Practice only, with "Help us unlock ranked for Mobile". |
+| 7 | **Snapshot (and ranked commitment)** | Ranked: "Attempt 1 of 3 starts now" | — | The server freezes the profile snapshot. In ranked, the attempt is **committed server-side when the competitive session starts**; leaving afterwards doesn't give it back. The exact commitment point is designed in Part 2 (anti-cheat). |
+| 8 | **Job Challenge** | A posting **for this profile** (today's company in ranked, a random company in practice) | Reads, taps **APPLY** | Reading timer (ranked 45 s, practice 60 s); reading time isn't scored |
+| 9 | **Lobby** | "237 candidates applied to Kestrel Pay today · 41 in Fullstack · Senior+", runners holding CVs | Waits for 3-2-1-GO | Real counts in ranked |
+| 10 | **Run** | A side-scrolling level with four stages; questions appear **in the world** as A/B/C/D paths | Runs, jumps, avoids obstacles, enters the answer path | See [run structure](../game-design/run-structure.md) |
+| 11 | **Result** | "**Ricardo scored 18,492 points competing as a Senior Fullstack Developer.**" Stack chips · Recruiter 3/3 · ATS 91% · Technical 3/4 · CV Health 75% · position · ranked: "#1 of 41 today in Fullstack · Senior+ (provisional)" | Reads; opens the breakdown or review | Practice: "Practice run — not ranked" |
+| 12 | **XP and level** | "+460 XP", the level bar, a level-up animation if any | — | See [progression](../game-design/progression.md) |
+| 13 | **Save your progress** (after the first completed game, and later until done) | "You earned 460 XP · CV Rush Level 2. Save your progress." Email (optional) · LinkedIn (optional) · "Not now" | Adds one, both, or skips | See section 2.2 |
+| 14 | **My Profile** | Level, XP, games, best ranks, history, initial technology stats, last active, visibility, contact details | Reviews progress; edits | Private; see [developer profile](developer-profile.md) |
+| 15 | **Rankings** | The developer's category ranking (daily, weekly), the spotlight | Browses; opens public LinkedIn profiles | LinkedIn clicks counted in aggregate |
+| 16 | **Share** | A result card with the context (and optionally the level) | Shares or skips | Respects visibility; **never includes the email** |
+| 17 | **Play again** | One-tap retry with the same choice (Ranked if attempts remain, otherwise Practice is suggested) | Retries or leaves | ≤ 2 taps, < 3 s |
+| 18 | **Review and report** | The questions seen, with results (practice: correct answers and explanations) | Can report a question | Only after the run; see [question strategy](../questions/question-strategy.md#10-reporting-questions) |
 
-### 2.1 Profile (onboarding)
+### 2.1 Profile (light onboarding)
 
 Ask little, react a lot, never show 200 technologies at once.
 
-1. **Name**: 2–32 characters, moderated (see [privacy](public-profile-and-privacy.md#6-display-names-and-moderation)). Nicknames are fine. It is the public name, so it's never the email.
+1. **Name**: 2–32 characters, moderated (see [privacy](public-profile-and-privacy.md#6-display-names-and-moderation)). Nicknames are fine. It's the display name, never the email.
 2. **Seniority**: Trainee · Junior · Mid · Senior · Lead · Staff · Principal, as large chips.
 3. **Role**: 13 roles at launch, grouped. Roles whose track isn't ranked yet show "Practice only for now".
 4. **Stack**: recommended chips for the role (~12), role-specific categories (e.g. Fullstack: Frontend, Backend, Databases, Caching/Search, Messaging, Cloud, Infrastructure), search with aliases, progressive suggestions (NestJS → Node.js, TypeScript), role rules shown inline ("Fullstack needs at least one Frontend and one Backend technology"). 1–12 technologies.
-5. **Email and/or LinkedIn**: at least one. Email is recommended ("the identifier we'll be able to verify when accounts arrive"). LinkedIn is accepted in any common format and normalized.
-6. **Privacy and visibility**: as in step 5 above.
+5. **Continue** includes a one-line acknowledgement of the terms and privacy policy (with links). Visibility starts **private**; nothing is public until the developer chooses it.
 
-**Friction note:** asking for email or LinkedIn before the first run is a deliberate trade-off for persistent identity. If playtests show a large drop at this step, the alternative is to ask right after the first result ("Save your 460 XP"); see [open questions](mvp-scope.md#6-open-questions).
+### 2.2 Save your progress
+
+Shown after the **first completed game** (delivered or failed), when XP, a level, a result and a first history entry already exist:
+
+```
+You earned 460 XP · CV Rush Level 2
+Save your progress
+  Email      [ ............ ]   Private. Used to recover your profile and, later, to claim it with an account.
+  LinkedIn   [ ............ ]   Optional. Not public unless you choose to show it.
+[ Save ]   Not now
+```
+
+- **Both are optional.** Adding one or both attaches them to **the same provisional Developer**; no separate identities are created.
+- Both are stored as **unverified**. The email is private, always. LinkedIn is not public until the developer explicitly enables "Show my LinkedIn on public rankings" (asked right after adding it, default **No**).
+- **"Not now" never loses progress.** The Developer stays tied to the device credential. A calm, honest notice is shown:
+  - EN: "Your progress is saved on this device for now. Add an email to keep it safe if you switch devices or clear your browser."
+  - ES: "Tu progreso está guardado en este dispositivo por ahora. Añade un email para no perderlo si cambias de dispositivo o borras los datos del navegador."
+- The prompt can reappear at meaningful moments (a level-up, a first ranked result, the first Daily Champion title), at most once per day, and is always available in My Profile. No nagging.
+- Measured as **`first_game_completed` → `identity_contact_added`** (see [success metrics](success-metrics.md)).
 
 ## 3. Failure journey
 
@@ -89,10 +99,10 @@ Abandoning is `ABANDONED`: the run expires after its maximum lifetime, earns no 
 ## 4. Returning developer journey
 
 1. The device credential recognises the developer: "Welcome back, Andrea · CV Rush Level 9 · 120 XP to Level 10".
-2. The landing page shows today's company, their category status ("Frontend · Junior: you're #4 of 27 today"), ranked runs left and their best result today.
+2. The landing page shows today's company, their category status ("Frontend · Junior: you're #4 of 27 today"), **ranked attempts remaining** and their best result today.
 3. Yesterday's outcome: "Yesterday you finished #4 of 212 in Frontend · Junior" or "You were yesterday's Daily Champion in Frontend · Junior (+250 XP)".
-4. **Play** goes to the "Competing as" card (prefilled), then to the Job Challenge.
-5. On a new device: the management link (MVP) or, later, an account login.
+4. **Play Ranked** / **Practice** after the "Competing as" card.
+5. On a new device: the management link, or (later) an account; with an email saved, future recovery and claiming become possible.
 
 ## 5. Interruptions and edge cases
 
@@ -105,8 +115,8 @@ Abandoning is `ABANDONED`: the run expires after its maximum lifetime, earns no 
 | Profile edited mid-run | It doesn't affect the running run (the snapshot is frozen); in ranked, edits wait until the daily lock ends |
 | Language switch mid-run | The UI language changes; the run's question language is fixed at the start |
 | Different device | The management link (MVP); accounts later |
-| Cookies blocked or cleared | A new provisional Developer would be created; the management link restores the original. Claiming merges duplicates later (see [identity and accounts](identity-and-accounts.md#6-merging-several-provisional-profiles)). |
-| Ranked runs used up | Practice runs continue (XP, history, stats) |
+| Cookies blocked or cleared | Without the device credential, a new provisional Developer would be created. The management link restores the original; a saved email enables future recovery and claiming, which merges duplicates (see [identity and accounts](identity-and-accounts.md#6-merging-several-provisional-profiles)). |
+| Ranked attempts used up | Play Ranked shows "0 attempts remaining today · resets in 04:32:18"; Practice stays available (XP, history, stats) |
 | Category not ranked yet | Practice runs only, with a "help us unlock ranked" call to action |
 
 ## 6. Game loop

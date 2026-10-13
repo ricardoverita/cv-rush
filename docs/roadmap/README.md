@@ -1,6 +1,6 @@
 # Roadmap
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > No dates on purpose. Phases follow the [product evolution](../product/product-evolution.md): **Game → Developer Network → Jobs → Recruiter Platform**. Each stage starts only when the previous one works. GitHub milestones will mirror these phases once the repository is public.
 
@@ -16,7 +16,7 @@
 
 ## MVP (summary)
 
-Landing · **provisional developer identity** (name, seniority, role, stack, email and/or LinkedIn, privacy consent) · a Job Challenge generated for the frozen profile snapshot · a **2D side-scrolling runner** with Recruiter, ATS, Hiring Manager and Final Interview · 5–10 in-world A/B/C/D questions per run from **AI-generated, validated pools** · bots · CV Health · server-computed score, **XP and CV Rush Level** · **history** and **last active** · **ranked (3/day) and practice runs** · category rankings (daily, weekly) with the Daily Champion per category, Season 0 (Beta) · optional public LinkedIn · sharing · a **private "My profile" page** with initial stats · i18n es/en · accessibility basics · first-party analytics · moderation commands · open-source foundations.
+Landing · light onboarding (name, seniority, role, stack) creating a **provisional developer identity** · explicit **Play Ranked / Practice** · a Job Challenge generated for the frozen profile snapshot · a **2D side-scrolling runner** with Recruiter, ATS, Hiring Manager and Final Interview · 5–10 in-world A/B/C/D questions per run from **AI-generated, validated pools** · bots · CV Health · server-computed score, **XP and CV Rush Level** · **history** and **last active** · **Save your progress** after the first game (optional email/LinkedIn) · ranked attempts (3/day) and practice runs · category rankings (daily, weekly) with the Daily Champion per category, Season 0 (Beta) · optional public LinkedIn · sharing · a **private "My profile" page** with initial stats · i18n es/en · accessibility basics · first-party analytics · moderation commands · open-source foundations.
 
 Exact scope: [MVP scope](../product/mvp-scope.md).
 

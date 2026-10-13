@@ -1,6 +1,6 @@
 # Glossary (ubiquitous language)
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > These terms are used across docs, code and conversations. Domain terms are **brand-agnostic**: none of them contain "CV Rush" (the "CV Rush Level" label is UI copy, not a domain name).
 
@@ -12,9 +12,11 @@
 | **Provisional developer** | A Developer without an account, recognised by a device credential or management link |
 | **Device credential** | A secret in a secure cookie that proves "this browser is this Developer". Not the Developer ID. |
 | **Management link** | A private, regenerable link to access and manage a provisional Developer from another device |
-| **Claim identifier** | An identifier that may later prove ownership: `contactEmail`, `linkedinUsername`. Always carries a verification status (`unverified` in the MVP). |
-| **contactEmail** | The private email of a Developer. Never public, never in analytics or logs. Used for future claiming, recovery and, with consent, communication. |
-| **linkedinUsername** | The normalized LinkedIn `/in/` username. Public only when the Developer is public and consented to show it. |
+| **Contact / claim identifier** | An **optional** identifier added after the first game or later: `contactEmail`, `linkedinIdentifier`. Always carries a verification status (`unverified` in the MVP). Never a credential. |
+| **Save your progress** | The post-game prompt (after the first completed game) to add an email and/or LinkedIn |
+| **contactEmail** | The optional, private email of a Developer. No public option exists; never in analytics or logs. The most important identifier for recovery, claiming, merges and future authentication; communication only with consent. |
+| **linkedinIdentifier** | The optional, normalized LinkedIn `/in/` username. Unverified; not proof of ownership. |
+| **linkedinVisibility** | Whether LinkedIn is shown on public surfaces: hidden (default) or shown, and only when the profile is public |
 | **Profile visibility** | `private` (default) or `public` in the MVP; more levels later (public page sections, Open to Work, discoverable by recruiters) |
 | **Consent** | A recorded decision per purpose, with text version and timestamp |
 | **User account** *(Stage 2)* | Login credentials that attach to a Developer through a claim |
@@ -41,7 +43,8 @@
 | **Company** | The employer of a job posting: fictional in the MVP (generated or the Daily Company), real in Stage 3 |
 | **Job posting** | A job description: generated for the profile in the MVP; published by a company later |
 | **Game session (run)** | One playthrough of a Job Challenge as a profile snapshot, of a run type |
-| **Run type** | **Ranked** (the first 3 per UTC day; category blueprint; counts for rankings) or **Practice** (unlimited; exact-seniority difficulty; explanations) |
+| **Run type** | Chosen explicitly: **Ranked** ("Play Ranked", 3 attempts per UTC day, category blueprint, counts for rankings) or **Practice** (unlimited, exact-seniority difficulty, explanations, reduced XP) |
+| **Ranked attempt** | One of 3 daily ranked attempts, committed server-side when the competitive session starts; never returned |
 | **Ranked profile lock** | After the first ranked run of a UTC day, the profile can't change until the day ends |
 | **Category cooldown** *(V1)* | A minimum time between ranked track or band changes |
 | **Stage** | Recruiter Screening, ATS Scan, Hiring Manager, Final Interview (Salary Negotiation, Ghosting later) |
@@ -94,9 +97,10 @@
 | Term | Meaning |
 |---|---|
 | **Question** | A versioned single-choice item (4 options) with translations, source, verification level and tags |
-| **Question context / pool** | The questions available for a context (e.g. Redis × level 3), ~20 in the MVP, split into **ranked** and **practice partitions** |
-| **AI-generated question** | Generated ahead of time or asynchronously with structured output, then validated, cross-checked and stored. Never generated on the request path. |
-| **Verification level** | `auto_validated` → `cross_checked` → `human_reviewed` → `curated` (or `quarantined`) |
+| **Question context / pool** | The questions available for a context (e.g. Redis × level 3): ~20 generated when first needed, then rotated and regenerated |
+| **Question lifecycle** | Generated → Validated → Competitive → Retired → Practice (or Invalidated, Archived). A question in competitive rotation never appears in practice. |
+| **AI-generated question** | Generated ahead of time or asynchronously with structured output, validated, second-checked and stored with source and confidence metadata. Never generated on the request path. |
+| **Verification tier** | AI generated → AI validated → Human reviewed → Curated. The independent AI check detects problems; it doesn't prove correctness. |
 | **Job-derived question** | Generated from facts in the run's job posting (memory, recruiter, salary) |
 | **Template** | A parameterized or scenario question generator |
 | **Graded options** | Options with outcome grades (e.g. the salary question) |

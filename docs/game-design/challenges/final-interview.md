@@ -1,6 +1,6 @@
 # Final Interview
 
-> Part 1 · Product & Game Design · Status: **Draft for review** · MVP
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)** · MVP
 
 ## Fantasy
 

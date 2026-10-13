@@ -1,6 +1,6 @@
 # Job posting generation
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: Job Challenges)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 
 ## 1. Role of the job posting
 

@@ -1,6 +1,6 @@
 # Product vision, core fantasy and target users
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > "CV Rush" is the provisional public name. Everything below describes the product in brand-agnostic terms, so a rename is a branding change, not a redesign.
 
@@ -8,7 +8,17 @@
 
 **Build a developer network powered by games.** It starts as a fast, funny 2D game about getting your CV through a hiring process. Every run builds a persistent developer profile: results, XP, levels, history and gameplay stats. Over time, that profile can make developers visible, and later connect them with jobs and recruiters, always by their own choice.
 
-> **The game is the entry point and the engagement mechanism. The persistent developer profile is the asset that grows over time.**
+### Product principle
+
+> **The game creates engagement.**
+> **The profile accumulates value.**
+> **Jobs create opportunity.**
+>
+> Today we build mainly the first two lines.
+
+**Architectural north:** Developers → Games → Progress → Reputation inside CV Rush → Jobs → Applications → Recruiters.
+
+The game is the entry point and the engagement mechanism. The persistent developer profile is the asset that grows over time.
 
 Elevator pitch:
 

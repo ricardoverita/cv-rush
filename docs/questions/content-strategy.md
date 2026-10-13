@@ -1,8 +1,8 @@
 # Content strategy
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: simplified MVP content)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
-> Revision 3 simplifies the MVP: instead of hand-writing hundreds of questions before launch, the MVP uses **AI-generated, validated and stored question pools** (~20 per context) plus job-derived templates. The large open-source question-pack system and the curated competitive pool come later, and gradually **replace** AI content. Schemas, the generation pipeline and tooling are designed in Part 2.
+> The MVP uses **AI-generated, validated, stored question pools** (~20 per context when a context is first needed) plus job-derived templates. Questions follow a **lifecycle**: they rotate through competitive use, retire into practice and can be invalidated or regenerated. Curated and community content gradually replaces AI content later. Schemas, the generation pipeline and storage are designed in Part 2.
 
 ## 1. Content types
 
@@ -10,15 +10,14 @@
 |---|---|---|---|
 | **Catalogs** | Roles, seniorities, bands, tracks, technologies, categories, aliases, role compatibility and recommendations | Repository (open) | ✅ |
 | **Job content** | Title patterns, summaries, responsibility fragments, perks, company name parts, locations, salary bands | Repository (open) | ✅ |
-| **Question pools (MVP)** | AI-generated, validated questions per context, with ranked and practice partitions | **Private database** (answer keys never in the repository or on the client) | ❌ (reports only) |
+| **Question pools** | AI-generated, validated questions per context, moving through the lifecycle | **Private database** (answer keys never in the repository or on the client) | ❌ (reports only) |
 | **Question templates** | Job-memory generators, salary template, scenario templates | Repository (logic, open) | ✅ (reviewed carefully) |
 | **Sample pool** | A small, clearly fake question set for local development and tests | Repository (open) | ✅ |
-| **Community question packs** (later) | Curated questions per technology, with answers and explanations | Repository (open) | ✅ |
-| **Curated competitive pool** (later) | Reviewed, calibrated question families for ranked | Private | Trusted reviewers |
+| **Community question packs** (later) | Curated questions per technology, with answers and explanations | Repository (open), practice only | ✅ |
 | **Daily Company schedule** | Upcoming Daily Companies and themes | Private until published | ❌ |
 | **Bot content, humor content, UI copy** | Archetypes, lines, rejection emails, interface text | Repository (open) | ✅ |
 
-## 2. Question contexts and pools (MVP)
+## 2. Question contexts and pools
 
 A **question context** is a combination the game needs to fill a slot:
 
@@ -28,108 +27,109 @@ A **question context** is a combination the game needs to fill a slot:
 | Track fundamentals × level | Fullstack fundamentals · level 3 | H2 |
 | Seniority × band | Senior+ situational / architecture · level 4 | H3, F1 |
 
-Each context has a **pool of ~20 validated questions** (or enough to demonstrate the system), bilingual (es/en), split into a **ranked partition** (answers never revealed) and a **practice partition** (answers and explanations shown in practice reviews).
+When a context is first needed, about **20 questions** are generated, validated and stored (bilingual es/en). The pool then evolves through the lifecycle: questions enter competitive rotation, retire into practice, and new batches are generated when needed.
 
-Job questions (memory, recruiter, salary) come from **templates** applied to the run's posting. They don't need pools.
+Job questions (memory, recruiter, salary) come from **templates** applied to the run's posting; they don't need pools.
 
-## 3. AI-generated questions: the MVP pipeline
+## 3. AI-generated questions: the pipeline
 
 ```mermaid
 flowchart LR
-  need["Context needed<br/>(launch list, or a new technology appears)"] --> gen["Generate a batch<br/>(structured output)"]
+  need["Context needed<br/>(launch list, new technology,<br/>or rotation running low)"] --> gen["Generate a batch<br/>(structured output)"]
   gen --> schema["Schema validation"]
-  schema --> rules["Rule checks"]
+  schema --> rules["Rule checks and heuristics"]
   rules --> dedupe["Deduplication"]
-  dedupe --> cross["Cross-check<br/>(independent answer)"]
-  cross --> store["Store: versioned,<br/>source = ai_generated"]
-  store --> serve["Served just in time<br/>(never the answer key)"]
-  serve --> stats["Stats and reports"]
-  stats -->|"reported or outlier"| quarantine["Quarantine and review"]
-  stats -->|"good"| promote["Human review → curated"]
+  dedupe --> second["Independent second check"]
+  second --> store["Store: versioned,<br/>source and confidence metadata"]
+  store --> lifecycle["Question lifecycle"]
 ```
 
-**Structured output (one item):**
+**Structured output (one item):** question, optionA–D, correctOption, explanation, technology, difficulty, seniority, role, topic, translations (es + en, same correct option).
 
-```
-question, optionA, optionB, optionC, optionD, correctOption, explanation,
-technology, difficulty, seniority, role, (topic), translations es + en
-```
+**Checks:**
 
-**Rules:**
+- **Schema validation** of the structured output.
+- **Rules and heuristics:** 4 distinct options; exactly one correct; prompt ≤ 140 and options ≤ 40 characters; known technology; valid difficulty, seniority and role; both languages present with the same correct option; no answer leaked in the prompt; no "all/none of the above"; option-length balance (the correct answer is not systematically the longest); no version trivia without a tag.
+- **Deduplication** against existing questions.
+- **An independent second check:** another model answers without seeing the key. A disagreement discards or flags the item.
 
-- **Never on the request path.** Pools are generated **before launch** for the launch contexts, and **asynchronously** when a new context appears (e.g. someone selects Elixir) or when a pool runs low. A run never waits for an LLM; without a usable pool, the slot falls back to track fundamentals.
-- **Never trusted blindly.** Every generated question goes through:
-  - schema validation;
-  - rule checks: 4 distinct options, exactly one correct, length limits (prompt ≤ 140, options ≤ 40), known technology, valid difficulty and seniority, both languages present with the same correct option, no answer leaked in the prompt, no "all of the above";
-  - deduplication against existing questions;
-  - a **cross-check**: the item is answered independently (without the key) and discarded on disagreement.
-- **Stored and reused**, with `source = ai_generated` and a **verification level**: `auto_validated` → `cross_checked` → `human_reviewed` → `curated`. Selection prefers higher levels; ranked uses at least `cross_checked`.
+> **Important limitation:** the second check **detects problems; it does not prove technical correctness.** Two models can agree on a wrong answer. That's why AI-only content is labeled by its verification tier, why rankings run as **Season 0 (Beta)** while content is being calibrated, and why every question can be invalidated.
+
+**Metadata stored with every question:** source (`ai_generated`, `curated`, `community`), generator and prompt version, second-check result, a confidence signal, verification tier, the generation batch, timestamps. This lets us find and invalidate a whole bad batch.
+
+**Operational rules:**
+
+- **Never on the request path.** Generation happens before launch for launch contexts, and **asynchronously** afterwards (a new context appears, or competitive rotation runs low). A run never waits for an LLM; without a usable pool, the slot falls back to track fundamentals.
 - **Answer keys never reach the client.** Pools live in the private database, not in the repository.
-- **Reports and outlier stats quarantine** a question until it's reviewed.
-- **Pool refill:** when the active players of a context have seen most of its pool (exposure threshold), a new batch is generated asynchronously.
-- **Cost controls:** batch generation, caching, budgets and a feature flag (`aiQuestions`). Generation happens per context, never per run or per frame.
-- **Gradual replacement:** curated and community questions are added to the same pools with higher verification levels. AI questions with poor stats retire first.
-- **Rankings during this phase are Season 0 (Beta)** (see [rankings](../product/leaderboards.md#10-ranking-integrity)).
+- **Cost controls:** batches per context, caching, budgets, a feature flag (`aiQuestions`). Never one generation per run, challenge or frame.
 
-## 4. Open and private content (long term)
+## 4. Verification tiers
 
-The repository is public, so **anything in it is known to attackers, including answers**. Hiding questions from the browser doesn't protect a ranking if the answers are on GitHub. The long-term model:
-
-| | **Community Question Packs** (later) | **Private pools** (MVP: AI-generated; later: curated competitive) |
+| Tier | Meaning | Allowed in |
 |---|---|---|
-| Visibility | Public, open-source (with answers) | Private: never in the repository; answer keys never sent to clients |
-| Purpose | Practice, learning, contributors, local development, tests | Ranked slots (and practice partitions) |
-| Authors | Anyone, via PR | AI generation + validation (MVP); maintainer and trusted reviewers (later) |
-| Post-run review | Correct answer and explanation, with attribution | Ranked: results only; practice partition: answers and explanations |
-| End of life | Deprecated when outdated | Retired; curated competitive questions can later **graduate** into open packs |
+| **AI generated** | Passed schema, rules and deduplication | Practice only |
+| **AI validated** | Also passed the independent second check | Competitive rotation in **Season 0 (Beta)**, and practice |
+| **Human reviewed** | Reviewed by a person with domain knowledge | Competitive rotation (preferred), practice |
+| **Curated** *(later)* | Reviewed and calibrated with real attempt data | Competitive rotation in official seasons |
 
-## 5. Content lifecycle
+Selection prefers higher tiers. Later seasons can require **Human reviewed** or **Curated** for competitive slots. The Beta label on rankings says explicitly: "Season 0 · Beta: we're still calibrating questions."
+
+## 5. Question lifecycle
+
+The goal: **a question active in ranked never appears in practice**, and practice can still teach (correct answers, explanations, learning material) with questions that left competition.
 
 ```mermaid
 stateDiagram-v2
-  [*] --> Generated: AI batch
-  [*] --> Draft: human author
-  Generated --> AutoValidated: schema, rules, dedupe pass
-  AutoValidated --> CrossChecked: independent answer agrees
-  Draft --> InReview: submitted
-  InReview --> Curated: approved
-  CrossChecked --> Curated: human review
-  CrossChecked --> Quarantined: reported or outlier
-  Curated --> Quarantined: reported or outlier
-  Quarantined --> CrossChecked: fixed as a new version
-  Quarantined --> Retired: discarded
-  Curated --> Retired: exposure limit, age or outdated
-  Retired --> [*]
+  [*] --> Generated: AI batch or human draft
+  Generated --> Validated: checks pass
+  Generated --> Rejected: checks fail
+  Validated --> Competitive: enters rotation
+  Validated --> Practice: practice-only content
+  Competitive --> Retired: exposure limit, age or rotation
+  Retired --> Practice: published to practice with explanations
+  Competitive --> Invalidated: reported, wrong or outlier
+  Practice --> Invalidated: reported or wrong
+  Invalidated --> Generated: fixed as a new version or regenerated
+  Practice --> Archived: outdated
+  Rejected --> [*]
+  Archived --> [*]
 ```
 
-- **Edits create a new version.** Runs keep referencing the exact version they served, so past runs stay auditable (see [versioning](question-strategy.md#12-versioning-and-audit)).
-- **Deactivating never deletes.**
+| Capability | How |
+|---|---|
+| **Rotation** | Each context keeps a target number of questions in competitive rotation; retired ones are replaced by validated ones |
+| **Retirement** | After an exposure limit (times served in ranked) or an age, a question leaves competition |
+| **Expiration** | Version-sensitive questions carry a review-by date |
+| **Controlled reuse** | Retired questions serve practice. They never return to competition while their answers are visible in practice. |
+| **Regeneration** | When rotation runs low or a batch is invalidated, a new batch is generated asynchronously |
+| **Invalidation** | A report, an outlier statistic or a manual decision removes a question (or a whole batch) immediately; runs that already used it keep their audit trail |
+
+These are conceptual states. The exact model (states vs flags, pool tables, exposure counters) is designed in Part 2.
+
+**Edits create a new version**; runs reference the exact version they served. **Nothing is deleted**; invalidated questions remain for audit.
 
 ## 6. Coverage plan (MVP)
 
 - **Launch contexts pre-generated** for the 4 tracks with full coverage (Frontend, Backend, Fullstack, Platform): track fundamentals at levels 1–5, seniority pools per band, and technology pools for the ~22 priority technologies at the levels the bands and practice need.
 - **Priority technologies:** JavaScript, TypeScript, React, Vue, Angular, Next.js, Node.js, NestJS, PHP, Laravel, Java, Spring Boot, Python, Go, PostgreSQL, MySQL, MongoDB, Redis, Kafka, Docker, Kubernetes, AWS.
-- **Long tail** (any other catalog technology): generated asynchronously on first need; fallback to track fundamentals until ready.
-- **Practice-only tracks** (Mobile, Quality, Data, Security, Architecture): generated pools for practice; they become ranked when their pools reach quality and size thresholds.
+- **Long tail:** generated asynchronously on first need, with a fallback to track fundamentals until ready.
+- **Practice-only tracks** (Mobile, Quality, Data, Security, Architecture): pools exist for practice; the track becomes ranked when its pools reach size and quality thresholds.
 
-## 7. Quality bar (all sources)
+## 7. Open and private content (long term)
 
-- One unambiguous correct answer (or explicit graded options).
-- Prompt ≤ 140 characters, options ≤ 40: readable while running.
-- Plausible distractors; no joke options outside humor questions; no "all/none of the above".
-- Concepts over version trivia; version-sensitive questions are tagged.
-- Honest difficulty, an explanation for every question, neutral and respectful language.
-- Original content: no copying from certification exams, books or paid banks. AI output is checked for verbatim reproduction of known sources.
+The repository is public, so **anything in it is known to attackers, including answers**. Therefore:
 
-## 8. Localization of content
+- **Competitive questions live only in the private database.** The repository holds catalogs, templates, a fake sample pool and, later, community packs that feed **practice only**.
+- Retired competitive questions may eventually be published (for example into open practice packs); licensing is part of the Part 2 license ADR.
 
-- Every question exists in **es** and **en** with **the same option IDs and the same correct option**.
-- Technical meaning is preserved exactly; tech terms stay in English when that's how the industry speaks.
-- Neutral Spanish for Spain and Latin America.
-- Ranked requires both locales validated.
+## 8. Quality bar (all sources)
 
-## 9. Attribution and licensing
+One unambiguous correct answer (or explicit graded options) · prompt ≤ 140, options ≤ 40 · plausible distractors, no "all/none of the above" · concepts over version trivia · honest difficulty · an explanation for every question · neutral, respectful language · original content (AI output is checked against verbatim reproduction of known sources).
 
-- Repository content (catalogs, templates, sample pool, future community packs) follows the licensing decided in the Part 2 ADR (direction: CC BY 4.0 for content, Apache-2.0 for code).
-- AI-generated pools are private operational data, not distributed. Whether and how they are ever published is part of the same ADR.
-- Community questions (later) show "Question by @handle" in practice reviews.
+## 9. Localization
+
+Every question exists in **es** and **en** with the same option IDs and the same correct option; technical meaning is preserved exactly; tech terms stay in English where the industry does; neutral Spanish. Ranked requires both locales validated.
+
+## 10. Attribution and licensing
+
+Repository content follows the Part 2 license ADR (direction: CC BY 4.0 for content, Apache-2.0 for code). AI-generated pools are private operational data. Community questions (later) show "Question by @handle" in practice reviews.

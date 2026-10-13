@@ -1,6 +1,6 @@
 # Identity and account migration strategy
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > How a developer without an account can build progress today and claim it later when accounts exist, without losing or duplicating anything. Product-level design; credentials, storage and cryptography are specified in Part 2.
 
@@ -19,7 +19,7 @@
 | **Developer** | Created by the server at onboarding, with a **server-generated ID** (never derived from email or name). Status: `provisional` → `claimed` (later `merged` or `deleted`). Owns the profile, game sessions, results, XP, history and rankings. |
 | **Device credential** | A long random secret, stored in a secure, HTTP-only cookie, that proves "this browser is this Developer". The Developer ID itself is never a credential. A Developer can have several (devices) and they can be revoked. |
 | **Management link** | A private, regenerable link that grants the same access from another device (and lets the developer edit visibility or delete data). |
-| **Claim identifiers** | `contactEmail` and `linkedinUsername`, each with a **verification status** (`unverified` in the MVP). They are hints for future claiming, **never proof**. |
+| **Contact and claim identifiers** | `contactEmail` and `linkedinIdentifier`, both **optional**, each with a **verification status** (`unverified` in the MVP). Added after the first game ("Save your progress") or anytime from My Profile. They are hints for future recovery and claiming, **never proof**. |
 | **Account** *(future)* | Login credentials (email verification, Google, GitHub; LinkedIn sign-in if appropriate). Linked to a Developer through `accountId` when the developer claims it. |
 
 Conceptual fields:
@@ -30,11 +30,12 @@ Developer
   status                      provisional | claimed | merged | deleted
   displayName
   role, seniority, technologies     (current professional profile)
-  contactEmail                private, never public
+  contactEmail                optional; private, never public, no public option exists
   emailVerificationStatus     unverified | verified
-  linkedinUsername            public only with consent
+  linkedinIdentifier          optional; normalized /in/ username
   linkedinVerificationStatus  unverified | verified
-  profileVisibility           private | public   (more levels later)
+  linkedinVisibility          hidden (default) | shown_on_public_profile
+  profileVisibility           private (default) | public   (more levels later)
   consents[]                  purpose, granted/withdrawn, text version, timestamp
   createdAt, lastActiveAt
   claimedAt                   nullable
@@ -44,14 +45,21 @@ Developer
 
 Exact names and storage are decided in Part 2.
 
-## 3. Onboarding (MVP)
+## 3. Onboarding and "Save your progress" (MVP)
 
-1. Name, seniority, role, stack.
-2. **Email and/or LinkedIn**: at least one is required. Copy: "So you can keep your progress and claim it when CV Rush accounts arrive." Email is recommended because it is the identifier we will be able to verify.
-3. **Privacy and visibility**: accept the terms and privacy policy (required); choose profile visibility (private by default); opt in to email updates (separate, off by default).
-4. The server validates everything, creates the `Developer` (status `provisional`), sets the device credential, and records the consents.
+1. **Light onboarding:** name, seniority, role, stack (plus a one-line acknowledgement of terms and privacy). No email, no LinkedIn.
+2. The server validates the profile, creates the **provisional Developer** and sets the **device credential**. Progress is saved from the first run.
+3. The developer plays (Ranked or Practice, chosen explicitly).
+4. After the **first completed game**: **"Save your progress"**, with optional email and/or LinkedIn. The developer now has something worth saving (XP, level, result, position, a first history entry).
+5. If they add identifiers, both attach to **the same Developer**. If they add LinkedIn, they're asked separately whether to show it publicly (default: no).
+6. If they skip, nothing is lost: the Developer stays tied to the device credential, with an honest notice that progress lives on this device until an email is added.
 
-Nothing in the MVP claims that the email or LinkedIn is verified. The UI never shows a "verified" badge for unverified identifiers.
+| Identifier | Required to play? | Purpose | Public? |
+|---|---|---|---|
+| **Email** | No | The **most important identifier**: recovery, future account claim, merges, future authentication, and communication only with separate consent | **Never.** There is no option to make it public. |
+| **LinkedIn** | No | Professional identity; ranking display with consent; a future public profile; future recruiter visibility (Stage 4, separate consent) | Only if `linkedinVisibility` is explicitly enabled |
+
+Writing a LinkedIn URL **does not prove** ownership of that profile. It is never treated as an authenticated credential. The UI never shows a "verified" badge for unverified identifiers.
 
 ## 4. Rules for unverified identifiers
 
@@ -69,8 +77,8 @@ sequenceDiagram
   participant S as Server
   D->>S: Create account and verify email (code or magic link) or sign in with a provider
   S->>S: Find provisional Developers matching the verified email,<br/>plus the Developer of the device credential in this browser
-  S-->>D: "We found an existing CV Rush profile with 38 games. Claim it?"
-  Note over D: Shows name, games, level, last played, so the person can recognise it
+  S-->>D: "We found an existing CV Rush profile: 34 games, Level 17, 8,420 XP. Claim this profile?"
+  Note over D: Shows name, games, level, XP, titles, last played, so the person can recognise it
   D->>S: Claim (or "This isn't me")
   S->>S: Link accountId, mark verified identifiers, status claimed, audit log
   S-->>D: Profile claimed, with history, XP and rankings preserved
@@ -109,7 +117,7 @@ Every merge is audited and reversible by an admin.
 
 | | MVP (no accounts) | With accounts |
 |---|---|---|
-| Start playing | Seconds: profile + email or LinkedIn + consent | The same; signing up stays optional |
+| Start playing | Seconds: name, seniority, role, stack | The same; signing up stays optional |
 | Same device | Recognised by the device credential | The same, plus login |
 | Another device | Management link | Login |
 | Lost device and link | Contact process (manual, verified by email later) | Account recovery |
@@ -137,3 +145,17 @@ Collecting email makes CV Rush a holder of personal contact data:
 | Creating many provisional Developers to farm attempts or XP | Rate limits, bot protection, verification heuristics; XP and ranking rules (see [progression](../game-design/progression.md)) |
 | Stealing a device credential | HTTP-only secure cookie, revocation, credential rotation; the management link is regenerable |
 | Claiming someone else's history | Only possible with proof of control of an identifier attached to it |
+
+## 10. The claim experience (future, preserved by design)
+
+Ricardo plays for months as a provisional Developer and accumulates XP, a level, games, stats, titles and ranking history. When accounts arrive:
+
+```
+We found an existing CV Rush profile
+Ricardo Vera · Senior Fullstack Developer
+34 games · CV Rush Level 17 · 8,420 XP · 2 Daily Champion titles
+Last played: 3 days ago
+[ Claim this profile ]   This isn't me
+```
+
+After ownership is verified, everything becomes associated with his `UserAccount`: game sessions, results, the XP ledger, titles, ranking entries, stats and history. **Nothing is duplicated**, because all of it already belongs to one Developer, and the account only attaches to it. (With the documented level curve, 8,420 XP is CV Rush Level 17.)

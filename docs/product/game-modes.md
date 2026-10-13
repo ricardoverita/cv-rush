@@ -1,6 +1,6 @@
 # Job Challenges, ranked runs and practice runs
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > Every run is a **Job Challenge** played as the developer's frozen profile snapshot (see [competitive identity](competitive-identity.md)). Revision 3 keeps the profile-first design and makes the **Daily Challenge a feature**, not the center: the center is the developer and their persistent progress (see [domain concepts](domain-concepts.md)).
 
@@ -15,20 +15,21 @@ There are two **run types**:
 
 | | **Ranked run** | **Practice run** |
 |---|---|---|
-| When | The first **3** runs a developer starts each UTC day (unless they choose practice) | Anytime; all runs after the 3 ranked ones |
+| How it starts | **Play Ranked**: the primary CTA, always an explicit choice. "3 attempts remaining today" | **Practice**: the secondary CTA. "Unlimited · doesn't affect rankings" |
+| Limit | **3 attempts per UTC day**, committed server-side when the competitive session starts | Unlimited |
 | Purpose | Fair comparison with comparable profiles | Personalization, learning, fun |
 | Job Challenge | At **today's company** (the Daily Challenge feature), generated for the profile | At a random fictional company, generated for the profile |
 | Difficulty | The **category's band curve** (Junior, Mid, Senior+), identical within the category | The **exact seniority** curve (7 levels), with mild adaptivity |
-| Questions | Ranked partition of the question pools | Practice partition of the pools; occasional humor questions |
-| Rankings | ✅ Counts (best ranked score per day and week, per category) | ❌ |
-| XP, level, history, stats | ✅ | ✅ (history labeled "Practice"; XP with daily diminishing returns) |
+| Questions | Questions **in competitive rotation** (never seen in practice while active) | Questions **retired from competition** (and practice-only content); occasional humor questions |
+| Rankings | ✅ Daily and category rankings, Daily Champion, competitive stats (best ranked score per day and week) | ❌ Never affects competitive positions |
+| XP, level, history, stats | ✅ Full XP | ✅ **Reduced XP** with anti-farming rules (see [progression](../game-design/progression.md#2-xp)); history labeled "Practice" |
 | Profile | **Locked for the rest of the UTC day** after the first ranked run | Free to change between runs |
 | Pause | Never (the server clock runs) | Between stages |
 | Timers | Standard, identical within the category | Standard; optional "relaxed timers" |
 | Bots | The category's daily field | A random field |
 | Post-run review | Results and topics; ranked answer keys stay hidden | Correct answers and explanations |
 
-The "Play" button starts a ranked run while ranked runs are left ("Ranked · 2 of 3 left today"); a "Practice" option is always available.
+**Ranked is never implicit.** The developer always knows when they are competing: two clear entries, "Play Ranked" (primary) and "Practice" (secondary), so nobody burns their 3 attempts while learning the controls. A first-time explainer suggests practicing first.
 
 **Why both run types share XP:** XP measures engagement and achievement over time ("Junior Backend, CV Rush Level 30 because they play a lot"). Rankings measure comparable performance. Keeping these separate lets the profile grow with every run while keeping rankings fair.
 
@@ -37,8 +38,8 @@ The "Play" button starts a ranked run while ranked runs are left ("Ranked · 2 o
 - **The job** is generated for the snapshot at a random fictional company (see [job generation](../game-design/job-generation.md)).
 - **The difficulty follows the exact seniority**: a Trainee sees fundamentals, a Staff engineer sees distributed-systems trade-offs (see [levels](../questions/question-strategy.md#4-difficulty-scale-and-seniority-bands)).
 - **Mild adaptivity:** after two consecutive technical misses, the next technical slot drops one level (never below the seniority's floor).
-- **Learning:** the review shows correct answers and explanations. They come from the **practice partition** of each question pool, so revealing them doesn't expose ranked answers.
-- **Unlimited**, with XP subject to daily diminishing returns (see [progression](../game-design/progression.md#2-xp)).
+- **Learning:** the review shows correct answers, explanations and educational notes. Practice questions are **retired from competitive rotation** (or practice-only), so revealing them never exposes questions that are active in ranked. See the [question lifecycle](../questions/content-strategy.md#5-question-lifecycle).
+- **Unlimited**, with **reduced XP** and anti-farming rules (see [progression](../game-design/progression.md#2-xp)).
 
 ## 3. Ranked runs
 
@@ -109,7 +110,8 @@ The questions drawn from each pool, which job facts are asked, option order, que
 
 ### 3.7 Attempts, lock and daily window
 
-- **3 ranked runs per developer per UTC day**; the best counts for the daily ranking (and the best of the week for the weekly one). Abandoned ranked runs count.
+- **3 ranked attempts per developer per UTC day**; the best counts for the daily ranking (and the best of the week for the weekly one).
+- **An attempt is committed server-side** at a clear moment when the competitive session really starts, so "enter, see the questions, close, retry until favorable" is impossible. Abandoned or disconnected ranked sessions still count. The exact commitment point is specified in Part 2 (anti-cheat).
 - **The profile locks for the day** at the first ranked run, so all ranked runs are in the same category with the same stack. A cooldown on category changes is deferred to V1 (see [competitive identity](competitive-identity.md#6-ranked-profile-lock)).
 - The day is UTC and displayed in local time ("Daily Challenge ends in 04:32:18").
 
@@ -163,9 +165,9 @@ flowchart LR
 | 7 | Every run counts for rankings (no ranked limit) | ❌ | With pools of ~20 questions per context, grinding means memorizing |
 | 8 | **Profile-first Job Challenges; ranked runs (3/day, category blueprint) + practice runs; Daily Challenge as a feature** | ✅ **Chosen** | Personal, fair within comparable groups, progression for everyone |
 
-## 7. Open questions for review
+## 7. Decisions taken at Part 1 approval
 
-1. Should the first 3 runs of the day be ranked **by default**, or should the developer explicitly choose ranked each time?
-2. Is the **ranked/practice partition** of question pools acceptable (fewer ranked questions per context, but practice can reveal answers)?
-3. Should practice XP be equal to ranked XP, or slightly lower?
-4. Category cooldown: deferred to V1. Is the daily lock enough for the MVP?
+- Ranked is an **explicit choice** (primary CTA), never the default consumption of the first runs.
+- Ranked and practice content are separated by a **question lifecycle** (competitive → retired → practice), not by a fixed split.
+- Practice gives **reduced XP** with anti-farming rules.
+- The category cooldown stays deferred to V1; the daily lock covers the MVP.

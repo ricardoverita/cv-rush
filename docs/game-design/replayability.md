@@ -1,6 +1,6 @@
 # Replayability
 
-> Part 1 · Product & Game Design · Status: **Draft for review**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 
 ## 1. Why players come back
 
@@ -39,7 +39,7 @@
 ## 4. Repeat avoidance
 
 - Prefer questions the developer hasn't seen; don't repeat a question seen in their last **5** practice runs while the pool allows it.
-- When a developer has seen most of a context's pool, a refill is generated asynchronously (see [content strategy](../questions/content-strategy.md#3-ai-generated-questions-the-mvp-pipeline)).
+- When a developer has seen most of a context's pool, a refill is generated asynchronously (see [content strategy](../questions/content-strategy.md#3-ai-generated-questions-the-pipeline)).
 - Prefer topics not seen recently within the same technology.
 - Track the repeat rate as a content-quality metric (see [success metrics](../product/success-metrics.md)).
 

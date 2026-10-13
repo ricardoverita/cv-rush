@@ -1,13 +1,13 @@
 # Privacy, visibility and LinkedIn
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > Product-level rules. Technical enforcement (storage, encryption, retention, logging) is defined in Part 2. Identity and claiming are in [identity and accounts](identity-and-accounts.md); profile contents are in [developer profile](developer-profile.md).
 
 ## 1. Principles
 
-1. **Data minimization.** Name, seniority, role, stack, and email and/or LinkedIn. No CV files, phone, location, age or gender.
-2. **Three separate things:** `contactEmail` (private, always), `publicLinkedIn` (public only with consent) and `profileVisibility` (private by default). One never implies another.
+1. **Data minimization.** To play: name, seniority, role, stack. Optionally, after the first game: email and/or LinkedIn. No CV files, phone, location, age or gender.
+2. **Separate things:** `contactEmail` (private, always, with no public option), `linkedinIdentifier` (stored, unverified), `linkedinVisibility` (hidden by default) and `profileVisibility` (private by default). Adding LinkedIn never makes it public; going public never exposes the email. One never implies another.
 3. **Private by default.** Playing, even finishing #1, never makes anyone public.
 4. **Preview before publishing.** The developer sees exactly what will be public.
 5. **Easy to undo.** Hiding the public profile takes effect everywhere, immediately.
@@ -22,9 +22,9 @@
 |---|---|---|---|---|
 | Display name | Onboarding | Yes (nicknames OK) | Yes | Only when public |
 | Seniority, role, stack | Onboarding | Yes | Current profile + a **frozen snapshot per run** | Only when public, as the competing context of each result |
-| **Email** (`contactEmail`) | Onboarding (email and/or LinkedIn required) | One of email/LinkedIn | Yes, **protected**, with `emailVerificationStatus = unverified` | **Never** |
-| **LinkedIn** (`linkedinUsername`) | Onboarding or later | One of email/LinkedIn | Username only, with `linkedinVerificationStatus = unverified` | Only when public **and** LinkedIn display is consented |
-| Profile visibility | Onboarding, changeable anytime | — | Yes | — |
+| **Email** (`contactEmail`) | "Save your progress" after the first game, or My Profile | No | Yes, **protected**, with `emailVerificationStatus = unverified` | **Never** (no public option exists) |
+| **LinkedIn** (`linkedinIdentifier`) | "Save your progress" after the first game, or My Profile | No | Username only, with `linkedinVerificationStatus = unverified` | Only when the profile is public **and** `linkedinVisibility` is explicitly enabled (default: hidden) |
+| Profile visibility | Private by default; changeable anytime | — | Yes | — |
 | Developer ID, device credentials, management link | Automatic | — | Yes | Never |
 | Runs, answers, timings, XP, level, history, stats | During play | — | Yes (scoring, progression, audit, anti-cheat) | Ranking rows show score, race time, position and date (+ level optionally) when public. History and stats are private in the MVP. |
 | Last active | Automatic | — | Exact timestamp | Coarse only ("Active this week"), and only where the developer is public |
@@ -50,8 +50,9 @@ In the developer's own profile it is shown masked (`r••••@example.com`),
 
 ### 4.1 When and how it is shown
 
-- Collected at onboarding (as a claim identifier and an optional public link) or later.
-- **Shown publicly only if** the developer is public **and** consented to display LinkedIn.
+- Collected in "Save your progress" after the first game, or anytime in My Profile. Optional.
+- Right after adding it: **"Show my LinkedIn on public rankings?"** Yes / **No (default)**. This is `linkedinVisibility`, separate from the identifier.
+- **Shown publicly only if** the developer is public **and** `linkedinVisibility` is enabled.
 - Always shown as a link we build: `https://www.linkedin.com/in/{username}`, opening in a new tab, marked as user-generated and nofollow.
 
 ### 4.2 Accepted input (product rules)
@@ -82,23 +83,31 @@ We cannot verify that a LinkedIn profile belongs to the developer, and even a fu
 
 ```mermaid
 flowchart TD
-  onboarding["Onboarding: privacy and visibility"] --> choice{"Show me on public rankings?"}
-  choice -->|"Stay private (default)"| private["Rankings: Anonymous Candidate + score<br/>history and stats private"]
-  choice -->|"Show me"| preview["Preview of the public card:<br/>name, seniority, role, stack, level"]
-  preview --> liChoice{"Show my LinkedIn? (if given)"}
-  liChoice -->|"No"| pub["Public card without LinkedIn"]
-  liChoice -->|"Yes"| pubLi["Public card with View LinkedIn"]
-  private --> later["Change anytime: My profile or management link"]
-  pub --> later
-  pubLi --> later
-  results["After a run (if private): optional nudge with preview"] --> choice
+  onboarding["Light onboarding<br/>(visibility: private by default)"] --> firstGame["First game completed"]
+  firstGame --> save{"Save your progress?"}
+  save -->|"Not now"| deviceOnly["Progress kept on this device<br/>(notice: add an email to keep it safe)"]
+  save -->|"Email"| email["Email stored: private, unverified"]
+  save -->|"LinkedIn"| li["LinkedIn stored: unverified"]
+  li --> liShow{"Show my LinkedIn on public rankings?"}
+  liShow -->|"No (default)"| liHidden["linkedinVisibility = hidden"]
+  liShow -->|"Yes"| liShown["linkedinVisibility = shown<br/>(only visible if the profile is public)"]
+  email --> public{"Show my profile on public rankings?"}
+  liHidden --> public
+  liShown --> public
+  deviceOnly --> public
+  public -->|"Stay private (default)"| anon["Rankings: Anonymous Candidate + score"]
+  public -->|"Show me"| card["Public card: name, seniority, role, stack, level<br/>+ LinkedIn only if shown"]
+  anon --> later["Change anytime in My Profile or via the management link"]
+  card --> later
 ```
 
 **Copy (draft):**
 
 | | English | Español |
 |---|---|---|
-| Identity step | Keep your progress. Add your email and/or LinkedIn so you can claim your profile when CV Rush accounts arrive. | Conserva tu progreso. Añade tu email y/o LinkedIn para reclamar tu perfil cuando lleguen las cuentas de CV Rush. |
+| Save step | You earned 460 XP. Save your progress. | Ganaste 460 XP. Guarda tu progreso. |
+| Skip notice | Your progress is saved on this device for now. Add an email to keep it safe if you switch devices or clear your browser. | Tu progreso está guardado en este dispositivo por ahora. Añade un email para no perderlo si cambias de dispositivo o borras los datos del navegador. |
+| LinkedIn visibility | Show my LinkedIn on public rankings | Mostrar mi LinkedIn en los rankings públicos |
 | Email helper | Private. Never shown to anyone. | Privado. Nunca se muestra a nadie. |
 | Visibility toggle | Show my profile on public rankings | Mostrar mi perfil en los rankings públicos |
 | Alternative | Stay private | Mantenerme privado |
@@ -112,7 +121,7 @@ flowchart TD
 | Action | Effect |
 |---|---|
 | Hide public profile | All entries immediately show "Anonymous Candidate"; share pages and images update |
-| Edit profile | Name (re-moderated), seniority, role, stack (except during the ranked daily lock), email, LinkedIn |
+| Edit profile | Name (re-moderated), seniority, role, stack (except during the ranked daily lock), email, LinkedIn, LinkedIn visibility |
 | Delete my data | Deletes the profile, email and LinkedIn. Game results are anonymized and kept for aggregates and ranking integrity (a title becomes "Anonymous Candidate"). |
 
 If both the device and the link are lost, a documented contact process handles requests (manual in the MVP).

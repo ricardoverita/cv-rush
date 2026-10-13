@@ -1,6 +1,6 @@
 # Product risks and abuse risks
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > This document covers risks from a **product and game-design** perspective. The technical threat model and anti-cheat design come in Part 2 (`docs/security/`, `docs/anti-cheat/`).
 
@@ -29,7 +29,7 @@ Scales: **L**ikelihood and **I**mpact are rated Low / Med / High.
 | P17 | **Accessibility vs real-time gameplay.** | Med | Med | Equivalent inputs (tap a path sign, keys 1–4); reduced motion; relaxed timers in practice; generous ranked timers | Accessibility feedback |
 | P18 | **Comparability between technologies within a category** ("PHP questions are easier than Go"). | Med | Med | Calibration per technology and level; a bounded stack share of the score; excluding outlier families; public explanation | Score distribution by declared stack within a category |
 | P19 | **Players don't understand categories** ("why am I #3 and someone else #1 with fewer points?") | Med | Med | The category is shown everywhere ("#1 in Fullstack · Senior+"); the spotlight copy says scores aren't comparable across categories; "How ranking works" | Support questions; feedback |
-| P20 | **Friction at the identity step** (email or LinkedIn before the first run) reduces activation. | High | High | Clear "keep your progress" value; minimal fields; email private; measure drop-off; ready alternative: ask after the first result | Identity step drop-off |
+| P20 | **Developers never save their progress** and lose it with the device or browser data. | High | Med | "Save your progress" after the first game, when there is value to keep; honest device-only notice; reminders at meaningful moments (level-up, first title); management link | `first_game_completed` → `identity_contact_added` |
 | P21 | **Personal data responsibility.** Storing emails raises legal obligations and breach impact. | Med | High | Minimization; protection at rest; masking in logs; retention policy; deletion; legal review before launch | Security reviews; incidents |
 | P22 | **AI cost and vendor dependency.** | Med | Med | Batch generation per context, caching, budgets, feature flag, a provider abstraction; the game works with stored pools if the AI provider is down | Cost per validated question |
 | P23 | **Scope creep toward a recruiter SaaS** before the game is fun. | High | High | Staged evolution with explicit gates; MVP non-goals; recruiter features only in Stage 4 | Roadmap reviews |
@@ -45,7 +45,8 @@ Scales: **L**ikelihood and **I**mpact are rated Low / Med / High.
 | # | Abuse | What it looks like | Design response | Residual risk |
 |---|---|---|---|---|
 | A1 | **Answer lookup from public content** | A script matches prompts against the repository | MVP pools live in the private database; the repository only has a fake sample pool; future community packs only feed practice | Low for ranked |
-| A2 | **Harvesting or memorizing small pools** by replaying (correct/incorrect feedback reveals answers by elimination) | Many runs recording questions and outcomes | 3 ranked runs per day; ranked/practice partitions (practice answers never come from the ranked partition); unseen-first selection; asynchronous pool refills on exposure; no ranked answer keys revealed | Medium in the MVP (pools of ~20); decreases as pools grow |
+| A2 | **Harvesting or memorizing small pools** by replaying (correct/incorrect feedback reveals answers by elimination) | Many runs recording questions and outcomes | 3 ranked attempts per day, committed server-side; the question lifecycle (active competitive questions never appear in practice; retirement by exposure); unseen-first selection; asynchronous regeneration; no ranked answer keys revealed | Medium in the MVP (pools of ~20); decreases as rotation grows |
+| A2b | **Attempt re-rolling** (start ranked, see questions, close, retry) | Abandon unfavorable ranked sessions | The attempt is committed server-side when the competitive session starts; abandoned sessions count | Low |
 | A3 | **Sharing answers the same day** | A chat group posts today's answers | Equivalent but different content per run; shuffled options; the job's open-book facts give no advantage | Low–Medium |
 | A4 | **Many identities** (clear cookies to get more attempts) | Many anonymous players from the same network or device | Rate limits; bot protection before ranked runs; verification heuristics; optional login (V1) to claim champion status | Medium in the MVP |
 | A5 | **Automation** (a bot plays the run) | Inhumanly fast or consistent answers; perfect ATS | Plausibility floors on timing; ATS input checks; human-verification challenge on suspicion; manual review of champions | Medium. Sophisticated automation with human-like timing is hard to detect |
@@ -63,7 +64,7 @@ Scales: **L**ikelihood and **I**mpact are rated Low / Med / High.
 | A14 | **Gaming Candidate of the Week** by winning on easier days | — | The same category blueprint every day; only themed families vary; a field-relative index if data shows a bias | Low |
 | A15 | **Sponsors seeking advantage** | Pressure to promote candidates or alter questions | Written integrity rules; sponsors have no access to ranking or content pipelines | Low |
 | A16 | **Spamming question reports** to get good questions removed | Coordinated reports | Reports never remove anything automatically; they feed a review queue | Low |
-| A17 | **XP farming** (scripts or endless runs to inflate levels) | Many runs per day, inhuman timings | XP only from server results; diminishing returns after 10 runs/day; voided XP on failed verification; rate limits and bot protection | Medium; matters more once levels are public |
+| A17 | **XP farming** (scripts or endless runs to inflate levels) | Many practice runs, repeating easy questions | Reduced practice XP; one-time discovery bonus; diminishing returns after 10 runs/day; a daily practice XP cap; voided XP on failed verification; rate limits and bot protection | Low–Medium; matters more once levels are public |
 | A18 | **Identity squatting** (typing someone else's email or LinkedIn) | A provisional profile with a famous person's LinkedIn | Unverified status; no merges on unverified data; reports; provisional public pages not indexed; the real owner can decline matches when claiming | Low–Medium |
 | A19 | **Claim hijacking** (taking over someone's history) | Claiming a profile without owning its identifiers | Claims require proof of control (verified email, device credential, management link); audited merges | Low |
 
@@ -78,6 +79,6 @@ What we intentionally **do not** publish: verification thresholds, plausibility 
 5. People share results on LinkedIn rather than only on private chats.
 6. Players understand and accept category boards, and don't miss a single global champion.
 7. The 9 launch categories gather enough runs per day for meaningful boards (otherwise: fewer, broader categories).
-8. Developers accept giving an email or LinkedIn before the first run.
+8. A meaningful share of developers saves their progress after the first game.
 9. XP and levels make developers come back (D7 and 4-week retention).
 10. AI-generated pools are good enough that reports stay below 1%.

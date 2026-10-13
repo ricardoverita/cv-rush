@@ -1,6 +1,6 @@
 # Open-source and community strategy (product level)
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > Licensing is decided in a Part 2 ADR (direction under study: Apache-2.0 for code, CC BY 4.0 for content packs, branding not licensed). Repository mechanics (templates, CI, guides) come in Part 3.
 

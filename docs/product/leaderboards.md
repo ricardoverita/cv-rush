@@ -1,8 +1,8 @@
 # Rankings
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
-> Rankings are a **progression feature built on top of game results**, not the center of the model. They are projections over immutable results, with scopes (period × dimension) that can be added over time: daily, weekly, category, technology, season. Only **ranked runs** feed competitive rankings (see [run types](game-modes.md#1-every-run-is-a-job-challenge-for-your-profile)).
+> Rankings are a **progression feature built on top of game results**, not the center of the model. They are projections over immutable results, with scopes (period × dimension) that can be added over time: daily, weekly, category, technology, season. Only **ranked runs**, which the developer explicitly chooses with "Play Ranked", feed competitive rankings (see [run types](game-modes.md#1-every-run-is-a-job-challenge-for-your-profile)).
 
 ## 1. Time model
 
@@ -137,7 +137,7 @@ flowchart LR
 ## 10. Ranking integrity
 
 - Rankings use only server-side results and the run's **server-side snapshot**. The client never sends scores, times, positions, XP or "who it is" after the run starts.
-- **Season 0 (Beta):** at launch, questions come mostly from AI-generated, automatically validated pools (see [content strategy](../questions/content-strategy.md)). Rankings are labeled "Beta" until curated content and anti-cheat mature. A new season can then start without deleting any history.
+- **Season 0 (Beta):** at launch, competitive questions are AI-generated and AI-validated (see [content strategy](../questions/content-strategy.md)); an independent check detects problems but doesn't prove correctness. Rankings say so explicitly: **"Season 0 · Beta — we're still calibrating questions."** Questions can be invalidated, and a new season can start without deleting any history.
 - **Sponsors can never influence** rankings, categories, positions, questions or eligibility.
 - Every admin action is audited.
 - **"How ranking works"** explains categories, ranked vs practice runs, what influences the score, and what the ranking does **not** mean: it is not a measure of professional ability, and declared seniority is not verified.

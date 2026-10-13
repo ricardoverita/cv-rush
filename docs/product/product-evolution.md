@@ -1,12 +1,20 @@
 # Long-term product evolution
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > Replaces the former "future platform" document. Revision 3 changes the product's north star: the game is the entry point to a **developer network**, which can later grow into **jobs** and **recruiter** features.
 
 ## 1. Principle
 
+> **The game creates engagement.**
+> **The profile accumulates value.**
+> **Jobs create opportunity.**
+>
+> Today we build mainly the first two lines.
+
 > **First build a fun developer game. Then build a developer network. Then jobs. Then recruiter features.**
+
+**Architectural north:** Developers → Games → Progress → Reputation inside CV Rush → Jobs → Applications → Recruiters.
 
 Each stage has to work on its own before the next one starts. The game is the **engagement and playful evaluation mechanism**. The **persistent developer profile** is the asset that grows over time. Jobs and recruiters only make sense once there are enough active developers with meaningful, voluntary profiles.
 

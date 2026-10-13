@@ -1,6 +1,6 @@
 # Scoring principles (product level)
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > This document defines **what the score rewards and why**. The exact formula, its configuration and its versioning are designed in Part 2 (Scoring Engine + ADR "score calculation server-side").
 

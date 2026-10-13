@@ -1,6 +1,6 @@
 # Run structure, level design and controls
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: side-scrolling platformer)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > All numbers are **initial values** (tunables). In Part 2 they move into game configuration; none are hardcoded.
 

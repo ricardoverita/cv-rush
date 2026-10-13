@@ -1,6 +1,6 @@
 # MVP scope and explicit non-goals
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > The MVP is **Stage 1 (Game)** of the [product evolution](product-evolution.md), built so that Stages 2–4 don't require redoing the domain. V1, V2 and later items are in the [roadmap](../roadmap/README.md).
 
@@ -10,43 +10,45 @@
 
 It is a public product, not a demo: everything in scope is production quality, and everything out of scope has a prepared place in the domain.
 
-## 2. In scope (the 26-step core)
+## 2. In scope: the main journey
+
+**Landing → Name → Seniority → Role → Stack → provisional Developer created → choose Ranked or Practice → Job Challenge generated → play → result → score → XP → level → Save your progress (optional email/LinkedIn) → My Profile → play again.**
 
 | # | Item | Notes |
 |---|---|---|
 | 1 | **Landing** | Server-rendered, indexable, es/en, OpenGraph/Twitter metadata; today's company, leaders by category, countdown |
-| 2 | **Provisional developer identity** | A server-generated `Developer`, a device credential, a management link. See [identity and accounts](identity-and-accounts.md). |
-| 3 | Name | Moderated; never the email |
-| 4 | Seniority | 7 levels |
-| 5 | Role | 13 roles, 10 tracks |
-| 6 | Stack | Role-adapted picker: recommendations, categories, search, aliases, suggestions, compatibility rules; 1–12 technologies |
-| 7 | **Email and/or LinkedIn** | At least one; stored **unverified**; email private; LinkedIn normalized |
-| 8 | **Privacy consent** | Terms/privacy (required), public visibility (off by default), email communication (off by default); recorded per purpose |
-| 9 | **Generate a Job Challenge** | A job for the frozen profile snapshot; the Daily Company for ranked runs, a random company for practice |
-| 10 | **2D race** | A side-scrolling platformer/runner (Phaser, confirmed by ADR in Part 2); run, jump, avoid obstacles, choose paths, collect boosts |
-| 11 | **5–10 questions per run** from a larger pool | 7 by default; questions appear in the world as A/B/C/D paths |
-| 12 | Recruiter Screening | 3 questions, including the graded salary question |
-| 13 | ATS Scan | The ATS 9000 conveyor; threshold; game over on failure |
-| 14 | Hiring Manager | 3 technical questions (stack, role fundamentals, seniority) |
-| 15 | Final Interview | 1 mixed question; Final Boost |
-| 16 | Deliver CV | The delivery animation |
-| 17 | **Result** | With competing context: "scored 18,492 points competing as a Senior Fullstack Developer" + stack |
-| 18 | **Score** | Server-computed, explained breakdown |
-| 19 | **XP** | Server-computed, append-only ledger, anti-farming rules |
-| 20 | **Level** | The CV Rush Level, derived from XP; never confused with seniority |
+| 2 | Name | Moderated; the display name, never the email |
+| 3 | Seniority | 7 levels |
+| 4 | Role | 13 roles, 10 tracks |
+| 5 | Stack | Role-adapted picker: recommendations, categories, search, aliases, suggestions, compatibility rules; 1–12 technologies |
+| 6 | **Provisional Developer created** | Server-generated ID, secure device credential, management link; terms/privacy acknowledgement; visibility **private** by default. See [identity and accounts](identity-and-accounts.md). |
+| 7 | **Choose Ranked or Practice** | Two explicit entries: **Play Ranked** (primary, "3 attempts remaining today") and **Practice** (secondary, unlimited). Ranked is never implicit. |
+| 8 | **Generate a Job Challenge** | For the frozen profile snapshot; today's company in ranked, a random company in practice. A ranked attempt is committed server-side when the competitive session starts. |
+| 9 | **2D race** | A side-scrolling platformer/runner (Phaser, confirmed by ADR in Part 2): run, jump, avoid obstacles, choose paths, collect boosts |
+| 10 | **5–10 questions per run** from larger pools | 7 by default; questions appear in the world as A/B/C/D paths; ranked uses competitive rotation, practice uses retired/practice questions |
+| 11 | Recruiter Screening | 3 questions, including the graded salary question |
+| 12 | ATS Scan | The ATS 9000 conveyor; threshold; game over on failure |
+| 13 | Hiring Manager | 3 technical questions (stack, role fundamentals, seniority) |
+| 14 | Final Interview | 1 mixed question; Final Boost |
+| 15 | Deliver CV | The delivery animation |
+| 16 | **Result** | With competing context: "scored 18,492 points competing as a Senior Fullstack Developer" + stack |
+| 17 | **Score** | Server-computed, explained breakdown |
+| 18 | **XP** | Server-computed, append-only ledger; practice gives reduced XP; anti-farming rules |
+| 19 | **Level** | The CV Rush Level, derived from XP; never confused with seniority |
+| 20 | **Save your progress** | After the first completed game (and at meaningful moments): optional email and/or LinkedIn, both **unverified**, both on the same Developer; skipping keeps progress on the device, with an honest notice |
 | 21 | **History saved** | Every run with its snapshot context, Job Challenge, result and XP |
 | 22 | **Last active** | `lastActiveAt`; shown coarsely |
-| 23 | **Ranking** | Category rankings (daily and weekly) from ranked runs; Daily Champion per category; Season 0 (Beta) |
-| 24 | **Optional public LinkedIn** | Shown only when the developer is public; normalized `/in/` username; unverified |
-| 25 | **Play again** | ≤ 2 taps; ranked runs (3/day), then practice runs |
-| 26 | **Basic developer profile with initial stats** | A private "My profile" page: level, XP, games, best ranks, history, technology stats (minimum sample), visibility settings |
+| 23 | **Rankings** | Category rankings (daily, weekly) from ranked runs only; Daily Champion per category; **Season 0 · Beta**, labeled as calibrating content |
+| 24 | **Optional public LinkedIn** | Only if the developer added it, made their profile public **and** enabled `linkedinVisibility` (default off); normalized `/in/` username; unverified |
+| 25 | **My Profile** | Private page: level, XP, games, best ranks, history, initial technology stats (minimum sample), visibility and contact settings |
+| 26 | **Play again** | ≤ 2 taps; Play Ranked while attempts remain, Practice anytime |
 
 ### Also in scope (foundations)
 
-- **Two run types:** ranked (3/day, category blueprint, rankings) and practice (exact-seniority difficulty, explanations, XP). See [game modes](game-modes.md).
+- **Two explicit run types:** ranked (3 attempts/day, committed server-side, category blueprint, rankings) and practice (unlimited, exact-seniority difficulty, explanations, reduced XP). See [game modes](game-modes.md).
 - **Profile snapshot per run** and the **ranked daily profile lock**.
 - **Bots** (5 archetypes, elimination funnel), **CV Health**, obstacles and pickups.
-- **Questions:** AI-generated, validated, stored pools (~20 per context, ranked and practice partitions), job-derived templates, just-in-time serving, no answer keys on the client. See [content strategy](../questions/content-strategy.md).
+- **Questions:** AI-generated, validated, stored pools (~20 per context when first needed) with a **lifecycle** (validated → competitive → retired → practice; invalidation and regeneration), verification tiers (AI generated, AI validated, later Human reviewed), job-derived templates, just-in-time serving, no answer keys on the client. See [content strategy](../questions/content-strategy.md).
 - **Sharing:** a result page with an OpenGraph image; LinkedIn, X, WhatsApp, copy link (plain URLs, no SDKs).
 - **Privacy pages:** privacy policy, terms, "What is public" (es/en); hide and delete via the management link.
 - **i18n:** es/en, locale-prefixed URLs, detection with English fallback, a remembered manual switch, semantic codes from the backend.
@@ -63,7 +65,7 @@ It is a public product, not a demo: everything in scope is production quality, a
 | Roles / tracks / bands | 13 roles · 10 tracks · 3 bands |
 | Official ranked categories | 9 (Frontend, Backend, Fullstack × Junior, Mid, Senior+); Platform in preview; others practice-only |
 | Technologies in the catalog | ~120, with categories, aliases, role recommendations and compatibility rules |
-| **Question pools** | **~20 validated questions per context** (technology × level, track fundamentals × level, seniority × band), bilingual, AI-generated and stored, split into ranked and practice partitions. Pre-generated for launch contexts; long-tail contexts generated asynchronously when first needed. |
+| **Question pools** | **~20 validated questions per context** when first needed (technology × level, track fundamentals × level, seniority × band), bilingual, AI-generated and stored, moving through the competitive → retired → practice lifecycle, regenerated as rotation needs. Pre-generated for launch contexts; long-tail contexts generated asynchronously. |
 | Job-derived templates | ~15 (memory, recruiter, salary) |
 | Job generation | Templates for every role; ~30 fictional companies; ~12 locations |
 | Daily Companies | A reviewed pool, scheduled ≥ 2 weeks ahead |
@@ -105,12 +107,12 @@ The large community question-pack system (open-source packs, curated competitive
 13. **No mocking of real companies or real people.**
 14. **No copied game assets.** Original visual identity; no Nintendo or Mario assets, characters, sounds or levels.
 
-## 6. Open questions
+## 6. Decisions taken at Part 1 approval
 
-1. **Email/LinkedIn before the first run, or right after it** ("Save your 460 XP")? The first maximizes identity; the second reduces friction. Recommendation: before (as requested), measure drop-off, and keep the alternative ready.
-2. Is "at least one of email or LinkedIn" the right minimum, or should email be required (it's the only verifiable one)?
-3. Should the first 3 runs of the day be ranked by default?
-4. Are Season 0 rankings labeled "Beta" acceptable for launch?
+1. **Email and LinkedIn are asked after the first completed game** ("Save your progress"), never before playing. Conversion is measured as `first_game_completed` → `identity_contact_added`.
+2. **Neither is required.** Email is the most important identifier (recovery, claim, merge, future authentication); LinkedIn is professional identity and never a credential.
+3. **Ranked is explicit**, with its own primary CTA and a visible attempt counter.
+4. **Season 0 rankings are labeled Beta**, stating that content is still being calibrated.
 
 ## 7. Definition of done for the MVP launch
 
@@ -120,7 +122,10 @@ The large community question-pack system (open-source packs, curated competitive
 - [ ] Scores, positions, XP and levels are computed server-side only (verified by tampering tests).
 - [ ] A run's profile cannot change after creation; every result shows its snapshot context.
 - [ ] The email never appears in any public surface, HTML, share card, analytics event or log (verified by automated checks).
-- [ ] A provisional developer's history, XP and rankings survive across sessions on the same device and via the management link.
+- [ ] A provisional developer's history, XP and rankings survive across sessions on the same device and via the management link, with or without contact details.
+- [ ] A ranked attempt is committed server-side at its defined moment; closing and reopening never returns an attempt (tampering tests).
+- [ ] A question in competitive rotation never appears in a practice run (automated check).
+- [ ] XP anti-farming rules hold (reduced practice XP, one-time discovery bonus, daily practice cap).
 - [ ] Category rankings and Daily Champions work across UTC day and week boundaries (integration tests with time travel).
 - [ ] AI-generated questions pass the validation pipeline; reported questions are quarantined.
 - [ ] es/en complete, with no missing keys (CI validation).

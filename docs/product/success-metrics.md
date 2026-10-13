@@ -1,6 +1,6 @@
 # Success metrics and analytics
 
-> Part 1 · Product & Game Design · Status: **Draft for review (revision 3: developer network)**
+> Part 1 · Product & Game Design · Status: **Approved (revision 4)**
 >
 > Targets are **hypotheses** to calibrate after launch. The event catalog and pipeline are defined in Part 2.
 
@@ -18,8 +18,10 @@ CV Rush succeeds when developers **enjoy it, come back, build a profile they car
 | Area | Metric | Definition | Initial hypothesis |
 |---|---|---|---|
 | Acquisition | Visitors; share-driven visits | Unique visitors; visits from share links | Share-driven ≥ 30% after month 1 |
-| Activation | Onboarding completion | Developers created ÷ onboarding started | ≥ 75% (email/LinkedIn adds friction) |
-| Activation | Identity step drop-off | Drop at the email/LinkedIn step | Watch closely; alternative flow ready |
+| Activation | Onboarding completion | Developers created ÷ onboarding started (name, seniority, role, stack) | ≥ 85% |
+| Activation | First game completed | Developers with a completed first game ÷ developers created | ≥ 70% |
+| **Identity** | **Save-progress conversion** | **`first_game_completed` → `identity_contact_added`**: share of developers who add an email or LinkedIn after their first completed game | ≥ 35% (hypothesis) |
+| Identity | Eventual contact rate | Active developers with an email (any time) | Growing |
 | Activation | First run start rate | Developers who start a run ÷ developers created | ≥ 90% |
 | Engagement | Completion rate | Delivered or failed (not abandoned) ÷ started | ≥ 80% |
 | Engagement | Delivery rate | Delivered ÷ started | 50–70% |
@@ -38,7 +40,8 @@ CV Rush succeeds when developers **enjoy it, come back, build a profile they car
 | Showcase | Public visibility rate | Public developers ÷ active developers | ≥ 30% |
 | Showcase | LinkedIn displayed | Public developers showing LinkedIn | ≥ 50% of public |
 | Showcase | Profile discoveries | LinkedIn clicks from CV Rush per week | Growing |
-| Network readiness | Email provided | Active developers with an email | Growing |
+| Network readiness | Email provided | Active developers with an email (the claimable base) | Growing |
+| Competition | Ranked adoption | Developers who choose Play Ranked ÷ active developers; attempts used per day | — |
 | Competition | Active categories | Categories with ≥ 3 verified ranked runs per day | All 9 launch categories most days |
 | Game balance | Failure distribution | Failures by stage and reason | No stage > 50% of failures |
 | Game balance | ATS pass rate (first run) | — | ~80% |
@@ -61,8 +64,10 @@ Privacy complaints and takedowns · any email exposure (target: zero, alert) · 
 
 ```mermaid
 flowchart LR
-  visit["Landing visit"] --> onboarding["Onboarding started"] --> identity["Email or LinkedIn given"] --> consent["Consent given"] --> created["Developer created"]
-  created --> started["Run started"] --> delivered["CV delivered"] --> xp["XP awarded"]
+  visit["Landing visit"] --> onboarding["Onboarding started"] --> created["Developer created"]
+  created --> started["Run started"] --> firstDone["first_game_completed"] --> contact["identity_contact_added"]
+  firstDone --> xp["XP awarded"]
+  started --> delivered["CV delivered"]
   xp --> again["Played again"]
   xp --> returned["Returned another day"]
   delivered --> public["Public visibility"] --> linkedin["LinkedIn shown"]
