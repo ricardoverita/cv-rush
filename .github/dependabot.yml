@@ -23,6 +23,9 @@ updates:
         update-types: [version-update:semver-major]
       - dependency-name: '@nestjs/*'
         update-types: [version-update:semver-major]
+      # Types must match the pinned runtime (Node.js 24 LTS).
+      - dependency-name: '@types/node'
+        update-types: [version-update:semver-major]
   - package-ecosystem: github-actions
     directory: /
     schedule:
