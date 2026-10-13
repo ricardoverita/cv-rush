@@ -1,6 +1,6 @@
 # Job Challenges
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decision: [ADR-017](../adr/ADR-017-job-challenge-abstraction.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decision: [ADR-017](../adr/ADR-017-job-challenge-abstraction.md)
 >
 > Product rules: [game modes](../product/game-modes.md), [job generation](../game-design/job-generation.md).
 

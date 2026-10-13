@@ -1,6 +1,6 @@
 # ADR-019: Ranked attempts committed at race start (apply)
 
-- **Status:** Proposed
+- **Status:** Accepted (Part 2 approved 2026-10-12)
 - **Date:** 2026-10-12
 
 ## Context
@@ -22,6 +22,10 @@ Each developer has 3 ranked attempts per UTC day. Ranked is an explicit choice (
 | Commit at session creation | Punishes accidental opens and reading the job, with no integrity gain |
 | Commit at the first question | Lets players restart until they like the race layout or the posting; a gap with no benefit |
 | Commit at completion | Abandoning would be free: the classic re-roll exploit |
+
+## Notes from approval
+
+Approved as written: once a ranked run is applied, closing the tab, abandoning, losing the connection or leaving never returns the attempt. Distinguishing legitimate technical failures from abandonment may be revisited with real data; for the MVP the server's record is authoritative.
 
 ## Consequences
 

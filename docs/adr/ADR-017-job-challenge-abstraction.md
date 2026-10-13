@@ -1,6 +1,6 @@
 # ADR-017: Job Challenge as a source-agnostic abstraction
 
-- **Status:** Proposed
+- **Status:** Accepted (Part 2 approved 2026-10-12)
 - **Date:** 2026-10-12
 
 ## Context

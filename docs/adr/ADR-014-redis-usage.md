@@ -1,6 +1,6 @@
 # ADR-014: Redis-compatible store for rate limits, locks, queues and caches only
 
-- **Status:** Proposed
+- **Status:** Accepted (Part 2 approved 2026-10-12)
 - **Date:** 2026-10-12
 
 ## Context

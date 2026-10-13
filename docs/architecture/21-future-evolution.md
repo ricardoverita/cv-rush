@@ -1,6 +1,6 @@
 # Future evolution: network, jobs and recruiters (not built)
 
-> Part 2 · Technical architecture · Status: **Draft for review**
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs)
 >
 > How Stages 2–4 of the [product evolution](../product/product-evolution.md) attach to the MVP architecture **without changing its center**. Nothing here is implemented in the MVP.
 

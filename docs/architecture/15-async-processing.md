@@ -1,6 +1,6 @@
 # Async processing: when BullMQ, and when not
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decision: [ADR-015](../adr/ADR-015-async-processing-scope.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decision: [ADR-015](../adr/ADR-015-async-processing-scope.md)
 
 ## 1. The rule
 

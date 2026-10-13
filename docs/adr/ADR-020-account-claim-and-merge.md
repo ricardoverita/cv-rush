@@ -1,6 +1,6 @@
 # ADR-020: Future account claim and merge by proof of control
 
-- **Status:** Proposed (implementation in Stage 2; the design constrains the MVP now)
+- **Status:** Accepted (design approved 2026-10-12; implemented in Stage 2)
 - **Date:** 2026-10-12
 
 ## Context

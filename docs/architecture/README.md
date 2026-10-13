@@ -1,6 +1,6 @@
 # Architecture (Part 2)
 
-> Status: **Draft for review**. No vertical slice starts until this part is reviewed.
+> Status: **Approved** (current decisions; they evolve through ADRs). No vertical slice starts until this part is reviewed.
 >
 > Architectural north: **Developers → Games → Progress → Reputation inside CV Rush → Jobs → Applications → Recruiters.** The MVP builds the first links; the rest attach without changing the center.
 

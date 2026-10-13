@@ -1,6 +1,6 @@
 # AI question pipeline
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decision: [ADR-018](../adr/ADR-018-ai-question-pipeline.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decision: [ADR-018](../adr/ADR-018-ai-question-pipeline.md)
 >
 > Product rules: [content strategy](../questions/content-strategy.md#3-ai-generated-questions-the-pipeline).
 
@@ -27,34 +27,39 @@ sequenceDiagram
   participant T as Trigger
   participant Q as Queue (BullMQ)
   participant W as Worker
-  participant G as Generator port (LLM)
-  participant C as Checker port (LLM)
+  participant G as QuestionGenerationProvider (generate)
+  participant C as QuestionGenerationProvider (verify)
   participant DB as PostgreSQL
   T->>Q: generate-batch(tech:redis:3, 20)
   Q->>W: job (rate-limited, with retries)
   W->>DB: create generation_batch (pending), load style rules + existing prompts (for dedupe hints)
   W->>G: generate(spec) → structured JSON items
   W->>W: schema → rules/heuristics → dedupe
-  W->>C: answer each item WITHOUT the key
+  W->>C: verify each item WITHOUT the key
   W->>W: compare, then assign tier (AI validated if agree, AI generated if not run, reject if disagree)
   W->>DB: insert questions + versions (state validated or rejected), batch stats and cost
   W->>Q: rotate-context(tech:redis:3)
 ```
 
-## 4. Ports and adapters
+## 4. The provider contract (provider-agnostic)
+
+No part of the domain depends on a specific AI provider. The pipeline talks to one conceptual contract:
 
 ```ts
-interface QuestionGenerator {
-  generate(spec: GenerationSpec): Promise<GenerationOutput>;      // structured items + usage/cost
-}
-interface QuestionChecker {
-  answer(item: ItemWithoutKey, locale: Locale): Promise<{ optionId: string; confidence: number }>;
+interface QuestionGenerationProvider {
+  readonly id: string;                                   // e.g. "fake", "openai", "anthropic", "gemini"
+  generate(spec: GenerationSpec): Promise<GenerationOutput>;              // structured items + usage/cost
+  verify(item: ItemWithoutKey, locale: Locale): Promise<VerificationOutput>; // independent answer + confidence
 }
 ```
 
-- **Provider adapters** implement these ports for a hosted LLM provider. The provider and models are chosen in the implementation slice with a small benchmark (acceptance rate, cost per accepted question, Spanish quality). The decision gets its own ADR. Requirements: JSON-schema structured output, good es/en quality, batch or async pricing, contractual no-training on our data, stable API.
-- **Fake adapters** (deterministic, offline) power tests and local development, so contributors never need API keys.
-- The **checker** should be a different model (or at least a different prompt and temperature) from the generator, to reduce correlated errors.
+- **Adapters** implement the contract, each in its own file under `question-generation/infrastructure/providers/`, for example `OpenAIQuestionProvider`, `AnthropicQuestionProvider` and `GeminiQuestionProvider`. None exists yet: concrete adapters arrive in the slice that integrates AI (S6), together with an ADR recording the choice and a small benchmark (acceptance rate, cost per accepted question, Spanish quality).
+- **`FakeQuestionProvider`** (deterministic, offline, no API key) is the default for contributors, tests, CI and local development. It returns structured items from fixtures and a deterministic verification, so the whole pipeline (validation stages, lifecycle, rotation) can run anywhere.
+- **Selection by configuration:** `QUESTION_GENERATION_PROVIDER` (generation) and `QUESTION_VERIFICATION_PROVIDER` (the independent second check; it can be a different provider or model). Values: `fake` (default), later `openai`, `anthropic`, `gemini`, … Provider credentials and model names are provider-specific environment variables, validated at worker boot only when that provider is selected.
+- The **verifier** should differ from the generator (another provider or model, or at least another prompt and temperature) to reduce correlated errors.
+- The domain and the Question Engine never import an adapter. The worker wires the configured provider through dependency injection.
+
+Requirements any real adapter must meet: JSON-schema structured output, good es/en quality, batch or async pricing (preferred), contractual no-training on submitted data, timeouts and retries handled inside the adapter.
 
 ## 5. Generation spec and output schema
 
@@ -85,12 +90,12 @@ const GeneratedItem = z.object({
 | 2. Rules | 4 distinct options per locale; technology in the catalog and matching the context; difficulty equals the context level (±0); length limits per locale; no answer text inside the prompt; banned patterns ("all of the above", "none of the above"); profanity | Reject with a reason code |
 | 3. Heuristics | Correct option systematically longest; options that are near-identical; negations in prompts ("Which is NOT…") above a quota; code-like content that isn't in code spans | Reject or downgrade |
 | 4. Deduplication | Normalized-text hash; trigram similarity (`pg_trgm`) against the same context above a threshold | Reject |
-| 5. Second check | The checker answers without the key, in English (and optionally in Spanish for parity) | Disagreement → reject (or keep as **AI generated** for practice-only, by configuration); agreement → **AI validated** |
+| 5. Second check | The verification provider answers without the key, in English (and optionally in Spanish for parity) | Disagreement → reject (or keep as **AI generated** for practice-only, by configuration); agreement → **AI validated** |
 | 6. Persist | Question + version 1, `lifecycle_state = validated`, tier, metadata | — |
 
 > The second check **detects problems; it doesn't prove correctness.** Two models can share a mistake. That's why competitive content shows the "Season 0 · Beta" label, every question keeps its batch and metadata, and invalidation is one command (also per batch).
 
-**Metadata per question:** provider, generator model, prompt version, checker model, checker agreement and confidence, batch ID, rejection reasons for discarded siblings (in the batch record), cost share.
+**Metadata per question:** generation provider and model, prompt version, verification provider and model, agreement and confidence, batch ID, rejection reasons for discarded siblings (in the batch record), cost share.
 
 ## 7. Model output is untrusted data
 

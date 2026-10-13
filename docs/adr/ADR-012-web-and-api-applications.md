@@ -1,6 +1,6 @@
 # ADR-012: Next.js web app and NestJS API on one origin
 
-- **Status:** Proposed
+- **Status:** Accepted (Part 2 approved 2026-10-12)
 - **Date:** 2026-10-12
 
 ## Context

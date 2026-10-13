@@ -1,6 +1,6 @@
 # Domain model
 
-> Part 2 · Technical architecture · Status: **Draft for review**
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs)
 >
 > Turns the [domain concepts](../product/domain-concepts.md) into aggregates, entities, value objects and invariants. Persistence is in the [data model](05-data-model.md).
 

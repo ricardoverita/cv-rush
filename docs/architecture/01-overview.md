@@ -1,6 +1,6 @@
 # Architecture overview
 
-> Part 2 · Technical architecture · Status: **Draft for review**
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs)
 >
 > Builds on the approved product design (Part 1). The architectural north is **Developers → Games → Progress → Reputation inside CV Rush → Jobs → Applications → Recruiters**. The MVP implements the first three links; the rest must be addable without changing the center.
 

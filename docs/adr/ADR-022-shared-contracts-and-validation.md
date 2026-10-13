@@ -1,6 +1,6 @@
 # ADR-022: Shared contracts and validation with Zod
 
-- **Status:** Proposed
+- **Status:** Accepted (Part 2 approved 2026-10-12)
 - **Date:** 2026-10-12
 
 ## Context

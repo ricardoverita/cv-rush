@@ -57,7 +57,7 @@ Recent games
 …
 
 Visibility: Private  [Show me publicly]
-LinkedIn: linkedin.com/in/ricardovera · Show on public rankings: No  [Change]
+LinkedIn: linkedin.com/in/ricardo-vera · Show on public rankings: No  [Change]
 Email: r••••@example.com (private, never shown)    [Manage / delete data]
 
 (Without an email:)

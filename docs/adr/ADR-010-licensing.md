@@ -1,6 +1,6 @@
 # ADR-010: Licensing — Apache-2.0 for code, CC BY 4.0 for content, branding excluded
 
-- **Status:** Proposed
+- **Status:** Accepted (direction approved 2026-10-12; legal files implemented in Part 3)
 - **Date:** 2026-10-12
 
 ## Context

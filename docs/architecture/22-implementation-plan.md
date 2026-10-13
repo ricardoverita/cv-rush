@@ -1,6 +1,6 @@
 # Implementation plan: repository foundations and vertical slices
 
-> Part 2 · Technical architecture · Status: **Draft for review**
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs)
 >
 > No implementation starts until Part 2 is reviewed. Each slice is a pull request (or a short series) that is **demoable**, tested, documented and recorded in the case study.
 

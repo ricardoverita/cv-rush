@@ -1,6 +1,6 @@
 # Testing strategy
 
-> Part 2 · Technical architecture · Status: **Draft for review**
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs)
 
 ## 1. Layers
 

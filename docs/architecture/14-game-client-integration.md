@@ -1,6 +1,6 @@
 # Game engine and Next.js integration
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decision: [ADR-002](../adr/ADR-002-phaser-game-engine.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decision: [ADR-002](../adr/ADR-002-phaser-game-engine.md)
 
 ## 1. Goal
 

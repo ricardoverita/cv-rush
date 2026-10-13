@@ -1,6 +1,6 @@
 # Web app (Next.js)
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decisions: [ADR-006](../adr/ADR-006-i18n-routing.md), [ADR-012](../adr/ADR-012-web-and-api-applications.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decisions: [ADR-006](../adr/ADR-006-i18n-routing.md), [ADR-012](../adr/ADR-012-web-and-api-applications.md)
 
 ## 1. Responsibilities
 

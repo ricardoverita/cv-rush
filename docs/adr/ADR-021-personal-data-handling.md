@@ -1,6 +1,6 @@
 # ADR-021: Personal data handling — encrypted email, no PII in logs or analytics
 
-- **Status:** Proposed
+- **Status:** Accepted (Part 2 approved 2026-10-12)
 - **Date:** 2026-10-12
 
 ## Context

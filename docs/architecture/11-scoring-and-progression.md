@@ -1,6 +1,6 @@
 # Scoring engine, race model and progression
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decisions: [ADR-005](../adr/ADR-005-score-calculation-server-side.md), [ADR-016](../adr/ADR-016-immutable-results-and-xp-ledger.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decisions: [ADR-005](../adr/ADR-005-score-calculation-server-side.md), [ADR-016](../adr/ADR-016-immutable-results-and-xp-ledger.md)
 >
 > Product rules: [scoring principles](../game-design/scoring-principles.md), [progression](../game-design/progression.md). All constants live in the versioned ruleset ([configuration](17-configuration.md)).
 

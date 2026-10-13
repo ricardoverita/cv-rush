@@ -1,6 +1,6 @@
 # Question Engine and question lifecycle
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decisions: [ADR-004](../adr/ADR-004-question-engine-and-lifecycle.md), [ADR-009](../adr/ADR-009-question-localization.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decisions: [ADR-004](../adr/ADR-004-question-engine-and-lifecycle.md), [ADR-009](../adr/ADR-009-question-localization.md)
 >
 > Product rules: [question strategy](../questions/question-strategy.md), [content strategy](../questions/content-strategy.md).
 

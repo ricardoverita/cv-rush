@@ -1,6 +1,6 @@
 # Backend modules (modular monolith)
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decision: [ADR-001](../adr/ADR-001-modular-monolith.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decision: [ADR-001](../adr/ADR-001-modular-monolith.md)
 
 ## 1. Modules
 
@@ -15,7 +15,7 @@ Each module owns its tables, exposes a small public API (`index.ts`), and never 
 | **job-challenges** | companies, job postings, Daily Company schedule, blueprints | Generate Job Challenges (generated/daily; later from real postings), category blueprints, applicant counts | 1 (3 adds real postings) |
 | **game-sessions** | game sessions, challenges, question attempts, ranked attempts, client event logs | The session state machine, attempt commitment, challenge opening and answering, ATS re-simulation, race timing, bot simulation, completion | 1 |
 | **questions** | question contexts, questions, versions, lifecycle, exposures, reports | The Question Engine (selection), lifecycle transitions, invalidation, reports, job-derived templates | 1 |
-| **question-generation** | generation batches | The AI pipeline: jobs, provider port, validation stages, second check, metadata (runs in the worker) | 1 |
+| **question-generation** | generation batches | The AI pipeline: jobs, the provider-agnostic `QuestionGenerationProvider` contract and its adapters (fake by default), validation stages, second check, metadata (runs in the worker) | 1 |
 | **scoring** | — (pure) | The versioned scoring engine | 1 |
 | **progression** | XP ledger, progression summary, discovery records | XP awards, anti-farming counters, levels, titles' XP | 1 |
 | **stats** | developer topic stats, question stats | Gameplay statistics projections | 1 |

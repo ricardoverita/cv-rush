@@ -1,6 +1,6 @@
 # Deployment and environments
 
-> Part 2 · Technical architecture · Status: **Draft for review**. The hosting provider is decided in the launch slice; this document fixes the shape.
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs). **The hosting provider and region are intentionally undecided**; this document fixes the shape so the app can be deployed in the EU or the US without changing the domain.
 
 ## 1. Environments
 
@@ -31,9 +31,13 @@ flowchart LR
 
 - **Containers:** `web`, `api` (HTTP entrypoint), `worker` (worker entrypoint; same image as `api`).
 - **Migrations:** `prisma migrate deploy` as a release step before new API instances start; migrations are backward-compatible (expand → migrate → contract) so rolling deploys work.
-- **Single region** in the MVP. The audience spans Spain and Latin America (and English speakers); latency fairness is handled by server-measured times and coarse speed buckets. The region is chosen at launch, balancing GDPR simplicity (EU) and latency to the Americas; a CDN handles static assets everywhere.
+- **Single region** in the MVP, **not chosen yet**. Nothing in the domain depends on a region: all times are UTC, data residency is a deployment choice, and every external dependency (database, Redis, AI provider, error tracking) is configured by environment. Latency fairness is handled by server-measured times and coarse speed buckets; a CDN serves static assets everywhere.
 
-## 3. Hosting options (to decide at launch)
+## 3. Hosting decision (deferred to the deployment slice)
+
+When we reach deployment, the decision will weigh: **target users** (Spain, Latin America, English-speaking markets), **latency**, **privacy and GDPR** (data residency, transfers, processors), **cost**, managed **PostgreSQL** (with point-in-time recovery), **Redis-compatible** storage, **workers**, **storage** (backups, assets), and the selected **AI provider's** regions and terms. The result is recorded in an ADR.
+
+### Options to evaluate
 
 | Option | Pros | Cons |
 |---|---|---|

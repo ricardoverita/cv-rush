@@ -1,6 +1,6 @@
 # API and client-server protocol
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decisions: [ADR-003](../adr/ADR-003-server-authoritative-gameplay.md), [ADR-022](../adr/ADR-022-shared-contracts-and-validation.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decisions: [ADR-003](../adr/ADR-003-server-authoritative-gameplay.md), [ADR-022](../adr/ADR-022-shared-contracts-and-validation.md)
 
 ## 1. Conventions
 

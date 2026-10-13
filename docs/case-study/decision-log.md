@@ -249,4 +249,28 @@
 
 ## 2026-10-12 · Part 2: architecture (draft)
 
-Architecture decisions are recorded as ADRs in [`docs/adr/`](../adr/README.md) (ADR-001 to ADR-024, all **Proposed** until the Part 2 review). Highlights: modular monolith (ADR-001), Phaser decoupled from Next.js (ADR-002), server-authoritative gameplay (ADR-003), provisional Developer identity with device credentials (ADR-007), rankings as projections (ADR-008), licensing split (ADR-010), one origin for web and API (ADR-012), BullMQ only where it pays (ADR-015), immutable results and XP ledger (ADR-016), Job Challenge abstraction (ADR-017), AI pipeline (ADR-018), ranked attempt committed at apply (ADR-019), claim and merge by proof of control (ADR-020), personal data handling (ADR-021).
+Architecture decisions are recorded as ADRs in [`docs/adr/`](../adr/README.md) (ADR-001 to ADR-024). Highlights: modular monolith (ADR-001), Phaser decoupled from Next.js (ADR-002), server-authoritative gameplay (ADR-003), provisional Developer identity with device credentials (ADR-007), rankings as projections (ADR-008), licensing split (ADR-010), one origin for web and API (ADR-012), BullMQ only where it pays (ADR-015), immutable results and XP ledger (ADR-016), Job Challenge abstraction (ADR-017), AI pipeline (ADR-018), ranked attempt committed at apply (ADR-019), claim and merge by proof of control (ADR-020), personal data handling (ADR-021).
+
+## 2026-10-12 · Part 2 approved
+
+All ADRs (001–024) are **Accepted**, with these approval notes:
+
+### D-058 · Provider-agnostic AI integration
+- **Status:** Accepted
+- **Decision:** a `QuestionGenerationProvider` contract with independent adapters selected by configuration; a fake provider for contributors, tests, CI and keyless development. No concrete provider until the slice that integrates AI (ADR-018).
+
+### D-059 · Hosting region and provider deferred
+- **Status:** Accepted
+- **Decision:** the app must be deployable in the EU or the US without domain changes. The choice (users, latency, privacy/GDPR, cost, PostgreSQL, Redis, workers, storage, AI provider) is made at the deployment slice and recorded in an ADR.
+
+### D-060 · Ranked attempt consumed at apply, server-authoritative
+- **Status:** Accepted (ADR-019)
+- **Decision:** after apply, closing, abandoning, disconnecting or leaving never returns the attempt. Telling technical failures apart from abandonment may be revisited with real data.
+
+### D-061 · Licensing direction confirmed
+- **Status:** Accepted (ADR-010)
+- **Decision:** Apache-2.0 for code, CC BY 4.0 for content, branding excluded, no CLA, an authorship/origin attestation in the PR template. Legal files arrive in Part 3.
+
+### D-062 · LinkedIn example
+- **Status:** Accepted
+- **Decision:** documentation keeps "Ricardo Vera" as the real example; normalized `linkedinUsername = ricardo-vera`; canonical URL `https://www.linkedin.com/in/ricardo-vera/` (built with a trailing slash).

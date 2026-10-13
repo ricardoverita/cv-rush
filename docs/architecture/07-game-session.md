@@ -1,6 +1,6 @@
 # GameSession: state machine, challenges and ranked attempts
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decisions: [ADR-003](../adr/ADR-003-server-authoritative-gameplay.md), [ADR-019](../adr/ADR-019-ranked-attempt-commitment.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decisions: [ADR-003](../adr/ADR-003-server-authoritative-gameplay.md), [ADR-019](../adr/ADR-019-ranked-attempt-commitment.md)
 
 ## 1. Lifecycle
 

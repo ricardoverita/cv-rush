@@ -1,6 +1,6 @@
 # Monorepo structure
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decision: [ADR-011](../adr/ADR-011-monorepo-and-tooling.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decision: [ADR-011](../adr/ADR-011-monorepo-and-tooling.md)
 
 ## 1. Layout
 

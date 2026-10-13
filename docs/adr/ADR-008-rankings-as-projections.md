@@ -1,6 +1,6 @@
 # ADR-008: Rankings as projections over immutable results
 
-- **Status:** Proposed
+- **Status:** Accepted (Part 2 approved 2026-10-12)
 - **Date:** 2026-10-12
 
 ## Context

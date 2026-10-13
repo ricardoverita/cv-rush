@@ -53,18 +53,18 @@ In the developer's own profile it is shown masked (`r••••@example.com`),
 - Collected in "Save your progress" after the first game, or anytime in My Profile. Optional.
 - Right after adding it: **"Show my LinkedIn on public rankings?"** Yes / **No (default)**. This is `linkedinVisibility`, separate from the identifier.
 - **Shown publicly only if** the developer is public **and** `linkedinVisibility` is enabled.
-- Always shown as a link we build: `https://www.linkedin.com/in/{username}`, opening in a new tab, marked as user-generated and nofollow.
+- Always shown as a link we build: `https://www.linkedin.com/in/{username}/` (canonical form, with the trailing slash), opening in a new tab, marked as user-generated and nofollow.
 
 ### 4.2 Accepted input (product rules)
 
-Accepted, all normalized to `https://www.linkedin.com/in/<username>`:
+Accepted, all normalized to `linkedinUsername = ricardo-vera` and the canonical URL `https://www.linkedin.com/in/ricardo-vera/`:
 
-- `ricardovera`
-- `linkedin.com/in/ricardovera`
-- `www.linkedin.com/in/ricardovera/`
-- `https://linkedin.com/in/ricardovera`
-- `https://www.linkedin.com/in/ricardovera`
-- Country subdomains: `pe.linkedin.com/in/ricardovera`
+- `ricardo-vera`
+- `linkedin.com/in/ricardo-vera`
+- `www.linkedin.com/in/ricardo-vera/`
+- `https://linkedin.com/in/ricardo-vera`
+- `https://www.linkedin.com/in/ricardo-vera/`
+- Country subdomains: `pe.linkedin.com/in/ricardo-vera`
 
 Rejected, with a friendly explanation:
 

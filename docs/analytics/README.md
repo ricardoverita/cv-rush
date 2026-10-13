@@ -1,6 +1,6 @@
 # Analytics
 
-> Part 2 · Status: **Draft for review** · Decision: [ADR-023](../adr/ADR-023-analytics-events.md)
+> Part 2 · Status: **Approved** (current decisions; they evolve through ADRs) · Decision: [ADR-023](../adr/ADR-023-analytics-events.md)
 >
 > Product metrics: [success metrics](../product/success-metrics.md).
 

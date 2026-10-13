@@ -1,6 +1,6 @@
 # Data model (PostgreSQL and Redis)
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decisions: [ADR-013](../adr/ADR-013-postgresql-and-prisma.md), [ADR-014](../adr/ADR-014-redis-usage.md), [ADR-016](../adr/ADR-016-immutable-results-and-xp-ledger.md), [ADR-021](../adr/ADR-021-personal-data-handling.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decisions: [ADR-013](../adr/ADR-013-postgresql-and-prisma.md), [ADR-014](../adr/ADR-014-redis-usage.md), [ADR-016](../adr/ADR-016-immutable-results-and-xp-ledger.md), [ADR-021](../adr/ADR-021-personal-data-handling.md)
 >
 > Conceptual schema: table names, key columns and constraints. The Prisma schema is written in the implementation slices. Every table belongs to exactly one module.
 

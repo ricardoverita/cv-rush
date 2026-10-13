@@ -1,6 +1,6 @@
 # Security and privacy engineering
 
-> Part 2 · Status: **Draft for review** · Decisions: [ADR-021](../adr/ADR-021-personal-data-handling.md), [ADR-007](../adr/ADR-007-provisional-developer-identity.md), [ADR-012](../adr/ADR-012-web-and-api-applications.md)
+> Part 2 · Status: **Approved** (current decisions; they evolve through ADRs) · Decisions: [ADR-021](../adr/ADR-021-personal-data-handling.md), [ADR-007](../adr/ADR-007-provisional-developer-identity.md), [ADR-012](../adr/ADR-012-web-and-api-applications.md)
 >
 > Anti-cheat is in [anti-cheat](../anti-cheat/README.md). Vulnerability disclosure (SECURITY.md) comes with the repository foundations (Part 3).
 

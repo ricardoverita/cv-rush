@@ -1,6 +1,6 @@
 # ADR-004: Question Engine with strategies and a question lifecycle
 
-- **Status:** Proposed
+- **Status:** Accepted (Part 2 approved 2026-10-12)
 - **Date:** 2026-10-12
 
 ## Context

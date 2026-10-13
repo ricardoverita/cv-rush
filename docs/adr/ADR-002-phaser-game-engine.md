@@ -1,6 +1,6 @@
 # ADR-002: Phaser as the game engine, decoupled from the web app
 
-- **Status:** Proposed
+- **Status:** Accepted (Part 2 approved 2026-10-12)
 - **Date:** 2026-10-12
 
 ## Context

@@ -1,6 +1,6 @@
 # ADR-018: AI question pipeline — asynchronous, validated, provider-agnostic
 
-- **Status:** Proposed
+- **Status:** Accepted (Part 2 approved 2026-10-12; the concrete provider is chosen later in its own ADR)
 - **Date:** 2026-10-12
 
 ## Context
@@ -10,7 +10,7 @@ The MVP needs ~20 bilingual questions per context when a context is first needed
 ## Decision
 
 - Generation runs **only in the worker**, as idempotent BullMQ jobs per context (launch seeding, missing contexts, low rotation, high exposure). Never on a request path.
-- **Ports and adapters:** `QuestionGenerator` and `QuestionChecker` interfaces; a provider adapter chosen in the implementation slice by a small benchmark (recorded in its own ADR); **fake adapters** for tests and local development.
+- **Provider-agnostic contract:** a `QuestionGenerationProvider` interface (`generate`, `verify`) with independent adapters (e.g. `OpenAIQuestionProvider`, `AnthropicQuestionProvider`, `GeminiQuestionProvider`), none of which the domain depends on. The active providers are selected by configuration (`QUESTION_GENERATION_PROVIDER`, `QUESTION_VERIFICATION_PROVIDER`). A **`FakeQuestionProvider`** (deterministic, offline) is the default for contributors, tests, CI and development without API keys. **No concrete provider is chosen yet**: that happens in the slice that integrates AI, with a benchmark and its own ADR.
 - **Structured output** validated with Zod, followed by rules and heuristics, deduplication, and an **independent second check** (a different model or configuration answering without the key).
 - **Verification tiers** (AI generated, AI validated, Human reviewed, Curated) and **metadata** (provider, models, prompt version, checker agreement, batch, cost) on every question; invalidation by question or batch.
 - **Budgets and limits:** a daily budget, per-context caps, provider rate limiting, retries with backoff.
@@ -23,7 +23,8 @@ The MVP needs ~20 bilingual questions per context when a context is first needed
 | Hand-written banks only | Too slow for launch; kept as the long-term curation path |
 | Runtime generation per question | Latency, cost, dependency, unvalidated content in front of players |
 | Trust single-model output | Known failure modes; no quality signal |
-| Lock into one provider's SDK across the codebase | Hard to switch; the port isolates it |
+| Lock into one provider's SDK across the codebase | Hard to switch; the contract isolates it |
+| Choose a provider now | No data yet; the choice belongs to the slice that integrates AI |
 
 ## Consequences
 

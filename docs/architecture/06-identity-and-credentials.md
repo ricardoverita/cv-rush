@@ -1,6 +1,6 @@
 # Identity, device credentials and account claim
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decisions: [ADR-007](../adr/ADR-007-provisional-developer-identity.md), [ADR-020](../adr/ADR-020-account-claim-and-merge.md), [ADR-021](../adr/ADR-021-personal-data-handling.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decisions: [ADR-007](../adr/ADR-007-provisional-developer-identity.md), [ADR-020](../adr/ADR-020-account-claim-and-merge.md), [ADR-021](../adr/ADR-021-personal-data-handling.md)
 >
 > Product rules: [identity and accounts](../product/identity-and-accounts.md).
 
@@ -69,7 +69,7 @@ Adding one or both always updates **the same Developer** (the one resolved from 
    - The path must match `/in/<username>` with an optional trailing `/`. Everything else (`/company/`, `/jobs/`, `/posts/`, `/feed/`, `/pub/`, `/school/`, deeper paths) is rejected.
    - Query string and fragment are discarded.
 4. Username: percent-decode once, then require 3–100 characters of letters (Unicode), digits and hyphens; lowercase it.
-5. Output: the username only. The public URL is always built as `https://www.linkedin.com/in/{encodeURIComponent(username)}`, rendered with `rel="nofollow noopener noreferrer ugc"` and `target="_blank"`.
+5. Output: the username only (example: `linkedinUsername = ricardo-vera`). The public URL is always built in its canonical form `https://www.linkedin.com/in/{encodeURIComponent(username)}/` (example: `https://www.linkedin.com/in/ricardo-vera/`), rendered with `rel="nofollow noopener noreferrer ugc"` and `target="_blank"`.
 6. The server never fetches LinkedIn (no SSRF surface, no scraping).
 
 Semantic errors: `LINKEDIN_NOT_A_PROFILE`, `LINKEDIN_INVALID_HOST`, `LINKEDIN_INVALID_USERNAME`.

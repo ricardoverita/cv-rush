@@ -1,6 +1,6 @@
 # Anti-cheat design
 
-> Part 2 · Status: **Draft for review** · Decisions: [ADR-003](../adr/ADR-003-server-authoritative-gameplay.md), [ADR-019](../adr/ADR-019-ranked-attempt-commitment.md)
+> Part 2 · Status: **Approved** (current decisions; they evolve through ADRs) · Decisions: [ADR-003](../adr/ADR-003-server-authoritative-gameplay.md), [ADR-019](../adr/ADR-019-ranked-attempt-commitment.md)
 >
 > Game-design risks are in [risks](../product/risks.md#2-abuse-and-cheating-risks-game-design-perspective). This document is the technical design.
 

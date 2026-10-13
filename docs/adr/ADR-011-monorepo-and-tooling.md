@@ -1,6 +1,6 @@
 # ADR-011: pnpm monorepo, Node 24 LTS and pinned tooling
 
-- **Status:** Proposed
+- **Status:** Accepted (Part 2 approved 2026-10-12)
 - **Date:** 2026-10-12
 
 ## Context

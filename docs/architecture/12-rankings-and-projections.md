@@ -1,6 +1,6 @@
 # Rankings, daily close and developer profile projections
 
-> Part 2 · Technical architecture · Status: **Draft for review** · Decisions: [ADR-008](../adr/ADR-008-rankings-as-projections.md), [ADR-014](../adr/ADR-014-redis-usage.md), [ADR-015](../adr/ADR-015-async-processing-scope.md)
+> Part 2 · Technical architecture · Status: **Approved** (current decisions; they evolve through ADRs) · Decisions: [ADR-008](../adr/ADR-008-rankings-as-projections.md), [ADR-014](../adr/ADR-014-redis-usage.md), [ADR-015](../adr/ADR-015-async-processing-scope.md)
 >
 > Product rules: [rankings](../product/leaderboards.md), [developer profile](../product/developer-profile.md).
 

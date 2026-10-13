@@ -1,6 +1,6 @@
 # Internationalization (es, en)
 
-> Part 2 · Status: **Draft for review** · Decisions: [ADR-006](../adr/ADR-006-i18n-routing.md), [ADR-009](../adr/ADR-009-question-localization.md)
+> Part 2 · Status: **Approved** (current decisions; they evolve through ADRs) · Decisions: [ADR-006](../adr/ADR-006-i18n-routing.md), [ADR-009](../adr/ADR-009-question-localization.md)
 
 ## 1. Locales
 

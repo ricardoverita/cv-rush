@@ -8,7 +8,7 @@
 
 - The MVP must let anyone **start fast**: no passwords, no OAuth, no account creation.
 - But progress (XP, levels, history, rankings, stats) must **persist** and later be attachable to a real account.
-- Typed identifiers prove nothing: writing `ricardo@example.com` doesn't prove that the person owns that inbox, and writing `linkedin.com/in/ricardovera` doesn't prove that the person is Ricardo.
+- Typed identifiers prove nothing: writing `ricardo@example.com` doesn't prove that the person owns that inbox, and writing `linkedin.com/in/ricardo-vera` doesn't prove that the person is Ricardo.
 
 ## 2. The model: a Developer that exists before any account
 
