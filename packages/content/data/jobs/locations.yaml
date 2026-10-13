@@ -1,0 +1,53 @@
+# Where generated jobs are based. Each location belongs to a salary tier (salary-bands.yaml),
+# which also sets the currency. Illustrative content, not market data.
+tiers:
+  - { id: spain, currency: EUR }
+  - { id: europe, currency: EUR }
+  - { id: uk, currency: GBP }
+  - { id: us, currency: USD }
+  - { id: latam, currency: USD }
+  - { id: remote, currency: USD }
+
+locations:
+  - {
+      id: barcelona,
+      labels: { en: Barcelona, es: Barcelona },
+      tier: spain,
+      modes: [hybrid, onsite],
+    }
+  - { id: madrid, labels: { en: Madrid, es: Madrid }, tier: spain, modes: [hybrid, onsite] }
+  - { id: lima, labels: { en: Lima, es: Lima }, tier: latam, modes: [hybrid, remote] }
+  - {
+      id: mexico_city,
+      labels: { en: Mexico City, es: Ciudad de México },
+      tier: latam,
+      modes: [hybrid, onsite],
+    }
+  - { id: bogota, labels: { en: Bogotá, es: Bogotá }, tier: latam, modes: [hybrid, remote] }
+  - {
+      id: buenos_aires,
+      labels: { en: Buenos Aires, es: Buenos Aires },
+      tier: latam,
+      modes: [hybrid, remote],
+    }
+  - {
+      id: santiago,
+      labels: { en: Santiago de Chile, es: Santiago de Chile },
+      tier: latam,
+      modes: [hybrid, onsite],
+    }
+  - { id: london, labels: { en: London, es: Londres }, tier: uk, modes: [hybrid, onsite] }
+  - { id: dublin, labels: { en: Dublin, es: Dublín }, tier: europe, modes: [hybrid, onsite] }
+  - { id: berlin, labels: { en: Berlin, es: Berlín }, tier: europe, modes: [hybrid, remote] }
+  - { id: austin, labels: { en: Austin, es: Austin }, tier: us, modes: [hybrid, onsite] }
+  - {
+      id: remote,
+      labels: { en: Remote (worldwide), es: Remoto (global) },
+      tier: remote,
+      modes: [remote],
+    }
+
+workModes:
+  onsite: { en: On-site, es: Presencial }
+  hybrid: { en: Hybrid, es: Híbrido }
+  remote: { en: Remote, es: Remoto }

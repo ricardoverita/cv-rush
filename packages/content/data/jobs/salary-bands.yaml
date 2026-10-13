@@ -1,0 +1,52 @@
+# Illustrative yearly salary bands per tier and exact seniority, in the tier's currency.
+# Authored content for the game, NOT market data: the UI never presents them as such.
+# Contributors can correct them (docs/game-design/job-generation.md §3).
+bands:
+  spain:
+    trainee: { min: 18000, max: 22000 }
+    junior: { min: 24000, max: 32000 }
+    mid: { min: 32000, max: 45000 }
+    senior: { min: 45000, max: 60000 }
+    lead: { min: 55000, max: 70000 }
+    staff: { min: 65000, max: 85000 }
+    principal: { min: 75000, max: 95000 }
+  europe:
+    trainee: { min: 30000, max: 38000 }
+    junior: { min: 40000, max: 52000 }
+    mid: { min: 52000, max: 68000 }
+    senior: { min: 68000, max: 85000 }
+    lead: { min: 80000, max: 98000 }
+    staff: { min: 95000, max: 120000 }
+    principal: { min: 110000, max: 140000 }
+  uk:
+    trainee: { min: 25000, max: 30000 }
+    junior: { min: 32000, max: 42000 }
+    mid: { min: 45000, max: 60000 }
+    senior: { min: 60000, max: 80000 }
+    lead: { min: 75000, max: 95000 }
+    staff: { min: 90000, max: 115000 }
+    principal: { min: 105000, max: 135000 }
+  us:
+    trainee: { min: 55000, max: 70000 }
+    junior: { min: 75000, max: 95000 }
+    mid: { min: 100000, max: 130000 }
+    senior: { min: 135000, max: 170000 }
+    lead: { min: 160000, max: 195000 }
+    staff: { min: 185000, max: 230000 }
+    principal: { min: 215000, max: 270000 }
+  latam:
+    trainee: { min: 8000, max: 12000 }
+    junior: { min: 12000, max: 20000 }
+    mid: { min: 22000, max: 34000 }
+    senior: { min: 36000, max: 55000 }
+    lead: { min: 50000, max: 68000 }
+    staff: { min: 60000, max: 80000 }
+    principal: { min: 70000, max: 95000 }
+  remote:
+    trainee: { min: 25000, max: 35000 }
+    junior: { min: 35000, max: 50000 }
+    mid: { min: 50000, max: 75000 }
+    senior: { min: 75000, max: 100000 }
+    lead: { min: 90000, max: 120000 }
+    staff: { min: 110000, max: 145000 }
+    principal: { min: 130000, max: 170000 }

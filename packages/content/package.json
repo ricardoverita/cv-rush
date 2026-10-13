@@ -10,11 +10,13 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./data/*": "./data/*"
+    "./data/*": "./data/*",
+    "./rulesets/*": "./rulesets/*"
   },
   "files": [
     "dist",
-    "data"
+    "data",
+    "rulesets"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

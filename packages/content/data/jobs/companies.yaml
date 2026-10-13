@@ -1,0 +1,62 @@
+# Fictional companies for generated jobs: a name part + a sector suffix (e.g. "Kestrel Pay").
+# Never real companies; generated names are checked against `blockedNames`.
+nameParts:
+  [
+    Kestrel,
+    Nimbus,
+    Orbit,
+    Quill,
+    Harbor,
+    Lumen,
+    Copper,
+    Juniper,
+    Vector,
+    Pixel,
+    Maple,
+    Granite,
+    Falcon,
+    Cobalt,
+    Saffron,
+    Tundra,
+  ]
+
+sectors:
+  - id: fintech
+    labels: { en: Fintech, es: Fintech }
+    suffixes: [Pay, Ledger, Vault]
+    summary:
+      en: Join the team building payment services and dashboards used by thousands of merchants.
+      es: Únete al equipo que construye servicios de pagos y paneles que usan miles de comercios.
+  - id: health
+    labels: { en: Health tech, es: Salud digital }
+    suffixes: [Health, Care, Clinic]
+    summary:
+      en: Help clinics book appointments and share results safely with their patients.
+      es: Ayuda a las clínicas a gestionar citas y compartir resultados de forma segura con sus pacientes.
+  - id: logistics
+    labels: { en: Logistics, es: Logística }
+    suffixes: [Freight, Route, Cargo]
+    summary:
+      en: Track millions of parcels a day and keep deliveries on time across the region.
+      es: Sigue millones de paquetes al día y mantén las entregas a tiempo en toda la región.
+  - id: edtech
+    labels: { en: Education, es: Educación }
+    suffixes: [Learn, Academy, Tutor]
+    summary:
+      en: Build the learning platform that thousands of students open every morning.
+      es: Construye la plataforma de aprendizaje que miles de estudiantes abren cada mañana.
+  - id: ecommerce
+    labels: { en: E-commerce, es: E-commerce }
+    suffixes: [Cart, Shop, Market]
+    summary:
+      en: Make checkout fast and reliable for shops that sell online around the clock.
+      es: Haz que el checkout sea rápido y fiable para tiendas que venden online a todas horas.
+  - id: travel
+    labels: { en: Travel, es: Viajes }
+    suffixes: [Trips, Voyage, Stay]
+    summary:
+      en: Help travelers find, book and change their trips without waiting on hold.
+      es: Ayuda a los viajeros a encontrar, reservar y cambiar sus viajes sin esperas al teléfono.
+
+# Generated names that must never be used (well-known brands, accidental collisions).
+blockedNames: [Atlas Pay, Pixel Shop, Falcon Pay]

@@ -1,0 +1,98 @@
+# Ruleset v0 (slice S2): every gameplay constant in one versioned file (ADR-024).
+# Sessions and results record `version` and `scoring.version`; changing a value here means
+# creating a new ruleset file, never editing this one after results exist.
+# All values are initial tunables taken from docs/game-design and docs/architecture/11.
+version: ruleset-v0
+
+ranked:
+  attemptsPerDay: 3
+  # Guard against review-stage fishing (ADR-019): ranked sessions created but never applied.
+  maxUncommittedPerDay: 10
+  # Tracks without an entry are practice-only.
+  tracks:
+    frontend: official
+    backend: official
+    fullstack: official
+    platform: preview
+
+session:
+  # Time to read the job posting before applying (created → expired_unstarted).
+  reviewWindowMs: 120000
+  # From apply to the end of the run (in_progress → abandoned).
+  maxLifetimeMs: 600000
+  # Grace period added to every server deadline (network latency).
+  answerToleranceMs: 300
+  # Minimum time in each racing segment before its checkpoint. Zero until the race exists (S3).
+  segmentMinMs: [0, 0, 0, 0]
+  # Practice windows are relaxed (+50%); ranked windows are identical for everyone.
+  practiceWindowFactor: 1.5
+
+stages:
+  recruiter:
+    - { slot: R1, kind: job_memory, windowMs: 10000 }
+    - { slot: R2, kind: job_memory, windowMs: 10000 }
+    - { slot: R3, kind: salary_graded, windowMs: 10000 }
+  hiring_manager:
+    - { slot: H1, kind: stack, windowMs: 15000 }
+    - { slot: H2, kind: track_fundamentals, windowMs: 15000 }
+    - { slot: H3, kind: seniority, windowMs: 15000 }
+  final:
+    - { slot: F1, kind: mixed_scenario, windowMs: 20000 }
+
+# Difficulty per slot (docs/questions/question-strategy.md §4). Recruiter slots are always 2.
+levels:
+  recruiter: 2
+  ranked:
+    junior: { H1: 1, H2: 2, H3: 2, F1: 2 }
+    mid: { H1: 2, H2: 3, H3: 3, F1: 3 }
+    senior_plus: { H1: 3, H2: 3, H3: 4, F1: 4 }
+  practice:
+    trainee: { H1: 1, H2: 1, H3: 2, F1: 2 }
+    junior: { H1: 1, H2: 2, H3: 2, F1: 2 }
+    mid: { H1: 2, H2: 3, H3: 3, F1: 3 }
+    senior: { H1: 3, H2: 3, H3: 4, F1: 4 }
+    lead: { H1: 3, H2: 4, H3: 4, F1: 4 }
+    staff: { H1: 3, H2: 4, H3: 5, F1: 5 }
+    principal: { H1: 4, H2: 4, H3: 5, F1: 5 }
+
+cvHealth:
+  initial: 100
+  damage:
+    recruiter: 10
+    salaryOutOfRange: 10
+    hiring_manager: 15
+    final: 25
+    atsIrrelevantKeyword: 5
+    atsCap: 20
+
+ats:
+  windowMs: 30000
+  threshold: 70
+  recruiterBonusPerCorrect: 3
+  penaltyPerIrrelevant: 8
+  # Irrelevant tokens shown next to the posting's keywords.
+  irrelevantTechnologies: 3
+  buzzwords: 2
+
+scoring:
+  version: scoring-v0
+  # Maximum points per component (total 25,000). v0 has no race: "completion" stands in for the
+  # final position component of scoring-v1 until bots and race time exist (S4–S5).
+  weights:
+    answers: 11250
+    speed: 3750
+    completion: 3000
+    ats: 2500
+    cvHealth: 2500
+    streak: 2000
+  # Fraction of the window used (after the tolerance) → share of the speed points.
+  speedBuckets:
+    - { upTo: 0.25, credit: 1 }
+    - { upTo: 0.5, credit: 0.75 }
+    - { upTo: 0.75, credit: 0.5 }
+    - { upTo: 1, credit: 0.25 }
+  gradedCredit:
+    aligned: 1
+    undersell: 0.25
+    vague: 0.25
+    out_of_range: 0

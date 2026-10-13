@@ -1,0 +1,108 @@
+# Text fragments for generated job postings, authored per language (never machine-translated).
+# {tech} is replaced by a technology from the posting. Option-sized texts (experience, perks)
+# must stay within 40 characters: they are also used as answer options.
+
+experience:
+  trainee: { years: 0, en: No experience required, es: Sin experiencia previa }
+  junior: { years: 0, en: 0–2 years building software, es: 0–2 años desarrollando software }
+  mid: { years: 2, en: 2+ years building software, es: 2+ años desarrollando software }
+  senior: { years: 5, en: 5+ years building software, es: 5+ años desarrollando software }
+  lead: { years: 7, en: 7+ years, including team leadership, es: 7+ años, liderando equipos }
+  staff: { years: 8, en: 8+ years building software, es: 8+ años desarrollando software }
+  principal: { years: 10, en: 10+ years building software, es: 10+ años desarrollando software }
+
+# One responsibility per technology category present in the posting.
+responsibilities:
+  frontend:
+    {
+      en: 'Build {tech} interfaces for our users',
+      es: 'Construir interfaces con {tech} para nuestros usuarios',
+    }
+  backend:
+    {
+      en: 'Build scalable backend services in {tech}',
+      es: 'Construir servicios backend escalables con {tech}',
+    }
+  databases:
+    {
+      en: 'Design and optimize {tech} schemas and queries',
+      es: 'Diseñar y optimizar esquemas y consultas en {tech}',
+    }
+  caching_search:
+    { en: 'Speed up hot paths with {tech}', es: 'Acelerar las rutas críticas con {tech}' }
+  messaging:
+    {
+      en: 'Work with event-driven architecture on {tech}',
+      es: 'Trabajar con arquitectura orientada a eventos sobre {tech}',
+    }
+  cloud:
+    { en: 'Run and monitor services on {tech}', es: 'Desplegar y monitorizar servicios en {tech}' }
+  infrastructure:
+    {
+      en: 'Automate builds and deployments with {tech}',
+      es: 'Automatizar builds y despliegues con {tech}',
+    }
+  testing:
+    { en: 'Write automated tests with {tech}', es: 'Escribir tests automatizados con {tech}' }
+  mobile: { en: 'Ship {tech} apps to the stores', es: 'Publicar apps con {tech} en las tiendas' }
+  data:
+    {
+      en: 'Build reliable data pipelines with {tech}',
+      es: 'Construir pipelines de datos fiables con {tech}',
+    }
+  machine_learning:
+    { en: 'Train and serve models with {tech}', es: 'Entrenar y servir modelos con {tech}' }
+  security:
+    { en: 'Run security assessments with {tech}', es: 'Hacer auditorías de seguridad con {tech}' }
+
+# Added to every posting (one) and to Senior and above (one more).
+generalResponsibilities:
+  - {
+      en: Review pull requests and share knowledge,
+      es: Revisar pull requests y compartir conocimiento,
+    }
+  - { en: Work closely with product and design, es: Trabajar de cerca con producto y diseño }
+seniorResponsibilities:
+  - { en: Mentor other engineers, es: Mentorizar a otras personas del equipo }
+  - { en: Shape the architecture of new services, es: Definir la arquitectura de nuevos servicios }
+
+perks:
+  - { id: flexible_hours, en: Flexible hours, es: Horario flexible }
+  - { id: learning_budget, en: Learning budget, es: Presupuesto de formación }
+  - { id: health_insurance, en: Health insurance, es: Seguro médico }
+  - { id: home_office, en: Home office budget, es: Ayuda para teletrabajo }
+  - { id: summer_hours, en: Shorter Fridays in summer, es: Jornada intensiva en verano }
+  - {
+      id: pingpong,
+      en: Ping-pong table (unused since 2019),
+      es: Mesa de ping-pong (sin uso desde 2019),
+      satirical: true,
+    }
+  - {
+      id: fun_fridays,
+      en: '"Fun Fridays" (mandatory)',
+      es: '"Viernes divertidos" (obligatorios)',
+      satirical: true,
+    }
+  - { id: fruit, en: Free fruit on Mondays, es: Fruta gratis los lunes, satirical: true }
+
+# Questions built from the posting's facts (job memory and the salary question).
+# The answer key is the posting itself, which the player has read, so these templates are open.
+questionTemplates:
+  location: { en: Where is the role based?, es: ¿Dónde está basado el puesto? }
+  experience:
+    { en: How much experience did the posting ask for?, es: ¿Cuánta experiencia pedía la oferta? }
+  missing_technology:
+    { en: Which technology was NOT in the posting?, es: ¿Qué tecnología NO aparecía en la oferta? }
+  included_technology:
+    { en: Which technology was in the posting?, es: ¿Qué tecnología aparecía en la oferta? }
+  perk: { en: Which perk did the company offer?, es: ¿Qué beneficio ofrecía la empresa? }
+  salary_expectation:
+    { en: What are your salary expectations?, es: ¿Cuáles son tus expectativas salariales? }
+salaryVagueOption: { en: Whatever you think is fair, es: Lo que ustedes consideren justo }
+templateExplanation: { en: 'The posting said: {answer}.', es: 'La oferta decía: {answer}.' }
+salaryExplanation:
+  {
+    en: 'The posting offered {range}. An expectation inside the range is the aligned answer.',
+    es: 'La oferta ofrecía {range}. Una expectativa dentro del rango es la respuesta alineada.',
+  }
