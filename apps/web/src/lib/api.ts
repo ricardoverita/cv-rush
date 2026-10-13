@@ -1,8 +1,16 @@
 import {
+  type AnswerRequest,
+  AnswerResponseSchema,
+  AtsResponseSchema,
+  type AtsSubmitRequest,
+  type ChallengeStage,
   type CreateDeveloperRequest,
+  type CreateGameSessionRequest,
   type ErrorCode,
   ErrorEnvelopeSchema,
   MeResponseSchema,
+  RankedStatusSchema,
+  SessionViewSchema,
   type UpdateProfileRequest,
 } from '@cv-rush/contracts';
 import type { z } from 'zod';
@@ -61,10 +69,32 @@ export async function apiRequest<S extends z.ZodType>(
   return schema.parse(body);
 }
 
+const sessionPath = (id: string) => `/game-sessions/${encodeURIComponent(id)}`;
+
 export const api = {
   me: () => apiRequest('/me', MeResponseSchema),
   createDeveloper: (body: CreateDeveloperRequest) =>
     apiRequest('/developers', MeResponseSchema, { method: 'POST', body }),
   updateProfile: (body: UpdateProfileRequest) =>
     apiRequest('/me/profile', MeResponseSchema, { method: 'PATCH', body }),
+  rankedStatus: () => apiRequest('/game-sessions/ranked-status', RankedStatusSchema),
+  createSession: (body: CreateGameSessionRequest) =>
+    apiRequest('/game-sessions', SessionViewSchema, { method: 'POST', body }),
+  session: (id: string) => apiRequest(sessionPath(id), SessionViewSchema),
+  apply: (id: string) =>
+    apiRequest(`${sessionPath(id)}/apply`, SessionViewSchema, { method: 'POST' }),
+  startChallenge: (id: string, stage: ChallengeStage) =>
+    apiRequest(`${sessionPath(id)}/challenges/${stage}/start`, SessionViewSchema, {
+      method: 'POST',
+    }),
+  answer: (id: string, challengeId: string, body: AnswerRequest) =>
+    apiRequest(`${sessionPath(id)}/challenges/${challengeId}/answer`, AnswerResponseSchema, {
+      method: 'POST',
+      body,
+    }),
+  submitAts: (id: string, challengeId: string, body: AtsSubmitRequest) =>
+    apiRequest(`${sessionPath(id)}/challenges/${challengeId}/ats`, AtsResponseSchema, {
+      method: 'POST',
+      body,
+    }),
 };

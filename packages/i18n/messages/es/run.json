@@ -1,0 +1,125 @@
+{
+  "choose": {
+    "title": "¿Listo para aplicar?",
+    "ranked": "Jugar Ranked",
+    "rankedAttempts": "{remaining, plural, =0 {No te quedan intentos hoy} one {Te queda # intento hoy} other {Te quedan # intentos hoy}}",
+    "rankedResets": "Se reinician a las {time} (medianoche UTC)",
+    "rankedPracticeOnly": "Ranked todavía no está abierto para tu track.",
+    "rankedHint": "Cuenta para los rankings de hoy. El intento se usa al aplicar, no antes.",
+    "practice": "Practice",
+    "practiceHint": "Ilimitado. Tiempos más amplios y respuestas explicadas al final.",
+    "resume": "Retomar tu partida actual",
+    "starting": "Preparando tu oferta…"
+  },
+  "stages": {
+    "recruiter": "Recruiter",
+    "ats": "ATS 9000",
+    "hiring_manager": "Hiring Manager",
+    "final": "Entrevista final"
+  },
+  "progress": {
+    "label": "Proceso de selección",
+    "pending": "Pendiente",
+    "current": "En curso",
+    "passed": "Superado",
+    "failed": "No superado",
+    "correct": "{correct}/{total}",
+    "match": "{match}%"
+  },
+  "header": {
+    "ranked": "Ranked",
+    "practice": "Practice",
+    "attempt": "Intento {number} de {max}",
+    "cvHealth": "CV Health {value}%",
+    "score": "Puntuación {value}"
+  },
+  "job": {
+    "title": "La oferta",
+    "review": "Lee bien la oferta: el recruiter te preguntará por ella.",
+    "reviewEnds": "Aplica en {seconds} s",
+    "responsibilities": "Responsabilidades",
+    "stack": "Stack",
+    "experience": "Experiencia",
+    "perks": "Beneficios",
+    "salary": "{min} – {max} al año",
+    "apply": "Aplicar",
+    "applyRanked": "Aplicar usa el intento ranked {number} de {max} de hoy. Después de aplicar, salir también cuenta.",
+    "applyPractice": "Partida de práctica: no usa intentos ranked.",
+    "expired": "Esta oferta caducó antes de que aplicaras. Tu intento no se usó."
+  },
+  "segment": {
+    "next": "Siguiente: {stage}",
+    "continue": "Continuar a {stage}",
+    "intro": {
+      "recruiter": "Llama el recruiter: tres preguntas rápidas sobre la oferta.",
+      "ats": "El ATS 9000 escanea tu CV buscando las keywords de la oferta.",
+      "hiring_manager": "El hiring manager pone a prueba tu criterio técnico.",
+      "final": "Una última pregunta decide la oferta."
+    }
+  },
+  "question": {
+    "counter": "Pregunta {index} de {total}",
+    "timeLeft": "{seconds} s",
+    "timeUp": "Se acabó el tiempo",
+    "option": "Opción {id}"
+  },
+  "feedback": {
+    "correct": "Correcto",
+    "incorrect": "No exactamente",
+    "timeout": "Se acabó el tiempo",
+    "points": "+{points} pts",
+    "combo": "Combo ×{combo}",
+    "cvDamage": "CV −{value}"
+  },
+  "ats": {
+    "title": "ATS 9000",
+    "instructions": "Selecciona las keywords relevantes para esta oferta. Las irrelevantes restan puntos y CV Health.",
+    "threshold": "Nota de corte: {threshold}%",
+    "selected": "{count} seleccionadas",
+    "submit": "Enviar al ATS",
+    "approved": "ATS APROBADO · match {match}%",
+    "rejected": "CANDIDATURA RECHAZADA · match {match}%"
+  },
+  "result": {
+    "delivered": "CANDIDATURA ENTREGADA",
+    "failed": "CANDIDATURA RECHAZADA",
+    "abandoned": "PARTIDA ABANDONADA",
+    "atsFailed": "Tu CV no encaja con nuestros requisitos.",
+    "cvDestroyed": "Gracias por tu interés en {company}. Tras una cuidadosa evaluación, hemos decidido continuar con otros candidatos.",
+    "abandonedBody": "La partida caducó antes de terminarse.",
+    "context": "{name} consiguió {score} puntos compitiendo como {title}.",
+    "notRanked": "Puntuación parcial (no puntúa en ranking)",
+    "breakdown": "Desglose de la puntuación",
+    "answers": "Respuestas",
+    "speed": "Velocidad",
+    "completion": "Entrega",
+    "ats": "Match ATS",
+    "cvHealth": "CV Health",
+    "streak": "Racha",
+    "total": "Total",
+    "recruiter": "Recruiter {correct}/{total}",
+    "technical": "Técnicas {correct}/{total}",
+    "atsMatch": "ATS {match}%",
+    "cv": "CV {value}%",
+    "review": "Tus respuestas",
+    "yourAnswer": "Tu respuesta: {answer}",
+    "expected": "Esperada: {answer}",
+    "noAnswer": "Sin respuesta",
+    "rankedReview": "Las partidas ranked no revelan respuestas. Las de práctica las explican.",
+    "outcome": {
+      "correct": "Correcta",
+      "incorrect": "Incorrecta",
+      "timeout": "Sin tiempo",
+      "graded": "Graduada",
+      "neutral": "No puntúa"
+    },
+    "playAgain": "Jugar de nuevo",
+    "practice": "Practice",
+    "back": "Volver a tu perfil",
+    "beta": "Season 0 (Beta) · scoring v0: los valores se reequilibrarán."
+  },
+  "errors": {
+    "notFound": "No encontramos esta partida.",
+    "retry": "Reintentar"
+  }
+}

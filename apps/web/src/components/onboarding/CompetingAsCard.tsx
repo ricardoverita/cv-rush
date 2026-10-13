@@ -72,16 +72,6 @@ export function CompetingAsCard({
           </button>
         </div>
       </section>
-
-      <section
-        aria-labelledby="next-step"
-        className="rounded-xl border border-dashed border-border p-5"
-      >
-        <h2 id="next-step" className="mb-1 font-semibold">
-          {t('nextTitle')}
-        </h2>
-        <p className="text-muted">{t('nextBody')}</p>
-      </section>
     </div>
   );
 }

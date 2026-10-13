@@ -47,8 +47,6 @@
     "category": "Categoría",
     "savedOnDevice": "Tu progreso está guardado en este dispositivo.",
     "private": "Perfil privado",
-    "edit": "Editar perfil",
-    "nextTitle": "Siguiente: tu primer Job Challenge",
-    "nextBody": "Play Ranked y Practice llegan en la próxima actualización. Tu perfil ya está listo."
+    "edit": "Editar perfil"
   }
 }

@@ -1,0 +1,125 @@
+{
+  "choose": {
+    "title": "Ready to apply?",
+    "ranked": "Play Ranked",
+    "rankedAttempts": "{remaining, plural, =0 {No attempts left today} one {# attempt remaining today} other {# attempts remaining today}}",
+    "rankedResets": "Resets at {time} (UTC midnight)",
+    "rankedPracticeOnly": "Ranked isn't open for your track yet.",
+    "rankedHint": "Counts for today's rankings. The attempt is used when you apply, not before.",
+    "practice": "Practice",
+    "practiceHint": "Unlimited. Relaxed timers and answers explained at the end.",
+    "resume": "Resume your current run",
+    "starting": "Preparing your job…"
+  },
+  "stages": {
+    "recruiter": "Recruiter",
+    "ats": "ATS 9000",
+    "hiring_manager": "Hiring Manager",
+    "final": "Final Interview"
+  },
+  "progress": {
+    "label": "Hiring process",
+    "pending": "Pending",
+    "current": "In progress",
+    "passed": "Passed",
+    "failed": "Failed",
+    "correct": "{correct}/{total}",
+    "match": "{match}%"
+  },
+  "header": {
+    "ranked": "Ranked",
+    "practice": "Practice",
+    "attempt": "Attempt {number} of {max}",
+    "cvHealth": "CV Health {value}%",
+    "score": "Score {value}"
+  },
+  "job": {
+    "title": "The job",
+    "review": "Read the offer carefully: the recruiter will ask about it.",
+    "reviewEnds": "Apply within {seconds} s",
+    "responsibilities": "Responsibilities",
+    "stack": "Stack",
+    "experience": "Experience",
+    "perks": "Perks",
+    "salary": "{min} – {max} per year",
+    "apply": "Apply",
+    "applyRanked": "Applying uses ranked attempt {number} of {max} today. Once you apply, leaving still counts.",
+    "applyPractice": "Practice run: it doesn't use ranked attempts.",
+    "expired": "This offer expired before you applied. Your attempt wasn't used."
+  },
+  "segment": {
+    "next": "Next: {stage}",
+    "continue": "Continue to the {stage}",
+    "intro": {
+      "recruiter": "The recruiter calls: three quick questions about the offer.",
+      "ats": "The ATS 9000 scans your CV for the job's keywords.",
+      "hiring_manager": "The hiring manager checks your technical judgment.",
+      "final": "One last question decides the offer."
+    }
+  },
+  "question": {
+    "counter": "Question {index} of {total}",
+    "timeLeft": "{seconds} s",
+    "timeUp": "Time's up",
+    "option": "Option {id}"
+  },
+  "feedback": {
+    "correct": "Correct",
+    "incorrect": "Not quite",
+    "timeout": "Time's up",
+    "points": "+{points} pts",
+    "combo": "Combo ×{combo}",
+    "cvDamage": "CV −{value}"
+  },
+  "ats": {
+    "title": "ATS 9000",
+    "instructions": "Select the keywords relevant to this job. Irrelevant ones cost points and CV Health.",
+    "threshold": "Pass mark: {threshold}%",
+    "selected": "{count} selected",
+    "submit": "Submit to the ATS",
+    "approved": "ATS APPROVED · match {match}%",
+    "rejected": "APPLICATION REJECTED · match {match}%"
+  },
+  "result": {
+    "delivered": "APPLICATION DELIVERED",
+    "failed": "APPLICATION REJECTED",
+    "abandoned": "RUN ABANDONED",
+    "atsFailed": "Your CV did not match our requirements.",
+    "cvDestroyed": "Thank you for your interest in {company}. After careful consideration, we've decided to move forward with other candidates.",
+    "abandonedBody": "The run expired before it was finished.",
+    "context": "{name} scored {score} points competing as a {title}.",
+    "notRanked": "Partial score (not ranked)",
+    "breakdown": "Score breakdown",
+    "answers": "Answers",
+    "speed": "Speed",
+    "completion": "Delivery",
+    "ats": "ATS match",
+    "cvHealth": "CV Health",
+    "streak": "Streak",
+    "total": "Total",
+    "recruiter": "Recruiter {correct}/{total}",
+    "technical": "Technical {correct}/{total}",
+    "atsMatch": "ATS {match}%",
+    "cv": "CV {value}%",
+    "review": "Your answers",
+    "yourAnswer": "Your answer: {answer}",
+    "expected": "Expected: {answer}",
+    "noAnswer": "No answer",
+    "rankedReview": "Ranked runs don't reveal answers. Practice runs explain them.",
+    "outcome": {
+      "correct": "Correct",
+      "incorrect": "Wrong",
+      "timeout": "Time's up",
+      "graded": "Graded",
+      "neutral": "Not scored"
+    },
+    "playAgain": "Play again",
+    "practice": "Practice",
+    "back": "Back to your profile",
+    "beta": "Season 0 (Beta) · scoring v0: values will be rebalanced."
+  },
+  "errors": {
+    "notFound": "We couldn't find this run.",
+    "retry": "Retry"
+  }
+}

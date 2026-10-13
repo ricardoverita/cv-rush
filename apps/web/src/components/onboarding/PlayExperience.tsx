@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { api, ApiError } from '@/lib/api';
 import { CompetingAsCard } from './CompetingAsCard';
 import { OnboardingWizard } from './OnboardingWizard';
+import { PlayChoice } from './PlayChoice';
 
 type State =
   | { kind: 'loading' }
@@ -74,11 +75,14 @@ export function PlayExperience({ catalog }: { catalog: CatalogResponse }) {
       );
     case 'ready':
       return (
-        <CompetingAsCard
-          catalog={catalog}
-          me={state.me}
-          onEdit={() => setState({ kind: 'editing', me: state.me })}
-        />
+        <div className="flex flex-col gap-8">
+          <CompetingAsCard
+            catalog={catalog}
+            me={state.me}
+            onEdit={() => setState({ kind: 'editing', me: state.me })}
+          />
+          <PlayChoice catalog={catalog} />
+        </div>
       );
   }
 }
