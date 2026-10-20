@@ -17,7 +17,7 @@ allowBuilds:
 catalog:
   # @nestjs/platform-fastify pins its own fastify; the override below makes the server run the
   # same (patched) version we depend on. Bump it here, never in apps/api/package.json.
-  fastify: 5.12.5
+  fastify: 5.12.7
 
 overrides:
   fastify: 'catalog:'
